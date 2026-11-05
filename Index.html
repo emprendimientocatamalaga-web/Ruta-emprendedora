@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SENA - Sistema de Seguimiento Ruta Emprendedora (Regional Santander)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sena: {
+                            green: '#39A900',
+                            greenHover: '#2e8700',
+                            navy: '#00324D',
+                            navyLight: '#004b73',
+                            grayBg: '#F4F6F8',
+                            accent: '#FF6B00'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&display=swap');
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background-color: #F4F6F8;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { background-color: white; }
+            .print-container { width: 100%; margin: 0; padding: 0; box-shadow: none; }
+        }
+    </style>
+</head>
+<body class="text-slate-800 flex h-screen overflow-hidden">
+
+    <!-- ================= LOGO VECTORIAL SVG SENA | FONDO EMPRENDER ================= -->
+    <svg class="hidden">
+        <defs>
+            <g id="sena-fondo-emprender-logo">
+                <g transform="translate(0, 0)">
+                    <circle cx="28" cy="10" r="7" fill="#39A900" />
+                    <text x="28" y="27" font-family="'Work Sans', sans-serif" font-weight="900" font-size="12" fill="#39A900" text-anchor="middle" letter-spacing="1">SENA</text>
+                    <path d="M 28 30 L 12 55 L 18 55 L 28 38 L 38 55 L 44 55 Z" fill="#39A900" />
+                    <path d="M 28 38 L 8 52 L 8 57 L 14 57 L 28 46 L 42 57 L 48 57 L 48 52 Z" fill="#39A900" />
+                </g>
+                <line x1="62" y1="5" x2="62" y2="55" stroke="#94A3B8" stroke-width="2.5" stroke-linecap="round" />
+                <g transform="translate(74, 5)">
+                    <path d="M 12 6 C 25 2, 45 3, 58 12 C 40 10, 25 12, 12 18 Z" fill="#182C53" />
+                    <path d="M 4 21 C 20 17, 45 18, 58 27 C 40 24, 20 26, 4 33 Z" fill="#80C226" />
+                    <path d="M 22 36 C 34 33, 48 35, 58 42 C 45 39, 32 40, 22 45 Z" fill="#69C1E2" />
+                    <text x="70" y="20" font-family="'Work Sans', sans-serif" font-weight="700" font-style="italic" font-size="17" fill="#69C1E2" letter-spacing="1">FONDO</text>
+                    <text x="70" y="42" font-family="'Work Sans', sans-serif" font-weight="900" font-style="italic" font-size="22" fill="#182C53" letter-spacing="0.5">EMPRENDER</text>
+                </g>
+            </g>
+
+            <g id="sena-fondo-emprender-logo-white">
+                <g transform="translate(0, 0)">
+                    <circle cx="28" cy="10" r="7" fill="#39A900" />
+                    <text x="28" y="27" font-family="'Work Sans', sans-serif" font-weight="900" font-size="12" fill="#39A900" text-anchor="middle" letter-spacing="1">SENA</text>
+                    <path d="M 28 30 L 12 55 L 18 55 L 28 38 L 38 55 L 44 55 Z" fill="#39A900" />
+                    <path d="M 28 38 L 8 52 L 8 57 L 14 57 L 28 46 L 42 57 L 48 57 L 48 52 Z" fill="#39A900" />
+                </g>
+                <line x1="62" y1="5" x2="62" y2="55" stroke="#475569" stroke-width="2.5" stroke-linecap="round" />
+                <g transform="translate(74, 5)">
+                    <path d="M 12 6 C 25 2, 45 3, 58 12 C 40 10, 25 12, 12 18 Z" fill="#FFFFFF" />
+                    <path d="M 4 21 C 20 17, 45 18, 58 27 C 40 24, 20 26, 4 33 Z" fill="#80C226" />
+                    <path d="M 22 36 C 34 33, 48 35, 58 42 C 45 39, 32 40, 22 45 Z" fill="#69C1E2" />
+                    <text x="70" y="20" font-family="'Work Sans', sans-serif" font-weight="700" font-style="italic" font-size="17" fill="#69C1E2" letter-spacing="1">FONDO</text>
+                    <text x="70" y="42" font-family="'Work Sans', sans-serif" font-weight="900" font-style="italic" font-size="22" fill="#FFFFFF" letter-spacing="0.5">EMPRENDER</text>
+                </g>
+            </g>
+        </defs>
+    </svg>
+
+    <!-- ================= PANTALLA LOGIN CON FIREBASE AUTH (@sena.edu.co) ================= -->
+    <div id="loginScreen" class="fixed inset-0 bg-sena-navy z-50 flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl p-6 md:p-8 space-y-5 relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-2 bg-sena-green"></div>
+
+            <div class="text-center space-y-2">
+                <div class="flex justify-center items-center py-2">
+                    <svg class="w-64 h-16">
+                        <use href="#sena-fondo-emprender-logo"></use>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold text-sena-navy">Acceso Institucional</h2>
+                    <p class="text-xs text-sena-green font-bold uppercase tracking-wider">Regional Santander • Unidad de Emprendimiento</p>
+                </div>
+            </div>
+
+            <div class="p-3 bg-red-50 border border-red-200 rounded-xl text-[11px] text-red-800 flex items-start gap-2">
+                <i class="fa-solid fa-user-shield text-red-600 text-sm mt-0.5"></i>
+                <div>
+                    <strong>Protección de Datos Personales (Ley 1581 de 2012):</strong> Plataforma restringida para profesionales y orientadores de emprendimiento SENA. Autenticación con correo corporativo @sena.edu.co.
+                </div>
+            </div>
+
+            <form id="loginForm" onsubmit="handleLoginSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Correo Electrónico Institucional *</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                        <input type="email" id="loginEmail" required placeholder="usuario@sena.edu.co" class="w-full pl-9 pr-3 py-2 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-sena-green focus:outline-none">
+                    </div>
+                    <p class="text-[10px] text-slate-400 mt-1">Debe pertenecer al dominio institucional @sena.edu.co</p>
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="block text-xs font-semibold text-slate-700">Contraseña de Acceso *</label>
+                        <button type="button" onclick="handleResetPasswordPrompt()" class="text-[11px] font-semibold text-sena-green hover:underline">
+                            ¿Olvidaste o deseas cambiar tu contraseña?
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <i class="fa-solid fa-key absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                        <input type="password" id="loginPassword" required placeholder="••••••••" class="w-full pl-9 pr-3 py-2 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-sena-green focus:outline-none">
+                    </div>
+                </div>
+
+                <div id="loginError" class="hidden p-2.5 bg-red-50 border border-red-300 rounded-xl text-xs text-red-800 font-medium"></div>
+                <div id="loginSuccess" class="hidden p-2.5 bg-emerald-50 border border-emerald-300 rounded-xl text-xs text-emerald-800 font-medium"></div>
+
+                <button type="submit" id="btnLoginSubmit" class="w-full py-2.5 bg-sena-green hover:bg-sena-greenHover text-white text-xs font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-right-to-bracket"></i> Iniciar Sesión Segura
+                </button>
+            </form>
+
+            <div class="text-center text-[10px] text-slate-400 border-t pt-3">
+                Dirección de Empleo, Trabajo y Emprendimiento © SENA 2026
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= SIDEBAR NAUTICO SENA ================= -->
+    <aside id="sidebar" class="w-64 bg-sena-navy text-white flex flex-col justify-between transition-all duration-300 z-30 fixed inset-y-0 left-0 md:relative md:translate-x-0 -translate-x-full">
+        <div>
+            <div class="p-4 border-b border-sena-navyLight flex flex-col items-center justify-center text-center gap-2">
+                <svg class="w-56 h-14">
+                    <use href="#sena-fondo-emprender-logo-white"></use>
+                </svg>
+                <div class="w-full pt-1 border-t border-slate-700/50">
+                    <p class="text-[11px] text-sena-green font-bold uppercase tracking-wider">Regional Santander</p>
+                    <p class="text-[10px] text-slate-300">Unidad de Emprendimiento</p>
+                </div>
+            </div>
+
+            <nav class="mt-6 px-3 space-y-1">
+                <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-item w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl text-white bg-sena-green shadow-sm transition">
+                    <i class="fa-solid fa-chart-pie w-5 text-center"></i>
+                    <span>Dashboard General</span>
+                </button>
+                <button onclick="switchTab('emprendedores')" id="nav-emprendedores" class="nav-item w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl text-slate-300 hover:bg-sena-navyLight hover:text-white transition">
+                    <i class="fa-solid fa-users w-5 text-center"></i>
+                    <span>Directorio y Ruta</span>
+                </button>
+                <button onclick="switchTab('nuevo')" id="nav-nuevo" class="nav-item w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl text-slate-300 hover:bg-sena-navyLight hover:text-white transition">
+                    <i class="fa-solid fa-user-plus w-5 text-center"></i>
+                    <span>Registrar Emprendedor</span>
+                </button>
+                <button onclick="switchTab('reportes')" id="nav-reportes" class="nav-item w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl text-slate-300 hover:bg-sena-navyLight hover:text-white transition">
+                    <i class="fa-solid fa-file-invoice w-5 text-center"></i>
+                    <span>Centro de Reportes</span>
+                </button>
+            </nav>
+        </div>
+
+        <div class="p-4 border-t border-sena-navyLight text-xs text-slate-400 space-y-1">
+            <div class="flex items-center gap-2">
+                <div id="firebaseStatusDot" class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></div>
+                <span id="firebaseStatusText" class="text-slate-200 font-medium">Conectando Firebase...</span>
+            </div>
+            <p class="text-[10px] text-slate-400">SISTEMA FONDO EMPRENDER v4.1</p>
+        </div>
+    </aside>
+
+    <!-- ================= CONTENIDO PRINCIPAL ================= -->
+    <div class="flex-1 flex flex-col h-screen overflow-hidden">
+
+        <!-- BARRA SUPERIOR (HEADER) -->
+        <header class="bg-white border-b border-slate-200 px-6 py-3 flex items-center justify-between no-print shadow-sm">
+            <div class="flex items-center gap-4">
+                <button id="sidebarToggle" onclick="toggleSidebar()" class="md:hidden text-slate-600 hover:text-sena-navy focus:outline-none">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+                <div>
+                    <h2 id="pageTitle" class="text-lg font-bold text-sena-navy">Dashboard de Impacto y Gestión</h2>
+                    <p class="text-xs text-slate-500 flex items-center gap-2">
+                        <span class="font-semibold text-sena-green">Regional Santander</span>
+                        <span>•</span>
+                        <span>Unidad de Emprendimiento</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <button onclick="toggleMaskSensitiveData()" id="btnMaskData" class="bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-2 shadow-sm transition">
+                    <i class="fa-solid fa-eye-slash text-amber-700" id="maskIcon"></i>
+                    <span id="maskBtnText" class="hidden sm:inline">Datos Sensibles: Ocultos</span>
+                </button>
+
+                <div class="hidden sm:flex items-center gap-2 bg-sena-grayBg px-3 py-1.5 rounded-full border border-slate-200">
+                    <i class="fa-solid fa-user-check text-sena-green"></i>
+                    <span id="userBadge" class="text-xs font-semibold text-slate-700">orientador@sena.edu.co</span>
+                </div>
+
+                <button onclick="handleResetPasswordCurrent()" title="Cambiar Contraseña" class="bg-blue-50 hover:bg-blue-100 text-blue-700 px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1 border border-blue-200 transition">
+                    <i class="fa-solid fa-key"></i>
+                    <span class="hidden md:inline">Cambiar Clave</span>
+                </button>
+
+                <button onclick="handleLogout()" title="Cerrar Sesión" class="bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1 border border-red-200 transition">
+                    <i class="fa-solid fa-power-off"></i>
+                </button>
+
+                <button onclick="exportDataToCSV()" class="bg-sena-navy hover:bg-sena-navyLight text-white px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-2 shadow-sm transition">
+                    <i class="fa-solid fa-file-excel text-emerald-400"></i>
+                    <span class="hidden sm:inline">Exportar Excel (>75 campos)</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- MAIN SCROLLABLE CONTAINER -->
+        <main class="flex-1 overflow-y-auto p-4 md:p-6 bg-slate-50">
+
+            <div class="mb-4 bg-emerald-50 border border-emerald-200 p-3 rounded-xl flex items-center justify-between text-xs text-emerald-900">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-shield-halved text-sena-green text-base"></i>
+                    <span><strong>Entorno Seguro SENA (Habeas Data):</strong> Cédulas, Teléfonos, Nombres y Proyectos protegidos por Ley 1581 de 2012 y sincronizados con Firebase Authentication y Realtime Database.</span>
+                </div>
+            </div>
+
+            <!-- ================= TAB 1: DASHBOARD ================= -->
+            <section id="tab-dashboard" class="space-y-6">
+
+                <!-- TARJETAS KPI -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between hover:border-sena-green transition">
+                        <div class="flex justify-between items-center text-slate-500 mb-2">
+                            <span class="text-xs font-semibold uppercase tracking-wider">Total Emprendedores</span>
+                            <i class="fa-solid fa-users text-sena-navy"></i>
+                        </div>
+                        <p id="kpi-total" class="text-2xl font-bold text-sena-navy">0</p>
+                        <span class="text-[10px] text-slate-400 mt-1">Registrados Santander</span>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between hover:border-sena-green transition">
+                        <div class="flex justify-between items-center text-slate-500 mb-2">
+                            <span class="text-xs font-semibold uppercase tracking-wider">En Formulación</span>
+                            <i class="fa-solid fa-file-signature text-purple-500"></i>
+                        </div>
+                        <p id="kpi-formulacion" class="text-2xl font-bold text-purple-700">0</p>
+                        <span class="text-[10px] text-purple-600 font-medium mt-1">17 Puntos en desarrollo</span>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between hover:border-sena-green transition">
+                        <div class="flex justify-between items-center text-slate-500 mb-2">
+                            <span class="text-xs font-semibold uppercase tracking-wider">Viables con Recursos</span>
+                            <i class="fa-solid fa-sack-dollar text-sena-green"></i>
+                        </div>
+                        <p id="kpi-recursos" class="text-2xl font-bold text-sena-green">0</p>
+                        <span class="text-[10px] text-emerald-600 font-medium mt-1">Asignados Fondo Emprender</span>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between hover:border-sena-green transition">
+                        <div class="flex justify-between items-center text-slate-500 mb-2">
+                            <span class="text-xs font-semibold uppercase tracking-wider">Condonados</span>
+                            <i class="fa-solid fa-award text-indigo-600"></i>
+                        </div>
+                        <p id="kpi-condonados" class="text-2xl font-bold text-indigo-700">0</p>
+                        <span class="text-[10px] text-indigo-600 font-medium mt-1">Resolución emitida</span>
+                    </div>
+                </div>
+
+                <!-- GRÁFICOS CHART.JS -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-chart-bar text-sena-green"></i>
+                                Emprendedores por Fase de la Ruta Emprendedora
+                            </h3>
+                        </div>
+                        <div class="relative h-64 w-full flex items-center justify-center">
+                            <canvas id="phaseChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-building-columns text-sena-navy"></i>
+                                Distribución por Centro de Emprendimiento Comunitario
+                            </h3>
+                        </div>
+                        <div class="relative h-64 w-full flex items-center justify-center">
+                            <canvas id="centroChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-chart-line text-emerald-600"></i>
+                                Cumplimiento de Ventas y Ejecución Financiera ($ COP)
+                            </h3>
+                        </div>
+                        <div class="relative h-64 w-full flex items-center justify-center">
+                            <canvas id="financialMetricsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-briefcase text-blue-600"></i>
+                                Generación de Empleos Directos (Proyectados vs Reales)
+                            </h3>
+                        </div>
+                        <div class="relative h-64 w-full flex items-center justify-center">
+                            <canvas id="jobsMetricsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TABLA TOP AVANCE -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-base">Últimos Emprendedores Actualizados</h3>
+                            <p class="text-xs text-slate-500">Mapeo en los 87 municipios de Santander y 8 Centros de Formación</p>
+                        </div>
+                        <button onclick="switchTab('emprendedores')" class="text-xs font-semibold text-sena-green hover:text-sena-navy flex items-center gap-1 transition">
+                            Ver Directorio Completo <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-slate-600">
+                            <thead class="bg-slate-50 text-slate-700 font-semibold uppercase border-b border-slate-200">
+                                <tr>
+                                    <th class="p-3.5">Emprendedor / Negocio</th>
+                                    <th class="p-3.5">Centro / Municipio</th>
+                                    <th class="p-3.5">Orientador Formulación</th>
+                                    <th class="p-3.5 text-center">Fase Actual</th>
+                                    <th class="p-3.5 w-36">% Avance Ponderado</th>
+                                    <th class="p-3.5 text-center">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody id="topProgresstableBody" class="divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- ================= TAB 2: DIRECTORIO Y FILTROS ================= -->
+            <section id="tab-emprendedores" class="hidden space-y-4">
+
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                        <div class="relative md:col-span-1">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                            <input type="text" id="searchInput" oninput="filterEmprendedores()" placeholder="Buscar por Nombre, Cédula o Proyecto..." class="w-full pl-9 pr-4 py-2 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-sena-green focus:outline-none">
+                        </div>
+
+                        <div>
+                            <select id="filterCentro" onchange="filterEmprendedores()" class="w-full text-xs border border-slate-300 rounded-xl px-3 py-2 bg-white text-slate-700 focus:ring-2 focus:ring-sena-green focus:outline-none">
+                                <option value="">Todos los 8 Centros SENA Santander</option>
+                                <option value="Centro de Servicios Empresariales y Turísticos (Bucaramanga)">CSET (Bucaramanga)</option>
+                                <option value="Centro Industrial de Mantenimiento Integral (Girón)">CIMI (Girón)</option>
+                                <option value="Centro Industrial del Diseño y la Manufactura (Floridablanca)">CIDM (Floridablanca)</option>
+                                <option value="Centro de Atención al Sector Agropecuario (Piedecuesta)">CASA (Piedecuesta)</option>
+                                <option value="Centro Industrial y del Desarrollo Tecnológico (Barrancabermeja)">CIDT (Barrancabermeja)</option>
+                                <option value="Centro de Gestión Agroempresarial del Oriente (Vélez)">CGAO (Vélez)</option>
+                                <option value="Centro Agroturístico (San Gil)">CAG (San Gil)</option>
+                                <option value="Centro Agroempresarial y Turístico de los Andes (Málaga)">CATA (Málaga)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <select id="filterMunicipio" onchange="filterEmprendedores()" class="w-full text-xs border border-slate-300 rounded-xl px-3 py-2 bg-white text-slate-700 focus:ring-2 focus:ring-sena-green focus:outline-none">
+                                <option value="">Todos los 87 Municipios de Santander</option>
+                            </select>
+                        </div>
+
+                        <div class="flex gap-2">
+                            <select id="filterFase" onchange="filterEmprendedores()" class="w-full text-xs border border-slate-300 rounded-xl px-3 py-2 bg-white text-slate-700 focus:ring-2 focus:ring-sena-green focus:outline-none">
+                                <option value="">Todas las Fases</option>
+                                <option value="Orientación">Orientación</option>
+                                <option value="Ideación">Ideación</option>
+                                <option value="Validación">Validación</option>
+                                <option value="Formulación">Formulación (17 Puntos)</option>
+                                <option value="Viable">Viable con Recursos</option>
+                                <option value="Puesta en Marcha">Puesta en Marcha / Ejecución</option>
+                                <option value="Interventoría">Interventoría / Condonado</option>
+                            </select>
+
+                            <button onclick="resetFilters()" class="px-3 py-2 text-xs bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl font-medium transition" title="Limpiar Filtros">
+                                <i class="fa-solid fa-rotate-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-slate-600">
+                            <thead class="bg-sena-navy text-white font-semibold uppercase tracking-wider">
+                                <tr>
+                                    <th class="p-3.5">Emprendedor & Cédula</th>
+                                    <th class="p-3.5">Nombre Emprendimiento</th>
+                                    <th class="p-3.5">Centro & Municipio</th>
+                                    <th class="p-3.5">Modalidad</th>
+                                    <th class="p-3.5">Orientador Formulación</th>
+                                    <th class="p-3.5 text-center">Fase Actual</th>
+                                    <th class="p-3.5 text-center">% Avance Ponderado</th>
+                                    <th class="p-3.5 text-center">Recursos Asignados ($)</th>
+                                    <th class="p-3.5 text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="mainTableBody" class="divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
+                    <div class="p-3 bg-slate-50 border-t border-slate-200 text-xs text-slate-500 flex justify-between items-center">
+                        <span id="recordCount">Mostrando 0 emprendedores</span>
+                        <span>SENA Regional Santander • Fondo Emprender</span>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- ================= TAB 3: REGISTRO / EDICIÓN ================= -->
+            <section id="tab-nuevo" class="hidden max-w-5xl mx-auto space-y-6">
+
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                    <div class="border-b border-slate-200 pb-4 mb-6 flex justify-between items-center">
+                        <div>
+                            <h3 id="formTitle" class="text-lg font-bold text-sena-navy">Registrar Nuevo Emprendedor en la Ruta</h3>
+                            <p class="text-xs text-slate-500">Formulario integrado con sincronización en tiempo real a Firebase Database</p>
+                        </div>
+                        <span class="bg-sena-green/10 text-sena-green font-bold text-xs px-3 py-1 rounded-full">Sincronizado en la Nube</span>
+                    </div>
+
+                    <form id="emprendedorForm" onsubmit="handleFormSubmit(event)" class="space-y-6">
+
+                        <input type="hidden" id="editIndex" value="-1">
+                        <input type="hidden" id="editKey" value="">
+
+                        <!-- SECCIÓN 1: DATOS PERSONALES Y EMPRENDIMIENTO -->
+                        <div>
+                            <h4 class="text-xs font-bold text-sena-navy uppercase tracking-wider mb-3 flex items-center gap-2">
+                                <i class="fa-solid fa-address-card text-sena-green"></i> 1. Datos Personales y Caracterización del Proyecto
+                            </h4>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Nombre Completo * (Sensible)</label>
+                                    <input type="text" id="formNombre" required class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="Ej: Martha Lucia Gómez">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Cédula de Ciudadanía * (Sensible)</label>
+                                    <input type="text" id="formCedula" required class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="Ej: 1098654321">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Número Telefónico (Sensible)</label>
+                                    <input type="text" id="formTelefono" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="316 455 1289">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Nombre del Emprendimiento * (Sensible)</label>
+                                    <input type="text" id="formEmprendimiento" required class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="Ej: AgroFlores de Florián">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Centro de Emprendimiento Comunitario (8 Centros) *</label>
+                                    <select id="formCentro" required class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none bg-white">
+                                        <option value="Centro de Servicios Empresariales y Turísticos (Bucaramanga)">Centro de Servicios Empresariales y Turísticos (Bucaramanga)</option>
+                                        <option value="Centro Industrial de Mantenimiento Integral (Girón)">Centro Industrial de Mantenimiento Integral (Girón)</option>
+                                        <option value="Centro Industrial del Diseño y la Manufactura (Floridablanca)">Centro Industrial del Diseño y la Manufactura (Floridablanca)</option>
+                                        <option value="Centro de Atención al Sector Agropecuario (Piedecuesta)">Centro de Atención al Sector Agropecuario (Piedecuesta)</option>
+                                        <option value="Centro Industrial y del Desarrollo Tecnológico (Barrancabermeja)">Centro Industrial y del Desarrollo Tecnológico (Barrancabermeja)</option>
+                                        <option value="Centro de Gestión Agroempresarial del Oriente (Vélez)">Centro de Gestión Agroempresarial del Oriente (Vélez)</option>
+                                        <option value="Centro Agroturístico (San Gil)">Centro Agroturístico (San Gil)</option>
+                                        <option value="Centro Agroempresarial y Turístico de los Andes (Málaga)">Centro Agroempresarial y Turístico de los Andes (Málaga)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Municipio (87 Municipios Santander) *</label>
+                                    <select id="formMunicipio" required class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none bg-white">
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Modalidad del Proyecto *</label>
+                                    <select id="formTipoProyecto" required class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none bg-white">
+                                        <option value="Individual CREAR">Individual CREAR</option>
+                                        <option value="Asociativo CREAR">Asociativo CREAR</option>
+                                        <option value="Individual FORTALECIMIENTO">Individual FORTALECIMIENTO</option>
+                                        <option value="Asociativo FORTALECIMIENTO">Asociativo FORTALECIMIENTO</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Orientador Ideación / Validación</label>
+                                    <input type="text" id="formOrientadorIdeacion" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="Carlos Ramírez">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Orientador Formulación</label>
+                                    <input type="text" id="formOrientadorFormulacion" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="Andrea Gómez">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SECCIÓN 2: ORIENTACIÓN, IDEACIÓN Y VALIDACIÓN -->
+                        <div class="pt-4 border-t border-slate-200">
+                            <h4 class="text-xs font-bold text-sena-navy uppercase tracking-wider mb-3 flex items-center gap-2">
+                                <i class="fa-solid fa-graduation-cap text-sena-green"></i> 2. Jornada de Orientación y Entrenamientos
+                            </h4>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                                    <span class="font-bold text-slate-800 block">Jornada de Orientación</span>
+                                    <div class="flex items-center gap-2">
+                                        <input type="checkbox" id="checkOrientacion" class="w-4 h-4 text-sena-green rounded">
+                                        <label for="checkOrientacion">Evidencia Registrada (Sí)</label>
+                                    </div>
+                                    <input type="date" id="fechaOrientacion" class="w-full p-1.5 border border-slate-300 rounded bg-white">
+                                </div>
+
+                                <div class="p-3 bg-amber-50/50 border border-amber-200 rounded-xl space-y-2">
+                                    <span class="font-bold text-amber-900 block">Entrenamientos de Ideación</span>
+                                    <div class="space-y-1.5 text-[11px]">
+                                        <div class="flex items-center justify-between">
+                                            <span>01: ¿A quién le sirve lo que hago?</span>
+                                            <input type="checkbox" id="checkIdeacion1" class="rounded text-amber-600">
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <span>02: ¡Diferentes, pero competentes!</span>
+                                            <input type="checkbox" id="checkIdeacion2" class="rounded text-amber-600">
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <span>03: ¡Lo que no se mide no existe!</span>
+                                            <input type="checkbox" id="checkIdeacion3" class="rounded text-amber-600">
+                                        </div>
+                                    </div>
+                                    <input type="date" id="fechaIdeacion" class="w-full p-1.5 border border-slate-300 rounded bg-white">
+                                </div>
+
+                                <div class="p-3 bg-blue-50/50 border border-blue-200 rounded-xl space-y-2">
+                                    <span class="font-bold text-blue-900 block">Entrenamientos de Validación</span>
+                                    <div class="space-y-1.5 text-[11px]">
+                                        <div class="flex items-center justify-between">
+                                            <span>01: Manos a la obra</span>
+                                            <input type="checkbox" id="checkValidacion1" class="rounded text-blue-600">
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <span>02: Esto es diciendo y haciendo</span>
+                                            <input type="checkbox" id="checkValidacion2" class="rounded text-blue-600">
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <span>03: Presentación PITCH</span>
+                                            <input type="checkbox" id="checkValidacion3" class="rounded text-blue-600">
+                                        </div>
+                                    </div>
+                                    <input type="date" id="fechaValidacion" class="w-full p-1.5 border border-slate-300 rounded bg-white">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SECCIÓN 3: FORMULACIÓN DE LOS 17 PUNTOS -->
+                        <div class="pt-4 border-t border-slate-200">
+                            <h4 class="text-xs font-bold text-sena-navy uppercase tracking-wider mb-2 flex items-center justify-between">
+                                <span class="flex items-center gap-2">
+                                    <i class="fa-solid fa-list-check text-sena-green"></i> 3. Formulación Plan de Negocios (17 Puntos)
+                                </span>
+                                <button type="button" onclick="selectAllPuntos(true)" class="text-[11px] text-sena-green hover:underline">Marcar Todos</button>
+                            </h4>
+                            <p class="text-[11px] text-slate-500 mb-3">Marque cada uno de los módulos formulados con sus evidencias:</p>
+
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-[11px]" id="puntosFormulacionContainer">
+                            </div>
+                        </div>
+
+                        <!-- SECCIÓN 4: CONVOCATORIA, RECURSOS E INTERVENTORÍA (Actualizada sin campos trasladados) -->
+                        <div class="pt-4 border-t border-slate-200">
+                            <h4 class="text-xs font-bold text-sena-navy uppercase tracking-wider mb-3 flex items-center gap-2">
+                                <i class="fa-solid fa-sack-dollar text-sena-green"></i> 4. Convocatoria, Viabilidad y Recursos Iniciales
+                            </h4>
+
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Nombre Convocatoria</label>
+                                    <input type="text" id="formConvocatoria" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="Nacional 2026 / Santander">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Fecha Formalización</label>
+                                    <input type="date" id="formFechaFormalizacion" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Estado Viabilidad</label>
+                                    <select id="formViabilidad" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none bg-white">
+                                        <option value="En Proceso">En Proceso / Formulación</option>
+                                        <option value="Viable">Viable con Recursos Asignados</option>
+                                        <option value="No Viable">No Viable</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Recursos Asignados ($ COP)</label>
+                                    <input type="number" id="formRecursos" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Nº Acta Asignación / Contrato</label>
+                                    <input type="text" id="formActaContrato" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="Acta 045-2026">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SECCIÓN 5: PUESTA EN MARCHA E INDICADORES DE IMPACTO (Trasladados aquí: Recursos ejecutados, Visitas de interventoría, Actas de seguimiento técnico operativo, Resolución y Estado de condonación) -->
+                        <div class="pt-4 border-t border-slate-200">
+                            <h4 class="text-xs font-bold text-sena-navy uppercase tracking-wider mb-3 flex items-center gap-2">
+                                <i class="fa-solid fa-rocket text-sena-green"></i> 5. Puesta en Marcha, Ejecución, Interventoría y Condonación
+                            </h4>
+
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+                                <!-- Fechas de Puesta en Marcha -->
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Fecha Inicio Puesta en Marcha</label>
+                                    <input type="date" id="formFechaInicioPuestaEnMarcha" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Fecha Final Puesta en Marcha</label>
+                                    <input type="date" id="formFechaFinPuestaEnMarcha" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none">
+                                </div>
+
+                                <!-- Empleos -->
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Empleos Proyectados (Entero)</label>
+                                    <input type="number" min="0" id="formEmpleosProyectados" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Empleos Generados Reales</label>
+                                    <input type="number" min="0" id="formEmpleosGenerados" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
+                                </div>
+
+                                <!-- Ventas -->
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Ventas Proyectadas ($ COP)</label>
+                                    <input type="number" min="0" id="formVentasProyectadas" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Ventas Realizadas ($ COP)</label>
+                                    <input type="number" min="0" id="formVentasRealizadas" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
+                                </div>
+
+                                <!-- Contrapartidas -->
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Contrapartidas Proyectadas ($ COP)</label>
+                                    <input type="number" min="0" id="formContrapartidasProyectadas" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Contrapartidas Ejecutadas ($ COP)</label>
+                                    <input type="number" min="0" id="formContrapartidasEjecutadas" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
+                                </div>
+
+                                <!-- Eventos -->
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Eventos Mercadeo (Proyectados)</label>
+                                    <input type="number" min="0" id="formEventosMercadeoProyectados" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Eventos Mercadeo (Ejecutados)</label>
+                                    <input type="number" min="0" id="formEventosMercadeoEjecutados" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Eventos Comercialización (Proyectados)</label>
+                                    <input type="number" min="0" id="formEventosComercializacionProyectados" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Eventos Comercialización (Ejecutados)</label>
+                                    <input type="number" min="0" id="formEventosComercializacionEjecutados" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
+                                </div>
+
+                                <!-- CAMPOS TRASLADADOS DESDE EL NUMERAL 4 -->
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Recursos Ejecutados ($ COP)</label>
+                                    <input type="number" id="formRecursosEjecutados" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Visitas de Interventoría (0 - 4)</label>
+                                    <input type="number" min="0" max="4" id="formVisitas" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" value="0">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Nº Actas Seguimiento Técnico Operativo</label>
+                                    <input type="number" min="0" id="formActasSeguimientoTecnico" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Estado de Condonación</label>
+                                    <select id="formCondonado" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none bg-white">
+                                        <option value="No">En Ejecución / No Condonado</option>
+                                        <option value="Sí">Sí - Condonación Aprobada</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Resolución de Condonación</label>
+                                    <input type="text" id="formResolucion" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="Res. 1024-2026">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ACCIONES -->
+                        <div class="pt-4 border-t border-slate-200 flex justify-end gap-3">
+                            <button type="button" onclick="switchTab('emprendedores')" class="px-4 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
+                                Cancelar
+                            </button>
+                            <button type="submit" class="px-6 py-2 bg-sena-green hover:bg-sena-greenHover text-white rounded-xl text-xs font-bold shadow transition flex items-center gap-2">
+                                <i class="fa-solid fa-cloud-arrow-up"></i> Guardar en Firebase
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+
+            </section>
+
+            <!-- ================= TAB 4: CENTRO DE REPORTES ================= -->
+            <section id="tab-reportes" class="hidden space-y-6">
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                    <h3 class="text-base font-bold text-sena-navy mb-2">Generación de Reportes Consolidados de la Matriz Expandida (>75 Campos)</h3>
+                    <p class="text-xs text-slate-500 mb-6">Descargue o imprima los informes analíticos para la gestión de la Unidad de Emprendimiento.</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="p-5 border border-slate-200 rounded-xl bg-slate-50 flex flex-col justify-between">
+                            <div>
+                                <div class="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg mb-3">
+                                    <i class="fa-solid fa-file-excel"></i>
+                                </div>
+                                <h4 class="font-bold text-slate-800 text-sm">Matriz Consolidada CSV / Excel (Matriz Expandida >75 Campos)</h4>
+                                <p class="text-xs text-slate-500 mt-1">Exporta la totalidad de columnas incluyendo Puesta en Marcha, Ventas, Empleos, Contrapartidas, Eventos de Mercadeo/Comercialización, Recursos Ejecutados, Actas de Seguimiento Técnico, Interventoría y Condonación.</p>
+                            </div>
+                            <button onclick="exportDataToCSV()" class="mt-4 w-full py-2.5 bg-sena-navy hover:bg-sena-navyLight text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition">
+                                <i class="fa-solid fa-download"></i> Descargar Matriz Consolidada Expandida (CSV)
+                            </button>
+                        </div>
+
+                        <div class="p-5 border border-slate-200 rounded-xl bg-slate-50 flex flex-col justify-between">
+                            <div>
+                                <div class="w-10 h-10 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-lg mb-3">
+                                    <i class="fa-solid fa-print"></i>
+                                </div>
+                                <h4 class="font-bold text-slate-800 text-sm">Informe Ejecutivo Impreso Regional Santander</h4>
+                                <p class="text-xs text-slate-500 mt-1">Imprime el resumen de métricas del Dashboard con gráficos e indicadores de los 8 Centros SENA Santander.</p>
+                            </div>
+                            <button onclick="window.print()" class="mt-4 w-full py-2.5 bg-sena-green hover:bg-sena-greenHover text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition">
+                                <i class="fa-solid fa-print"></i> Imprimir Informe Regional
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- ================= MODAL DETALLE / FICHA / TIMELINE ================= -->
+    <div id="modalDetail" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+            
+            <div class="p-5 bg-sena-navy text-white flex justify-between items-start no-print">
+                <div>
+                    <span id="modalCentroTag" class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded bg-sena-green text-white">Centro SENA</span>
+                    <h3 id="modalNombreEmprendimiento" class="text-xl font-bold mt-1">Nombre Emprendimiento</h3>
+                    <p id="modalEmprendedorInfo" class="text-xs text-slate-300">Emprendedor: - | Cédula: -</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="window.print()" class="bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1 transition">
+                        <i class="fa-solid fa-print"></i> Imprimir Ficha
+                    </button>
+                    <button onclick="closeModal()" class="text-slate-300 hover:text-white p-1 text-lg">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- CUERPO FICHA IMPRIMIBLE -->
+            <div id="modalPrintArea" class="p-6 overflow-y-auto space-y-6 text-xs text-slate-700">
+
+                <div class="hidden print-only mb-6 border-b border-slate-300 pb-4">
+                    <div class="flex justify-between items-center">
+                        <svg class="w-64 h-16">
+                            <use href="#sena-fondo-emprender-logo"></use>
+                        </svg>
+                        <div class="text-right text-xs text-slate-600">
+                            <p class="font-bold text-sena-navy text-sm">REGIONAL SANTANDER</p>
+                            <p class="font-medium">Unidad de Emprendimiento • Expediente de Ruta</p>
+                            <p class="text-[10px] text-slate-400 mt-1">Fecha Expedición: <span id="printDate">--/--/----</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARACTERIZACIÓN GENERAL -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <div>
+                        <span class="text-slate-400 font-medium block">Municipio:</span>
+                        <span id="modalMunicipio" class="font-semibold text-slate-800">--</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 font-medium block">Modalidad:</span>
+                        <span id="modalTipoProyecto" class="font-semibold text-slate-800">--</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 font-medium block">Orientador Ideación:</span>
+                        <span id="modalOrientadorIdeacion" class="font-semibold text-slate-800">--</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 font-medium block">Orientador Formulación:</span>
+                        <span id="modalOrientadorFormulacion" class="font-semibold text-slate-800">--</span>
+                    </div>
+                </div>
+
+                <!-- BARRA DE PORCENTAJE DE AVANCE PONDERADO -->
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="font-bold text-sena-navy text-xs uppercase tracking-wider">Avance Consolidado y Ponderado de la Ruta</span>
+                        <span id="modalAvancePorcentaje" class="font-bold text-sena-green text-sm">0%</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
+                        <div id="modalAvanceBar" class="bg-sena-green h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- TIMELINE DETALLADO DE HITOS CON NUEVOS CAMPOS ANALÍTICOS -->
+                <div>
+                    <h4 class="font-bold text-sena-navy text-sm mb-4 pb-2 border-b border-slate-200 flex items-center gap-2">
+                        <i class="fa-solid fa-timeline text-sena-green"></i>
+                        Detalle de Evidencias, Hitos Operativos e Indicadores de Impacto
+                    </h4>
+
+                    <div class="space-y-4 relative before:absolute before:inset-0 before:left-3.5 before:w-0.5 before:bg-slate-200">
+
+                        <!-- Hito 1 -->
+                        <div class="relative flex items-start gap-4 pl-8">
+                            <div id="icon-orientacion" class="absolute left-1 top-0.5 w-6 h-6 rounded-full bg-slate-300 text-white flex items-center justify-center text-xs">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 w-full">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-slate-800">1. Jornada de Orientación</span>
+                                    <span id="fecha-orientacion-tag" class="text-[10px] text-slate-500 bg-white px-2 py-0.5 rounded border">--</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hito 2 -->
+                        <div class="relative flex items-start gap-4 pl-8">
+                            <div id="icon-ideacion" class="absolute left-1 top-0.5 w-6 h-6 rounded-full bg-slate-300 text-white flex items-center justify-center text-xs">
+                                <i class="fa-solid fa-lightbulb"></i>
+                            </div>
+                            <div class="bg
