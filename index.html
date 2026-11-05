@@ -100,19 +100,19 @@
         </defs>
     </svg>
 
-    <!-- ================= PANTALLA LOGIN OBLIGATORIO (@sena.edu.co) ================= -->
+    <!-- ================= PANTALLA LOGIN CON FIREBASE AUTH (@sena.edu.co) ================= -->
     <div id="loginScreen" class="fixed inset-0 bg-sena-navy z-50 flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl p-6 md:p-8 space-y-6 relative overflow-hidden">
+        <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl p-6 md:p-8 space-y-5 relative overflow-hidden">
             <div class="absolute top-0 left-0 right-0 h-2 bg-sena-green"></div>
 
-            <div class="text-center space-y-3">
+            <div class="text-center space-y-2">
                 <div class="flex justify-center items-center py-2">
                     <svg class="w-64 h-16">
                         <use href="#sena-fondo-emprender-logo"></use>
                     </svg>
                 </div>
                 <div>
-                    <h2 class="text-xl font-bold text-sena-navy">Acceso a la Plataforma</h2>
+                    <h2 class="text-xl font-bold text-sena-navy">Acceso Institucional</h2>
                     <p class="text-xs text-sena-green font-bold uppercase tracking-wider">Regional Santander • Unidad de Emprendimiento</p>
                 </div>
             </div>
@@ -120,31 +120,37 @@
             <div class="p-3 bg-red-50 border border-red-200 rounded-xl text-[11px] text-red-800 flex items-start gap-2">
                 <i class="fa-solid fa-user-shield text-red-600 text-sm mt-0.5"></i>
                 <div>
-                    <strong>Protección de Datos Personales (Ley 1581 de 2012):</strong> Sistema restringido a profesionales y orientadores de emprendimiento SENA. Requiere autenticación institucional con correo @sena.edu.co.
+                    <strong>Protección de Datos Personales (Ley 1581 de 2012):</strong> Plataforma restringida para profesionales y orientadores de emprendimiento SENA. Autenticación con correo corporativo @sena.edu.co.
                 </div>
             </div>
 
-            <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
+            <form id="loginForm" onsubmit="handleLoginSubmit(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-semibold text-slate-700 mb-1">Correo Electrónico Institucional *</label>
                     <div class="relative">
                         <i class="fa-solid fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                        <input type="email" id="loginEmail" required value="orientador.santander@sena.edu.co" placeholder="usuario@sena.edu.co" class="w-full pl-9 pr-3 py-2 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-sena-green focus:outline-none">
+                        <input type="email" id="loginEmail" required placeholder="usuario@sena.edu.co" class="w-full pl-9 pr-3 py-2 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-sena-green focus:outline-none">
                     </div>
-                    <p class="text-[10px] text-slate-400 mt-1">El correo debe finalizar estrictamente en @sena.edu.co</p>
+                    <p class="text-[10px] text-slate-400 mt-1">Debe pertenecer al dominio institucional @sena.edu.co</p>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">Contraseña de Acceso</label>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="block text-xs font-semibold text-slate-700">Contraseña de Acceso *</label>
+                        <button type="button" onclick="handleResetPasswordPrompt()" class="text-[11px] font-semibold text-sena-green hover:underline">
+                            ¿Olvidaste o deseas cambiar tu contraseña?
+                        </button>
+                    </div>
                     <div class="relative">
                         <i class="fa-solid fa-key absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                        <input type="password" id="loginPassword" required value="sena2026" placeholder="••••••••" class="w-full pl-9 pr-3 py-2 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-sena-green focus:outline-none">
+                        <input type="password" id="loginPassword" required placeholder="••••••••" class="w-full pl-9 pr-3 py-2 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-sena-green focus:outline-none">
                     </div>
                 </div>
 
-                <div id="loginError" class="hidden p-2.5 bg-amber-50 border border-amber-300 rounded-xl text-xs text-amber-900 font-medium"></div>
+                <div id="loginError" class="hidden p-2.5 bg-red-50 border border-red-300 rounded-xl text-xs text-red-800 font-medium"></div>
+                <div id="loginSuccess" class="hidden p-2.5 bg-emerald-50 border border-emerald-300 rounded-xl text-xs text-emerald-800 font-medium"></div>
 
-                <button type="submit" class="w-full py-2.5 bg-sena-green hover:bg-sena-greenHover text-white text-xs font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                <button type="submit" id="btnLoginSubmit" class="w-full py-2.5 bg-sena-green hover:bg-sena-greenHover text-white text-xs font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2">
                     <i class="fa-solid fa-right-to-bracket"></i> Iniciar Sesión Segura
                 </button>
             </form>
@@ -188,12 +194,12 @@
             </nav>
         </div>
 
-        <div class="p-4 border-t border-sena-navyLight text-xs text-slate-400">
-            <div class="flex items-center gap-2 mb-2">
-                <div class="w-2 h-2 rounded-full bg-sena-green animate-pulse"></div>
-                <span class="text-slate-200 font-medium">SENA Santander Activo</span>
+        <div class="p-4 border-t border-sena-navyLight text-xs text-slate-400 space-y-1">
+            <div class="flex items-center gap-2">
+                <div id="firebaseStatusDot" class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></div>
+                <span id="firebaseStatusText" class="text-slate-200 font-medium">Conectando Firebase...</span>
             </div>
-            <p class="text-[10px]">SISTEMA FONDO EMPRENDER v3.0</p>
+            <p class="text-[10px] text-slate-400">SISTEMA FONDO EMPRENDER v3.6</p>
         </div>
     </aside>
 
@@ -228,9 +234,16 @@
                     <span id="userBadge" class="text-xs font-semibold text-slate-700">orientador@sena.edu.co</span>
                 </div>
 
+                <!-- CAMBIAR CONTRASEÑA EN PANEL INTERNO -->
+                <button onclick="handleResetPasswordCurrent()" title="Cambiar Contraseña" class="bg-blue-50 hover:bg-blue-100 text-blue-700 px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1 border border-blue-200 transition">
+                    <i class="fa-solid fa-key"></i>
+                    <span class="hidden md:inline">Cambiar Clave</span>
+                </button>
+
                 <button onclick="handleLogout()" title="Cerrar Sesión" class="bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1 border border-red-200 transition">
                     <i class="fa-solid fa-power-off"></i>
                 </button>
+
                 <button onclick="exportDataToCSV()" class="bg-sena-navy hover:bg-sena-navyLight text-white px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-2 shadow-sm transition">
                     <i class="fa-solid fa-file-excel text-emerald-400"></i>
                     <span class="hidden sm:inline">Exportar Excel (66 campos)</span>
@@ -245,7 +258,7 @@
             <div class="mb-4 bg-emerald-50 border border-emerald-200 p-3 rounded-xl flex items-center justify-between text-xs text-emerald-900">
                 <div class="flex items-center gap-2">
                     <i class="fa-solid fa-shield-halved text-sena-green text-base"></i>
-                    <span><strong>Entorno Seguro SENA (Habeas Data):</strong> Cédulas, Teléfonos, Nombres y Proyectos están resguardados por Ley 1581 de 2012.</span>
+                    <span><strong>Entorno Seguro SENA (Habeas Data):</strong> Cédulas, Teléfonos, Nombres y Proyectos protegidos por Ley 1581 de 2012 y sincronizados con Firebase Authentication y Realtime Database.</span>
                 </div>
             </div>
 
@@ -439,14 +452,15 @@
                     <div class="border-b border-slate-200 pb-4 mb-6 flex justify-between items-center">
                         <div>
                             <h3 id="formTitle" class="text-lg font-bold text-sena-navy">Registrar Nuevo Emprendedor en la Ruta</h3>
-                            <p class="text-xs text-slate-500">Formulario integrado con sincronización directa para los 66 campos de la matriz SENA</p>
+                            <p class="text-xs text-slate-500">Formulario integrado con sincronización en tiempo real a Firebase Database</p>
                         </div>
-                        <span class="bg-sena-green/10 text-sena-green font-bold text-xs px-3 py-1 rounded-full">Ruta 2026</span>
+                        <span class="bg-sena-green/10 text-sena-green font-bold text-xs px-3 py-1 rounded-full">Sincronizado en la Nube</span>
                     </div>
 
                     <form id="emprendedorForm" onsubmit="handleFormSubmit(event)" class="space-y-6">
 
                         <input type="hidden" id="editIndex" value="-1">
+                        <input type="hidden" id="editKey" value="">
 
                         <!-- SECCIÓN 1: DATOS PERSONALES Y EMPRENDIMIENTO -->
                         <div>
@@ -638,7 +652,7 @@
                                 Cancelar
                             </button>
                             <button type="submit" class="px-6 py-2 bg-sena-green hover:bg-sena-greenHover text-white rounded-xl text-xs font-bold shadow transition flex items-center gap-2">
-                                <i class="fa-solid fa-floppy-disk"></i> Guardar Registro Completo
+                                <i class="fa-solid fa-cloud-arrow-up"></i> Guardar en Firebase
                             </button>
                         </div>
 
@@ -851,10 +865,259 @@
         </div>
     </div>
 
+    <!-- ================= FIREBASE V10 SDK (AUTH + REALTIME DATABASE) ================= -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { 
+            getAuth, 
+            signInWithEmailAndPassword, 
+            sendPasswordResetEmail, 
+            onAuthStateChanged, 
+            signOut 
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getDatabase, ref, set, remove, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    <!-- ================= LOGICA JAVASCRIPT COMPLETA ================= -->
+        // CONFIGURACIÓN OFICIAL FIREBASE
+        const firebaseConfig = {
+            apiKey: "AIzaSyBZ9iaQCTWfJ92VARzEXGhu7lB6Fw03DuI",
+            authDomain: "ruta-emprendedora-santander.firebaseapp.com",
+            databaseURL: "https://ruta-emprendedora-santander-default-rtdb.firebaseio.com",
+            projectId: "ruta-emprendedora-santander",
+            storageBucket: "ruta-emprendedora-santander.firebasestorage.app",
+            messagingSenderId: "225756593228",
+            appId: "1:225756593228:web:501d20b0119df8ab1b48e9",
+            measurementId: "G-6KCGC61DDX"
+        };
+
+        // Inicialización
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        // Exponer funciones e instancias globalmente
+        window.fbAuth = auth;
+        window.fbDB = db;
+        window.fbRef = ref;
+        window.fbSet = set;
+        window.fbRemove = remove;
+        window.fbOnValue = onValue;
+
+        // Manejo de estado de autenticación de Firebase
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                if (!user.email.endsWith('@sena.edu.co')) {
+                    signOut(auth);
+                    showLoginError("Error de Autorización: El correo no pertenece al dominio @sena.edu.co");
+                    return;
+                }
+                window.currentUserEmail = user.email;
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('userBadge').innerText = user.email;
+            } else {
+                window.currentUserEmail = null;
+                document.getElementById('loginScreen').classList.remove('hidden');
+            }
+        });
+
+        // Inicio de sesión con Firebase Auth
+        window.handleLoginSubmit = async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+            const password = document.getElementById('loginPassword').value;
+            const btn = document.getElementById('btnLoginSubmit');
+
+            hideLoginAlerts();
+
+            if (!email.endsWith('@sena.edu.co')) {
+                showLoginError("Dominio no permitido. Debe usar su correo institucional @sena.edu.co");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Autenticando...';
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+            } catch (error) {
+                console.error("Error Auth:", error);
+                let message = "Credenciales incorrectas o usuario no registrado.";
+                if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+                    message = "Correo o contraseña inválidos. Verifique e intente de nuevo.";
+                } else if (error.code === 'auth/too-many-requests') {
+                    message = "Demasiados intentos fallidos. Intente más tarde o restablezca su clave.";
+                }
+                showLoginError(message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Iniciar Sesión Segura';
+            }
+        };
+
+        // Restablecimiento de contraseña por correo (Prompt desde login)
+        window.handleResetPasswordPrompt = async function() {
+            hideLoginAlerts();
+            const emailInput = document.getElementById('loginEmail').value.trim().toLowerCase();
+            const email = prompt("Ingrese su correo institucional (@sena.edu.co) para enviar el enlace de restablecimiento de contraseña:", emailInput || "");
+            
+            if (!email) return;
+
+            if (!email.endsWith('@sena.edu.co')) {
+                alert("El correo debe pertenecer al dominio institucional @sena.edu.co");
+                return;
+            }
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                showLoginSuccess(`Se ha enviado un enlace de restablecimiento de contraseña al correo: ${email}. Verifique su bandeja de entrada o spam.`);
+            } catch (error) {
+                console.error("Error Reset Password:", error);
+                showLoginError("No se pudo enviar el correo de restablecimiento. Verifique si el usuario está registrado en Firebase Auth.");
+            }
+        };
+
+        // Restablecimiento de contraseña desde la barra superior interna
+        window.handleResetPasswordCurrent = async function() {
+            if (!window.currentUserEmail) return;
+            if (confirm(`Se enviará un correo a ${window.currentUserEmail} para restablecer o cambiar su contraseña. ¿Desea continuar?`)) {
+                try {
+                    await sendPasswordResetEmail(auth, window.currentUserEmail);
+                    alert(`Enlace enviado con éxito a ${window.currentUserEmail}. Revise su correo institucional.`);
+                } catch (error) {
+                    alert("Error al solicitar cambio de contraseña: " + error.message);
+                }
+            }
+        };
+
+        // Cerrar sesión
+        window.handleLogout = function() {
+            signOut(auth).then(() => {
+                document.getElementById('loginForm').reset();
+                hideLoginAlerts();
+            });
+        };
+
+        function showLoginError(msg) {
+            const errDiv = document.getElementById('loginError');
+            errDiv.innerText = msg;
+            errDiv.classList.remove('hidden');
+        }
+
+        function showLoginSuccess(msg) {
+            const succDiv = document.getElementById('loginSuccess');
+            succDiv.innerText = msg;
+            succDiv.classList.remove('hidden');
+        }
+
+        function hideLoginAlerts() {
+            document.getElementById('loginError').classList.add('hidden');
+            document.getElementById('loginSuccess').classList.add('hidden');
+        }
+
+        // Sincronización Realtime Database
+        const empRef = ref(db, 'emprendedores');
+        onValue(empRef, (snapshot) => {
+            const data = snapshot.val();
+            window.emprendedoresData = [];
+            
+            if (data) {
+                Object.keys(data).forEach(key => {
+                    window.emprendedoresData.push({
+                        _fbKey: key,
+                        ...data[key]
+                    });
+                });
+            }
+
+            if (window.emprendedoresData.length === 0 && !window.hasSeededDefault) {
+                seedInitialData();
+            } else {
+                updateUIState(true);
+            }
+        }, (error) => {
+            console.error("Error Firebase Database:", error);
+            updateUIState(false);
+        });
+
+        function seedInitialData() {
+            window.hasSeededDefault = true;
+            const defaultRecords = [
+                {
+                    nombre: "Martha Lucia Gómez",
+                    cedula: "1098654321",
+                    telefono: "3164551289",
+                    emprendimiento: "AgroFlores de Florián",
+                    centro: "Centro de Gestión Agroempresarial del Oriente (Vélez)",
+                    municipio: "Florián",
+                    tipoProyecto: "Individual CREAR",
+                    orientadorIdeacion: "Carlos Ramírez",
+                    orientadorFormulacion: "Andrea Gómez",
+                    orientacionEvidencia: true,
+                    orientacionFecha: "2026-01-15",
+                    ideacion1: true, ideacion2: true, ideacion3: true, ideacionFecha: "2026-02-10",
+                    validacion1: true, validacion2: true, validacion3: true, validacionFecha: "2026-03-01",
+                    puntosFormulacion: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
+                    convocatoria: "Nacional 2026",
+                    fechaFormalizacion: "2026-03-15",
+                    viabilidad: "Viable",
+                    recursos: 95000000,
+                    actaContrato: "Acta 012-2026",
+                    visitasInterventoria: 2,
+                    condonado: "No",
+                    resolucion: ""
+                },
+                {
+                    nombre: "Javier Eduardo Ríos",
+                    cedula: "91234567",
+                    telefono: "3119876543",
+                    emprendimiento: "TechSantander Solutions",
+                    centro: "Centro de Servicios Empresariales y Turísticos (Bucaramanga)",
+                    municipio: "Bucaramanga",
+                    tipoProyecto: "Individual CREAR",
+                    orientadorIdeacion: "Laura Beltrán",
+                    orientadorFormulacion: "Jorge Pinto",
+                    orientacionEvidencia: true,
+                    orientacionFecha: "2026-01-20",
+                    ideacion1: true, ideacion2: true, ideacion3: true, ideacionFecha: "2026-02-15",
+                    validacion1: true, validacion2: true, validacion3: false, validacionFecha: "2026-03-05",
+                    puntosFormulacion: [true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false],
+                    convocatoria: "Santander Tech 2026",
+                    fechaFormalizacion: "",
+                    viabilidad: "En Proceso",
+                    recursos: 0,
+                    actaContrato: "",
+                    visitasInterventoria: 0,
+                    condonado: "No",
+                    resolucion: ""
+                }
+            ];
+
+            defaultRecords.forEach(rec => {
+                const key = rec.cedula.replace(/[^a-zA-Z0-9]/g, '_');
+                set(ref(db, 'emprendedores/' + key), rec);
+            });
+        }
+
+        function updateUIState(connected) {
+            const dot = document.getElementById('firebaseStatusDot');
+            const txt = document.getElementById('firebaseStatusText');
+
+            if(connected) {
+                dot.className = "w-2.5 h-2.5 rounded-full bg-sena-green";
+                txt.innerText = "Firebase Conectado";
+            } else {
+                dot.className = "w-2.5 h-2.5 rounded-full bg-red-500";
+                txt.innerText = "Error Firebase";
+            }
+
+            if (typeof window.renderDashboard === 'function') {
+                window.renderDashboard();
+                window.renderEmprendedoresTable(window.emprendedoresData);
+            }
+        }
+    </script>
+
+    <!-- ================= LOGICA APLICATIVA JAVASCRIPT ================= -->
     <script>
-        // LISTADO EXPLICITO DE LOS 87 MUNICIPIOS DE SANTANDER
         const MUNICIPIOS_SANTANDER = [
             "Aguada", "Albania", "Aratoca", "Barbosa", "Barichara", "Barrancabermeja", "Betulia", "Bolívar", 
             "Bucaramanga", "Cabrera", "California", "Capitanejo", "Carcasí", "Cepitá", "Cerrito", "Charalá", 
@@ -870,7 +1133,6 @@
             "Vélez", "Vetas", "Zapatoca"
         ];
 
-        // LISTADO EXPLICITO DE LOS 8 CENTROS SENA SANTANDER
         const CENTROS_SANTANDER = [
             "Centro de Servicios Empresariales y Turísticos (Bucaramanga)",
             "Centro Industrial de Mantenimiento Integral (Girón)",
@@ -882,7 +1144,6 @@
             "Centro Agroempresarial y Turístico de los Andes (Málaga)"
         ];
 
-        // LISTADO EXPLICITO DE LOS 17 PUNTOS DE FORMULACIÓN
         const NOMBRES_17_PUNTOS = [
             "1. Cliente / Mercado Objetivo",
             "2. Definición del Problema / Necesidad",
@@ -903,129 +1164,17 @@
             "17. Componente de Asociatividad"
         ];
 
-        let currentUser = null;
-        let isMasked = true; // Habeas Data activo por defecto
-
-        // BASE DE DATOS INICIAL CON EMPRENDEDORES EN SANTANDER
-        let emprendedoresData = [
-            {
-                nombre: "Martha Lucia Gómez",
-                cedula: "1098654321",
-                telefono: "3164551289",
-                emprendimiento: "AgroFlores de Florián",
-                centro: "Centro de Gestión Agroempresarial del Oriente (Vélez)",
-                municipio: "Florián",
-                tipoProyecto: "Individual CREAR",
-                orientadorIdeacion: "Carlos Ramírez",
-                orientadorFormulacion: "Andrea Gómez",
-                orientacionEvidencia: true,
-                orientacionFecha: "2026-01-15",
-                ideacion1: true, ideacion2: true, ideacion3: true, ideacionFecha: "2026-02-10",
-                validacion1: true, validacion2: true, validacion3: true, validacionFecha: "2026-03-01",
-                puntosFormulacion: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
-                convocatoria: "Nacional 2026",
-                fechaFormalizacion: "2026-03-15",
-                viabilidad: "Viable",
-                recursos: 95000000,
-                actaContrato: "Acta 012-2026",
-                visitasInterventoria: 2,
-                condonado: "No",
-                resolucion: ""
-            },
-            {
-                nombre: "Javier Eduardo Ríos",
-                cedula: "91234567",
-                telefono: "3119876543",
-                emprendimiento: "TechSantander Solutions",
-                centro: "Centro de Servicios Empresariales y Turísticos (Bucaramanga)",
-                municipio: "Bucaramanga",
-                tipoProyecto: "Individual CREAR",
-                orientadorIdeacion: "Laura Beltrán",
-                orientadorFormulacion: "Jorge Pinto",
-                orientacionEvidencia: true,
-                orientacionFecha: "2026-01-20",
-                ideacion1: true, ideacion2: true, ideacion3: true, ideacionFecha: "2026-02-15",
-                validacion1: true, validacion2: true, validacion3: false, validacionFecha: "2026-03-05",
-                puntosFormulacion: [true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false],
-                convocatoria: "Santander Tech 2026",
-                fechaFormalizacion: "",
-                viabilidad: "En Proceso",
-                recursos: 0,
-                actaContrato: "",
-                visitasInterventoria: 0,
-                condonado: "No",
-                resolucion: ""
-            },
-            {
-                nombre: "Cooperativa Cacaotera de Lebrija",
-                cedula: "900876543-1",
-                telefono: "3201123344",
-                emprendimiento: "Cacao Artesanal Lebrija",
-                centro: "Centro de Atención al Sector Agropecuario (Piedecuesta)",
-                municipio: "Lebrija",
-                tipoProyecto: "Asociativo FORTALECIMIENTO",
-                orientadorIdeacion: "Carlos Ramírez",
-                orientadorFormulacion: "Andrea Gómez",
-                orientacionEvidencia: true,
-                orientacionFecha: "2026-01-10",
-                ideacion1: true, ideacion2: true, ideacion3: true, ideacionFecha: "2026-01-28",
-                validacion1: true, validacion2: true, validacion3: true, validacionFecha: "2026-02-20",
-                puntosFormulacion: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
-                convocatoria: "Asociativos 2025",
-                fechaFormalizacion: "2025-11-01",
-                viabilidad: "Viable",
-                recursos: 120000000,
-                actaContrato: "Contrato FE-088",
-                visitasInterventoria: 4,
-                condonado: "Sí",
-                resolucion: "Res. 450-2026"
-            },
-            {
-                nombre: "Hernán Darío Parra",
-                cedula: "13887654",
-                telefono: "3187654321",
-                emprendimiento: "Ecoturismo Puerto Parra",
-                centro: "Centro Industrial y del Desarrollo Tecnológico (Barrancabermeja)",
-                municipio: "Puerto Parra",
-                tipoProyecto: "Individual FORTALECIMIENTO",
-                orientadorIdeacion: "Sofia Morales",
-                orientadorFormulacion: "Jorge Pinto",
-                orientacionEvidencia: true,
-                orientacionFecha: "2026-02-01",
-                ideacion1: true, ideacion2: true, ideacion3: false, ideacionFecha: "2026-02-25",
-                validacion1: false, validacion2: false, validacion3: false, validacionFecha: "",
-                puntosFormulacion: [true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false],
-                convocatoria: "",
-                fechaFormalizacion: "",
-                viabilidad: "En Proceso",
-                recursos: 0,
-                actaContrato: "",
-                visitasInterventoria: 0,
-                condonado: "No",
-                resolucion: ""
-            }
-        ];
-
+        window.emprendedoresData = [];
+        let isMasked = true;
         let phaseChartInstance = null;
         let centroChartInstance = null;
 
-        window.onload = function() {
+        window.addEventListener('DOMContentLoaded', () => {
             populateDropdowns();
             renderPuntosFormulacionForm();
-            
-            const savedUser = sessionStorage.getItem('sena_user');
-            if(savedUser) {
-                currentUser = savedUser;
-                document.getElementById('loginScreen').classList.add('hidden');
-                document.getElementById('userBadge').innerText = currentUser;
-            }
-
-            renderDashboard();
-            renderEmprendedoresTable(emprendedoresData);
             document.getElementById('printDate').innerText = new Date().toLocaleDateString('es-CO');
-        };
+        });
 
-        // Llenar menús desplegables con 87 municipios y 8 centros
         function populateDropdowns() {
             const selectMunFilter = document.getElementById('filterMunicipio');
             const selectMunForm = document.getElementById('formMunicipio');
@@ -1039,7 +1188,6 @@
             });
         }
 
-        // Llenar 17 checkboxes de puntos de formulación en el formulario
         function renderPuntosFormulacionForm() {
             const container = document.getElementById('puntosFormulacionContainer');
             container.innerHTML = '';
@@ -1057,32 +1205,6 @@
             document.querySelectorAll('.punto-checkbox').forEach(cb => cb.checked = status);
         }
 
-        // AUTHENTICATION
-        function handleLogin(e) {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-            const errorDiv = document.getElementById('loginError');
-
-            if (!email.endsWith('@sena.edu.co')) {
-                errorDiv.innerText = "Error de Acceso: El correo debe terminar estrictamente en @sena.edu.co";
-                errorDiv.classList.remove('hidden');
-                return;
-            }
-
-            currentUser = email;
-            sessionStorage.setItem('sena_user', email);
-            errorDiv.classList.add('hidden');
-            document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('userBadge').innerText = currentUser;
-        }
-
-        function handleLogout() {
-            sessionStorage.removeItem('sena_user');
-            currentUser = null;
-            document.getElementById('loginScreen').classList.remove('hidden');
-        }
-
-        // ENMASCARAMIENTO DE DATOS SENSIBLES (HABEAS DATA)
         function maskText(str, visibleChars = 3) {
             if (!str) return '---';
             if (!isMasked) return str;
@@ -1116,10 +1238,9 @@
             }
 
             renderTopProgressTable();
-            renderEmprendedoresTable(emprendedoresData);
+            renderEmprendedoresTable(window.emprendedoresData);
         }
 
-        // CÁLCULO DE FASE Y AVANCE %
         function calculateProgress(emp) {
             let score = 0;
             if(emp.orientacionEvidencia) score += 10;
@@ -1147,9 +1268,9 @@
             return "Orientación";
         }
 
-        // METRICAS Y DASHBOARD
-        function renderDashboard() {
-            const total = emprendedoresData.length;
+        window.renderDashboard = function() {
+            const list = window.emprendedoresData || [];
+            const total = list.length;
             let formulacion = 0, recursos = 0, condonados = 0;
 
             let faseCounts = { "Orientación": 0, "Ideación": 0, "Validación": 0, "Formulación": 0, "Viable": 0, "Interventoría": 0 };
@@ -1157,7 +1278,7 @@
 
             CENTROS_SANTANDER.forEach(c => centroCounts[c] = 0);
 
-            emprendedoresData.forEach(e => {
+            list.forEach(e => {
                 const fase = getFaseActual(e);
                 faseCounts[fase] = (faseCounts[fase] || 0) + 1;
 
@@ -1229,9 +1350,11 @@
             const tbody = document.getElementById('topProgresstableBody');
             tbody.innerHTML = '';
 
-            const recent = [...emprendedoresData].reverse().slice(0, 5);
+            const list = window.emprendedoresData || [];
+            const recent = [...list].reverse().slice(0, 5);
 
             recent.forEach((emp) => {
+                const originalIndex = list.indexOf(emp);
                 const prog = calculateProgress(emp);
                 const fase = getFaseActual(emp);
                 const centroShort = emp.centro ? emp.centro.split('(')[1]?.replace(')', '') : 'N/A';
@@ -1259,7 +1382,7 @@
                             </div>
                         </td>
                         <td class="p-3.5 text-center">
-                            <button onclick="openDetailModal(${emprendedoresData.indexOf(emp)})" class="text-sena-navy hover:text-sena-green p-1">
+                            <button onclick="openDetailModal(${originalIndex})" class="text-sena-navy hover:text-sena-green p-1">
                                 <i class="fa-solid fa-eye text-sm"></i>
                             </button>
                         </td>
@@ -1268,13 +1391,13 @@
             });
         }
 
-        // TABLA COMPLETA CON FILTROS
-        function renderEmprendedoresTable(list) {
+        window.renderEmprendedoresTable = function(list) {
             const tbody = document.getElementById('mainTableBody');
             tbody.innerHTML = '';
+            const allList = window.emprendedoresData || [];
 
-            list.forEach((emp) => {
-                const originalIndex = emprendedoresData.indexOf(emp);
+            (list || []).forEach((emp) => {
+                const originalIndex = allList.indexOf(emp);
                 const prog = calculateProgress(emp);
                 const fase = getFaseActual(emp);
                 const centroShort = emp.centro ? emp.centro.split('(')[1]?.replace(')', '') : 'N/A';
@@ -1314,12 +1437,15 @@
                             <button onclick="editEmprendedor(${originalIndex})" title="Editar" class="p-1.5 text-slate-600 hover:text-sena-green rounded-lg hover:bg-slate-100">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </button>
+                            <button onclick="deleteEmprendedor('${emp._fbKey}')" title="Eliminar de Firebase" class="p-1.5 text-slate-400 hover:text-red-600 rounded-lg hover:bg-slate-100">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
                         </td>
                     </tr>
                 `;
             });
 
-            document.getElementById('recordCount').innerText = `Mostrando ${list.length} de ${emprendedoresData.length} emprendedores registrados`;
+            document.getElementById('recordCount').innerText = `Mostrando ${(list || []).length} de ${allList.length} emprendedores registrados`;
         }
 
         function filterEmprendedores() {
@@ -1328,10 +1454,10 @@
             const mun = document.getElementById('filterMunicipio').value;
             const fase = document.getElementById('filterFase').value;
 
-            const filtered = emprendedoresData.filter(e => {
-                const matchSearch = e.nombre.toLowerCase().includes(search) || 
-                                    e.cedula.toLowerCase().includes(search) || 
-                                    e.emprendimiento.toLowerCase().includes(search);
+            const filtered = (window.emprendedoresData || []).filter(e => {
+                const matchSearch = (e.nombre || '').toLowerCase().includes(search) || 
+                                    (e.cedula || '').toLowerCase().includes(search) || 
+                                    (e.emprendimiento || '').toLowerCase().includes(search);
                 const matchCentro = !centro || e.centro === centro;
                 const matchMun = !mun || e.municipio === mun;
                 const matchFase = !fase || getFaseActual(e) === fase;
@@ -1347,12 +1473,12 @@
             document.getElementById('filterCentro').value = '';
             document.getElementById('filterMunicipio').value = '';
             document.getElementById('filterFase').value = '';
-            renderEmprendedoresTable(emprendedoresData);
+            renderEmprendedoresTable(window.emprendedoresData);
         }
 
-        // MODAL DETALLE EXPEDIENTE Y TIMELINE
         function openDetailModal(index) {
-            const emp = emprendedoresData[index];
+            const emp = window.emprendedoresData[index];
+            if (!emp) return;
             const prog = calculateProgress(emp);
 
             document.getElementById('modalCentroTag').innerText = emp.centro || 'Centro SENA Santander';
@@ -1366,7 +1492,6 @@
             document.getElementById('modalAvancePorcentaje').innerText = `${prog}%`;
             document.getElementById('modalAvanceBar').style.width = `${prog}%`;
 
-            // Milestone 1 - Orientación
             const iconO = document.getElementById('icon-orientacion');
             if(emp.orientacionEvidencia) {
                 iconO.className = "absolute left-1 top-0.5 w-6 h-6 rounded-full bg-sena-green text-white flex items-center justify-center text-xs";
@@ -1376,7 +1501,6 @@
                 document.getElementById('fecha-orientacion-tag').innerText = "Pendiente";
             }
 
-            // Milestone 2 - Ideación
             const ideCount = (emp.ideacion1?1:0) + (emp.ideacion2?1:0) + (emp.ideacion3?1:0);
             document.getElementById('status-ideacion-tag').innerText = `${ideCount} / 3 Entrenamientos`;
             document.getElementById('modalIdeacionDetails').innerHTML = `
@@ -1385,7 +1509,6 @@
                 <div class="p-1.5 rounded border ${emp.ideacion3 ? 'bg-amber-100 text-amber-900 border-amber-300' : 'bg-slate-100 text-slate-400'}">03: ¡Lo que no se mide no existe!</div>
             `;
 
-            // Milestone 3 - Validación
             const valCount = (emp.validacion1?1:0) + (emp.validacion2?1:0) + (emp.validacion3?1:0);
             document.getElementById('status-validacion-tag').innerText = `${valCount} / 3 Entrenamientos`;
             document.getElementById('modalValidacionDetails').innerHTML = `
@@ -1394,7 +1517,6 @@
                 <div class="p-1.5 rounded border ${emp.validacion3 ? 'bg-blue-100 text-blue-900 border-blue-300' : 'bg-slate-100 text-slate-400'}">03: Presentación PITCH</div>
             `;
 
-            // Milestone 4 - 17 Puntos
             const formCount = (emp.puntosFormulacion || []).filter(Boolean).length;
             document.getElementById('status-formulacion-tag').innerText = `${formCount} / 17 Módulos Completados`;
             const formGrid = document.getElementById('modalFormulacionGrid');
@@ -1408,7 +1530,6 @@
                 `;
             });
 
-            // Milestone 5 - Recursos e Interventoría
             const formatoDinero = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(emp.recursos || 0);
             document.getElementById('status-recursos-tag').innerText = formatoDinero;
             document.getElementById('modalViabilidadText').innerText = emp.viabilidad || 'En Proceso';
@@ -1423,19 +1544,21 @@
             document.getElementById('modalDetail').classList.add('hidden');
         }
 
-        // GUARDAR / EDITAR REGISTRO
         function handleFormSubmit(e) {
             e.preventDefault();
-            const editIdx = parseInt(document.getElementById('editIndex').value);
+
+            const editKey = document.getElementById('editKey').value;
+            const cedula = document.getElementById('formCedula').value.trim();
+            const firebaseKey = editKey || cedula.replace(/[^a-zA-Z0-9]/g, '_');
 
             const puntosArr = [];
             for(let i=0; i<17; i++) {
                 puntosArr.push(document.getElementById(`punto_${i}`).checked);
             }
 
-            const newObj = {
+            const payload = {
                 nombre: document.getElementById('formNombre').value.trim(),
-                cedula: document.getElementById('formCedula').value.trim(),
+                cedula: cedula,
                 telefono: document.getElementById('formTelefono').value.trim(),
                 emprendimiento: document.getElementById('formEmprendimiento').value.trim(),
                 centro: document.getElementById('formCentro').value,
@@ -1464,31 +1587,35 @@
                 resolucion: document.getElementById('formResolucion').value.trim()
             };
 
-            if(editIdx >= 0) {
-                emprendedoresData[editIdx] = newObj;
-            } else {
-                emprendedoresData.push(newObj);
+            if(window.fbSet && window.fbRef && window.fbDB) {
+                window.fbSet(window.fbRef(window.fbDB, 'emprendedores/' + firebaseKey), payload)
+                .then(() => {
+                    switchTab('emprendedores');
+                    document.getElementById('emprendedorForm').reset();
+                    document.getElementById('editIndex').value = "-1";
+                    document.getElementById('editKey').value = "";
+                })
+                .catch(err => {
+                    alert("Error al guardar en Firebase: " + err.message);
+                });
             }
-
-            renderDashboard();
-            renderEmprendedoresTable(emprendedoresData);
-            switchTab('emprendedores');
-            document.getElementById('emprendedorForm').reset();
-            document.getElementById('editIndex').value = "-1";
         }
 
         function editEmprendedor(index) {
-            const emp = emprendedoresData[index];
+            const emp = window.emprendedoresData[index];
+            if (!emp) return;
+
             document.getElementById('editIndex').value = index;
+            document.getElementById('editKey').value = emp._fbKey || '';
             document.getElementById('formTitle').innerText = "Editar Registro de Emprendedor";
 
-            document.getElementById('formNombre').value = emp.nombre;
-            document.getElementById('formCedula').value = emp.cedula;
-            document.getElementById('formTelefono').value = emp.telefono;
-            document.getElementById('formEmprendimiento').value = emp.emprendimiento;
-            document.getElementById('formCentro').value = emp.centro;
-            document.getElementById('formMunicipio').value = emp.municipio;
-            document.getElementById('formTipoProyecto').value = emp.tipoProyecto;
+            document.getElementById('formNombre').value = emp.nombre || '';
+            document.getElementById('formCedula').value = emp.cedula || '';
+            document.getElementById('formTelefono').value = emp.telefono || '';
+            document.getElementById('formEmprendimiento').value = emp.emprendimiento || '';
+            document.getElementById('formCentro').value = emp.centro || '';
+            document.getElementById('formMunicipio').value = emp.municipio || '';
+            document.getElementById('formTipoProyecto').value = emp.tipoProyecto || 'Individual CREAR';
             document.getElementById('formOrientadorIdeacion').value = emp.orientadorIdeacion || '';
             document.getElementById('formOrientadorFormulacion').value = emp.orientadorFormulacion || '';
 
@@ -1522,11 +1649,17 @@
             switchTab('nuevo');
         }
 
-        // EXPORTACIÓN A CSV CON LOS 66 CAMPOS DE LA MATRIZ SENA
+        function deleteEmprendedor(fbKey) {
+            if (!fbKey) return;
+            if (confirm("¿Está seguro de eliminar permanentemente este emprendedor de Firebase Database?")) {
+                window.fbRemove(window.fbRef(window.fbDB, 'emprendedores/' + fbKey))
+                .catch(err => alert("Error al eliminar: " + err.message));
+            }
+        }
+
         function exportDataToCSV() {
             let csvContent = "data:text/csv;charset=utf-8,";
             
-            // 66 Columnas Header
             const headers = [
                 "Nombre Completo","Cedula","Telefono","Nombre Emprendimiento","Centro Emprendimiento Comunitario","Municipio",
                 "Modalidad Proyecto","Orientador Ideacion","Orientador Formulacion","Orientacion Evidencia","Orientacion Fecha",
@@ -1541,23 +1674,23 @@
 
             csvContent += headers.join(",") + "\n";
 
-            emprendedoresData.forEach(e => {
+            (window.emprendedoresData || []).forEach(e => {
                 const row = [
                     `"${maskText(e.nombre, 4)}"`,
                     `"${maskCedula(e.cedula)}"`,
                     `"${maskTelefono(e.telefono)}"`,
                     `"${maskText(e.emprendimiento, 5)}"`,
-                    `"${e.centro}"`,
-                    `"${e.municipio}"`,
-                    `"${e.tipoProyecto}"`,
-                    `"${e.orientadorIdeacion}"`,
-                    `"${e.orientadorFormulacion}"`,
+                    `"${e.centro || ''}"`,
+                    `"${e.municipio || ''}"`,
+                    `"${e.tipoProyecto || ''}"`,
+                    `"${e.orientadorIdeacion || ''}"`,
+                    `"${e.orientadorFormulacion || ''}"`,
                     `"${e.orientacionEvidencia?'Si':'No'}"`,
-                    `"${e.orientacionFecha}"`,
-                    `"${e.ideacion1?'Si':'No'}"`,`"${e.ideacion2?'Si':'No'}"`,`"${e.ideacion3?'Si':'No'}"`,`"${e.ideacionFecha}"`,
-                    `"${e.validacion1?'Si':'No'}"`,`"${e.validacion2?'Si':'No'}"`,`"${e.validacion3?'Si':'No'}"`,`"${e.validacionFecha}"`,
+                    `"${e.orientacionFecha || ''}"`,
+                    `"${e.ideacion1?'Si':'No'}"`,`"${e.ideacion2?'Si':'No'}"`,`"${e.ideacion3?'Si':'No'}"`,`"${e.ideacionFecha || ''}"`,
+                    `"${e.validacion1?'Si':'No'}"`,`"${e.validacion2?'Si':'No'}"`,`"${e.validacion3?'Si':'No'}"`,`"${e.validacionFecha || ''}"`,
                     ...Array.from({length:17}, (_,i) => `"${(e.puntosFormulacion && e.puntosFormulacion[i])?'Si':'No'}"`),
-                    `"${e.convocatoria}"`,`"${e.fechaFormalizacion}"`,`"${e.viabilidad}"`,`"${e.recursos}"`,`"${e.actaContrato}"`,`"${e.visitasInterventoria}"`,`"${e.condonado}"`,`"${e.resolucion}"`
+                    `"${e.convocatoria || ''}"`,`"${e.fechaFormalizacion || ''}"`,`"${e.viabilidad || ''}"`,`"${e.recursos || 0}"`,`"${e.actaContrato || ''}"`,`"${e.visitasInterventoria || 0}"`,`"${e.condonado || 'No'}"`,`"${e.resolucion || ''}"`
                 ];
                 csvContent += row.join(",") + "\n";
             });
