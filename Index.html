@@ -197,7 +197,7 @@
                 <div id="firebaseStatusDot" class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></div>
                 <span id="firebaseStatusText" class="text-slate-200 font-medium">Conectando Firebase...</span>
             </div>
-            <p class="text-[10px] text-slate-400">SISTEMA FONDO EMPRENDER v4.1</p>
+            <p class="text-[10px] text-slate-400">SISTEMA FONDO EMPRENDER v4.0</p>
         </div>
     </aside>
 
@@ -299,7 +299,7 @@
                     </div>
                 </div>
 
-                <!-- GRÁFICOS CHART.JS -->
+                <!-- GRÁFICOS CHART.JS EXISTENTES Y NUEVOS -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
                         <div class="flex justify-between items-center mb-4">
@@ -325,6 +325,7 @@
                         </div>
                     </div>
 
+                    <!-- NUEVO GRÁFICO 1: VENTAS Y RECURSOS -->
                     <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
                         <div class="flex justify-between items-center mb-4">
                             <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
@@ -337,6 +338,7 @@
                         </div>
                     </div>
 
+                    <!-- NUEVO GRÁFICO 2: EMPLEOS GENERADOS VS PROYECTADOS -->
                     <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
                         <div class="flex justify-between items-center mb-4">
                             <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
@@ -603,10 +605,10 @@
                             </div>
                         </div>
 
-                        <!-- SECCIÓN 4: CONVOCATORIA, RECURSOS E INTERVENTORÍA (Actualizada sin campos trasladados) -->
+                        <!-- SECCIÓN 4: CONVOCATORIA, RECURSOS E INTERVENTORÍA -->
                         <div class="pt-4 border-t border-slate-200">
                             <h4 class="text-xs font-bold text-sena-navy uppercase tracking-wider mb-3 flex items-center gap-2">
-                                <i class="fa-solid fa-sack-dollar text-sena-green"></i> 4. Convocatoria, Viabilidad y Recursos Iniciales
+                                <i class="fa-solid fa-sack-dollar text-sena-green"></i> 4. Convocatoria, Viabilidad, Recursos e Interventoría
                             </h4>
 
                             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
@@ -630,21 +632,50 @@
                                     <label class="block font-medium text-slate-700 mb-1">Recursos Asignados ($ COP)</label>
                                     <input type="number" id="formRecursos" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
                                 </div>
+
+                                <!-- NUEVO REQUERIMIENTO 5: RECURSOS FINANCIEROS EJECUTADOS -->
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Recursos Ejecutados ($ COP) *</label>
+                                    <input type="number" id="formRecursosEjecutados" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
+                                </div>
+
                                 <div>
                                     <label class="block font-medium text-slate-700 mb-1">Nº Acta Asignación / Contrato</label>
                                     <input type="text" id="formActaContrato" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="Acta 045-2026">
                                 </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Visitas Interventoría (0 - 4)</label>
+                                    <input type="number" min="0" max="4" id="formVisitas" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" value="0">
+                                </div>
+
+                                <!-- NUEVO REQUERIMIENTO 6: SEGUIMIENTO TÉCNICO OPERATIVO -->
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Nº Actas Seguimiento Técnico Operativo *</label>
+                                    <input type="number" min="0" id="formActasSeguimientoTecnico" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
+                                </div>
+
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Estado de Condonación</label>
+                                    <select id="formCondonado" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none bg-white">
+                                        <option value="No">En Ejecución / No Condonado</option>
+                                        <option value="Sí">Sí - Condonación Aprobada</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Resolución Condonación</label>
+                                    <input type="text" id="formResolucion" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="Res. 1024-2026">
+                                </div>
                             </div>
                         </div>
 
-                        <!-- SECCIÓN 5: PUESTA EN MARCHA E INDICADORES DE IMPACTO (Trasladados aquí: Recursos ejecutados, Visitas de interventoría, Actas de seguimiento técnico operativo, Resolución y Estado de condonación) -->
+                        <!-- NUEVA SECCIÓN 5: PUESTA EN MARCHA E INDICADORES DE IMPACTO (REQUERIMIENTOS 1 AL 4) -->
                         <div class="pt-4 border-t border-slate-200">
                             <h4 class="text-xs font-bold text-sena-navy uppercase tracking-wider mb-3 flex items-center gap-2">
-                                <i class="fa-solid fa-rocket text-sena-green"></i> 5. Puesta en Marcha, Ejecución, Interventoría y Condonación
+                                <i class="fa-solid fa-rocket text-sena-green"></i> 5. Puesta en Marcha e Indicadores de Impacto (Proyectados vs Reales)
                             </h4>
 
                             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
-                                <!-- Fechas de Puesta en Marcha -->
+                                <!-- 1) Fechas de Puesta en Marcha -->
                                 <div>
                                     <label class="block font-medium text-slate-700 mb-1">Fecha Inicio Puesta en Marcha</label>
                                     <input type="date" id="formFechaInicioPuestaEnMarcha" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none">
@@ -654,7 +685,7 @@
                                     <input type="date" id="formFechaFinPuestaEnMarcha" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none">
                                 </div>
 
-                                <!-- Empleos -->
+                                <!-- 2) Empleos -->
                                 <div>
                                     <label class="block font-medium text-slate-700 mb-1">Empleos Proyectados (Entero)</label>
                                     <input type="number" min="0" id="formEmpleosProyectados" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
@@ -664,7 +695,7 @@
                                     <input type="number" min="0" id="formEmpleosGenerados" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
                                 </div>
 
-                                <!-- Ventas -->
+                                <!-- 2) Ventas -->
                                 <div>
                                     <label class="block font-medium text-slate-700 mb-1">Ventas Proyectadas ($ COP)</label>
                                     <input type="number" min="0" id="formVentasProyectadas" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
@@ -674,7 +705,7 @@
                                     <input type="number" min="0" id="formVentasRealizadas" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
                                 </div>
 
-                                <!-- Contrapartidas -->
+                                <!-- 3) Contrapartidas -->
                                 <div>
                                     <label class="block font-medium text-slate-700 mb-1">Contrapartidas Proyectadas ($ COP)</label>
                                     <input type="number" min="0" id="formContrapartidasProyectadas" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
@@ -684,7 +715,7 @@
                                     <input type="number" min="0" id="formContrapartidasEjecutadas" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
                                 </div>
 
-                                <!-- Eventos -->
+                                <!-- 4) Eventos -->
                                 <div>
                                     <label class="block font-medium text-slate-700 mb-1">Eventos Mercadeo (Proyectados)</label>
                                     <input type="number" min="0" id="formEventosMercadeoProyectados" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
@@ -700,31 +731,6 @@
                                 <div>
                                     <label class="block font-medium text-slate-700 mb-1">Eventos Comercialización (Ejecutados)</label>
                                     <input type="number" min="0" id="formEventosComercializacionEjecutados" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
-                                </div>
-
-                                <!-- CAMPOS TRASLADADOS DESDE EL NUMERAL 4 -->
-                                <div>
-                                    <label class="block font-medium text-slate-700 mb-1">Recursos Ejecutados ($ COP)</label>
-                                    <input type="number" id="formRecursosEjecutados" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
-                                </div>
-                                <div>
-                                    <label class="block font-medium text-slate-700 mb-1">Visitas de Interventoría (0 - 4)</label>
-                                    <input type="number" min="0" max="4" id="formVisitas" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" value="0">
-                                </div>
-                                <div>
-                                    <label class="block font-medium text-slate-700 mb-1">Nº Actas Seguimiento Técnico Operativo</label>
-                                    <input type="number" min="0" id="formActasSeguimientoTecnico" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
-                                </div>
-                                <div>
-                                    <label class="block font-medium text-slate-700 mb-1">Estado de Condonación</label>
-                                    <select id="formCondonado" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none bg-white">
-                                        <option value="No">En Ejecución / No Condonado</option>
-                                        <option value="Sí">Sí - Condonación Aprobada</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block font-medium text-slate-700 mb-1">Resolución de Condonación</label>
-                                    <input type="text" id="formResolucion" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="Res. 1024-2026">
                                 </div>
                             </div>
                         </div>
@@ -757,7 +763,7 @@
                                     <i class="fa-solid fa-file-excel"></i>
                                 </div>
                                 <h4 class="font-bold text-slate-800 text-sm">Matriz Consolidada CSV / Excel (Matriz Expandida >75 Campos)</h4>
-                                <p class="text-xs text-slate-500 mt-1">Exporta la totalidad de columnas incluyendo Puesta en Marcha, Ventas, Empleos, Contrapartidas, Eventos de Mercadeo/Comercialización, Recursos Ejecutados, Actas de Seguimiento Técnico, Interventoría y Condonación.</p>
+                                <p class="text-xs text-slate-500 mt-1">Exporta la totalidad de columnas incluyendo Puesta en Marcha, Ventas, Empleos, Contrapartidas, Eventos de Mercadeo/Comercialización, Recursos Ejecutados, Actas de Seguimiento Técnico y las evidencias de Orientación, Ideación, Validación, Formulación (17 Puntos), Recursos e Interventoría.</p>
                             </div>
                             <button onclick="exportDataToCSV()" class="mt-4 w-full py-2.5 bg-sena-navy hover:bg-sena-navyLight text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition">
                                 <i class="fa-solid fa-download"></i> Descargar Matriz Consolidada Expandida (CSV)
@@ -877,4 +883,1213 @@
                             <div id="icon-ideacion" class="absolute left-1 top-0.5 w-6 h-6 rounded-full bg-slate-300 text-white flex items-center justify-center text-xs">
                                 <i class="fa-solid fa-lightbulb"></i>
                             </div>
-                            <div class="bg
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 w-full">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-bold text-slate-800">2. Entrenamientos de Ideación</span>
+                                    <span id="status-ideacion-tag" class="text-[10px] font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">0/3</span>
+                                </div>
+                                <div id="modalIdeacionDetails" class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[10px]"></div>
+                            </div>
+                        </div>
+
+                        <!-- Hito 3 -->
+                        <div class="relative flex items-start gap-4 pl-8">
+                            <div id="icon-validacion" class="absolute left-1 top-0.5 w-6 h-6 rounded-full bg-slate-300 text-white flex items-center justify-center text-xs">
+                                <i class="fa-solid fa-vial"></i>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 w-full">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-bold text-slate-800">3. Entrenamientos de Validación</span>
+                                    <span id="status-validacion-tag" class="text-[10px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">0/3</span>
+                                </div>
+                                <div id="modalValidacionDetails" class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[10px]"></div>
+                            </div>
+                        </div>
+
+                        <!-- Hito 4 -->
+                        <div class="relative flex items-start gap-4 pl-8">
+                            <div id="icon-formulacion" class="absolute left-1 top-0.5 w-6 h-6 rounded-full bg-slate-300 text-white flex items-center justify-center text-xs">
+                                <i class="fa-solid fa-file-signature"></i>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 w-full">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-bold text-slate-800">4. Formulación del Plan de Negocios (17 Puntos)</span>
+                                    <span id="status-formulacion-tag" class="text-[10px] font-semibold text-purple-700 bg-purple-50 px-2 py-0.5 rounded border border-purple-200">0 / 17</span>
+                                </div>
+                                <div id="modalFormulacionGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-[10px]"></div>
+                            </div>
+                        </div>
+
+                        <!-- Hito 5 -->
+                        <div class="relative flex items-start gap-4 pl-8">
+                            <div id="icon-recursos" class="absolute left-1 top-0.5 w-6 h-6 rounded-full bg-slate-300 text-white flex items-center justify-center text-xs">
+                                <i class="fa-solid fa-award"></i>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 w-full space-y-2">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-slate-800">5. Convocatoria, Recursos & Interventoría</span>
+                                    <span id="status-recursos-tag" class="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">$0 COP</span>
+                                </div>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-[10px] text-slate-600 border-t pt-2">
+                                    <div><strong>Viabilidad:</strong> <span id="modalViabilidadText">--</span></div>
+                                    <div><strong>Contrato / Acta:</strong> <span id="modalActaText">--</span></div>
+                                    <div><strong>Visitas Interventoría:</strong> <span id="modalVisitasText">0 / 4</span></div>
+                                    <div><strong>Condonación:</strong> <span id="modalCondonadoText">No</span></div>
+                                    <div class="col-span-2"><strong>Recursos Ejecutados:</strong> <span id="modalRecursosEjecutadosText" class="font-semibold text-emerald-700">$0 COP</span></div>
+                                    <div class="col-span-2"><strong>Actas Seguimiento Técnico:</strong> <span id="modalActasSeguimientoText" class="font-semibold text-sena-navy">0 actas</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- NUEVO HITO 6: PUESTA EN MARCHA E INDICADORES DE IMPACTO -->
+                        <div class="relative flex items-start gap-4 pl-8">
+                            <div id="icon-puesta-en-marcha" class="absolute left-1 top-0.5 w-6 h-6 rounded-full bg-slate-300 text-white flex items-center justify-center text-xs">
+                                <i class="fa-solid fa-rocket"></i>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 w-full space-y-2">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-slate-800">6. Puesta en Marcha & Métricas de Impacto Operativo</span>
+                                    <span id="modalFechasPuestaEnMarchaTag" class="text-[10px] font-semibold text-slate-600 bg-white px-2 py-0.5 rounded border">Fechas: --</span>
+                                </div>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-[10px] text-slate-600 border-t pt-2">
+                                    <div><strong>Empleos Proyectados:</strong> <span id="modalEmpProyText">0</span></div>
+                                    <div><strong>Empleos Generados:</strong> <span id="modalEmpGenText" class="font-bold text-sena-green">0</span></div>
+                                    <div><strong>Ventas Proyectadas:</strong> <span id="modalVenProyText">$0 COP</span></div>
+                                    <div><strong>Ventas Realizadas:</strong> <span id="modalVenRealText" class="font-bold text-sena-green">$0 COP</span></div>
+                                    <div><strong>Contrapartidas Proyectadas:</strong> <span id="modalContProyText">$0 COP</span></div>
+                                    <div><strong>Contrapartidas Ejecutadas:</strong> <span id="modalContEjecText">$0 COP</span></div>
+                                    <div><strong>Ev. Mercadeo (Proy/Ejec):</strong> <span id="modalEventosMercadeoText">0 / 0</span></div>
+                                    <div><strong>Ev. Comercialización (Proy/Ejec):</strong> <span id="modalEventosComercializacionText">0 / 0</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="p-4 bg-slate-50 border-t border-slate-200 flex justify-end gap-2 no-print">
+                <button onclick="closeModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl text-xs font-semibold transition">
+                    Cerrar Ficha
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================= FIREBASE V10 SDK (AUTH + REALTIME DATABASE) ================= -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { 
+            getAuth, 
+            signInWithEmailAndPassword, 
+            sendPasswordResetEmail, 
+            onAuthStateChanged, 
+            signOut 
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getDatabase, ref, set, remove, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBZ9iaQCTWfJ92VARzEXGhu7lB6Fw03DuI",
+            authDomain: "ruta-emprendedora-santander.firebaseapp.com",
+            databaseURL: "https://ruta-emprendedora-santander-default-rtdb.firebaseio.com",
+            projectId: "ruta-emprendedora-santander",
+            storageBucket: "ruta-emprendedora-santander.firebasestorage.app",
+            messagingSenderId: "225756593228",
+            appId: "1:225756593228:web:501d20b0119df8ab1b48e9",
+            measurementId: "G-6KCGC61DDX"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        window.fbAuth = auth;
+        window.fbDB = db;
+        window.fbRef = ref;
+        window.fbSet = set;
+        window.fbRemove = remove;
+        window.fbOnValue = onValue;
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                if (!user.email.endsWith('@sena.edu.co')) {
+                    signOut(auth);
+                    showLoginError("Error de Autorización: El correo no pertenece al dominio @sena.edu.co");
+                    return;
+                }
+                window.currentUserEmail = user.email;
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('userBadge').innerText = user.email;
+            } else {
+                window.currentUserEmail = null;
+                document.getElementById('loginScreen').classList.remove('hidden');
+            }
+        });
+
+        window.handleLoginSubmit = async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+            const password = document.getElementById('loginPassword').value;
+            const btn = document.getElementById('btnLoginSubmit');
+
+            hideLoginAlerts();
+
+            if (!email.endsWith('@sena.edu.co')) {
+                showLoginError("Dominio no permitido. Debe usar su correo institucional @sena.edu.co");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Autenticando...';
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+            } catch (error) {
+                console.error("Error Auth:", error);
+                let message = "Credenciales incorrectas o usuario no registrado.";
+                if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+                    message = "Correo o contraseña inválidos. Verifique e intente de nuevo.";
+                } else if (error.code === 'auth/too-many-requests') {
+                    message = "Demasiados intentos fallidos. Intente más tarde o restablezca su clave.";
+                }
+                showLoginError(message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Iniciar Sesión Segura';
+            }
+        };
+
+        window.handleResetPasswordPrompt = async function() {
+            hideLoginAlerts();
+            const emailInput = document.getElementById('loginEmail').value.trim().toLowerCase();
+            const email = prompt("Ingrese su correo institucional (@sena.edu.co) para enviar el enlace de restablecimiento de contraseña:", emailInput || "");
+            
+            if (!email) return;
+
+            if (!email.endsWith('@sena.edu.co')) {
+                alert("El correo debe pertenecer al dominio institucional @sena.edu.co");
+                return;
+            }
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                showLoginSuccess(`Se ha enviado un enlace de restablecimiento de contraseña al correo: ${email}. Verifique su bandeja de entrada o spam.`);
+            } catch (error) {
+                console.error("Error Reset Password:", error);
+                showLoginError("No se pudo enviar el correo de restablecimiento. Verifique si el usuario está registrado en Firebase Auth.");
+            }
+        };
+
+        window.handleResetPasswordCurrent = async function() {
+            if (!window.currentUserEmail) return;
+            if (confirm(`Se enviará un correo a ${window.currentUserEmail} para restablecer o cambiar su contraseña. ¿Desea continuar?`)) {
+                try {
+                    await sendPasswordResetEmail(auth, window.currentUserEmail);
+                    alert(`Enlace enviado con éxito a ${window.currentUserEmail}. Revise su correo institucional.`);
+                } catch (error) {
+                    alert("Error al solicitar cambio de contraseña: " + error.message);
+                }
+            }
+        };
+
+        window.handleLogout = function() {
+            signOut(auth).then(() => {
+                document.getElementById('loginForm').reset();
+                hideLoginAlerts();
+            });
+        };
+
+        function showLoginError(msg) {
+            const errDiv = document.getElementById('loginError');
+            errDiv.innerText = msg;
+            errDiv.classList.remove('hidden');
+        }
+
+        function showLoginSuccess(msg) {
+            const succDiv = document.getElementById('loginSuccess');
+            succDiv.innerText = msg;
+            succDiv.classList.remove('hidden');
+        }
+
+        function hideLoginAlerts() {
+            document.getElementById('loginError').classList.add('hidden');
+            document.getElementById('loginSuccess').classList.add('hidden');
+        }
+
+        const empRef = ref(db, 'emprendedores');
+        onValue(empRef, (snapshot) => {
+            const data = snapshot.val();
+            window.emprendedoresData = [];
+            
+            if (data) {
+                Object.keys(data).forEach(key => {
+                    window.emprendedoresData.push({
+                        _fbKey: key,
+                        ...data[key]
+                    });
+                });
+            }
+
+            if (window.emprendedoresData.length === 0 && !window.hasSeededDefault) {
+                seedInitialData();
+            } else {
+                updateUIState(true);
+            }
+        }, (error) => {
+            console.error("Error Firebase Database:", error);
+            updateUIState(false);
+        });
+
+        function seedInitialData() {
+            window.hasSeededDefault = true;
+            const defaultRecords = [
+                {
+                    nombre: "Martha Lucia Gómez",
+                    cedula: "1098654321",
+                    telefono: "3164551289",
+                    emprendimiento: "AgroFlores de Florián",
+                    centro: "Centro de Gestión Agroempresarial del Oriente (Vélez)",
+                    municipio: "Florián",
+                    tipoProyecto: "Individual CREAR",
+                    orientadorIdeacion: "Carlos Ramírez",
+                    orientadorFormulacion: "Andrea Gómez",
+                    orientacionEvidencia: true,
+                    orientacionFecha: "2026-01-15",
+                    ideacion1: true, ideacion2: true, ideacion3: true, ideacionFecha: "2026-02-10",
+                    validacion1: true, validacion2: true, validacion3: true, validacionFecha: "2026-03-01",
+                    puntosFormulacion: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
+                    convocatoria: "Nacional 2026",
+                    fechaFormalizacion: "2026-03-15",
+                    viabilidad: "Viable",
+                    recursos: 95000000,
+                    recursosEjecutados: 48000000,
+                    actaContrato: "Acta 012-2026",
+                    visitasInterventoria: 2,
+                    actasSeguimientoTecnico: 3,
+                    condonado: "No",
+                    resolucion: "",
+                    fechaInicioPuestaEnMarcha: "2026-04-01",
+                    fechaFinPuestaEnMarcha: "2027-04-01",
+                    empleosProyectados: 4,
+                    empleosGenerados: 3,
+                    ventasProyectadas: 120000000,
+                    ventasRealizadas: 65000000,
+                    contrapartidasProyectadas: 15000000,
+                    contrapartidasEjecutadas: 10000000,
+                    eventosMercadeoProyectados: 4,
+                    eventosMercadeoEjecutados: 2,
+                    eventosComercializacionProyectados: 2,
+                    eventosComercializacionEjecutados: 1
+                },
+                {
+                    nombre: "Javier Eduardo Ríos",
+                    cedula: "91234567",
+                    telefono: "3119876543",
+                    emprendimiento: "TechSantander Solutions",
+                    centro: "Centro de Servicios Empresariales y Turísticos (Bucaramanga)",
+                    municipio: "Bucaramanga",
+                    tipoProyecto: "Individual CREAR",
+                    orientadorIdeacion: "Laura Beltrán",
+                    orientadorFormulacion: "Jorge Pinto",
+                    orientacionEvidencia: true,
+                    orientacionFecha: "2026-01-20",
+                    ideacion1: true, ideacion2: true, ideacion3: true, ideacionFecha: "2026-02-15",
+                    validacion1: true, validacion2: true, validacion3: false, validacionFecha: "2026-03-05",
+                    puntosFormulacion: [true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false],
+                    convocatoria: "Santander Tech 2026",
+                    fechaFormalizacion: "",
+                    viabilidad: "En Proceso",
+                    recursos: 0,
+                    recursosEjecutados: 0,
+                    actaContrato: "",
+                    visitasInterventoria: 0,
+                    actasSeguimientoTecnico: 0,
+                    condonado: "No",
+                    resolucion: "",
+                    fechaInicioPuestaEnMarcha: "",
+                    fechaFinPuestaEnMarcha: "",
+                    empleosProyectados: 3,
+                    empleosGenerados: 0,
+                    ventasProyectadas: 80000000,
+                    ventasRealizadas: 0,
+                    contrapartidasProyectadas: 8000000,
+                    contrapartidasEjecutadas: 0,
+                    eventosMercadeoProyectados: 2,
+                    eventosMercadeoEjecutados: 0,
+                    eventosComercializacionProyectados: 1,
+                    eventosComercializacionEjecutados: 0
+                }
+            ];
+
+            defaultRecords.forEach(rec => {
+                const key = rec.cedula.replace(/[^a-zA-Z0-9]/g, '_');
+                set(ref(db, 'emprendedores/' + key), rec);
+            });
+        }
+
+        function updateUIState(connected) {
+            const dot = document.getElementById('firebaseStatusDot');
+            const txt = document.getElementById('firebaseStatusText');
+
+            if(connected) {
+                dot.className = "w-2.5 h-2.5 rounded-full bg-sena-green";
+                txt.innerText = "Firebase Conectado";
+            } else {
+                dot.className = "w-2.5 h-2.5 rounded-full bg-red-500";
+                txt.innerText = "Error Firebase";
+            }
+
+            if (typeof window.renderDashboard === 'function') {
+                window.renderDashboard();
+                window.renderEmprendedoresTable(window.emprendedoresData);
+            }
+        }
+    </script>
+
+    <!-- ================= LOGICA APLICATIVA JAVASCRIPT ================= -->
+    <script>
+        const MUNICIPIOS_SANTANDER = [
+            "Aguada", "Albania", "Aratoca", "Barbosa", "Barichara", "Barrancabermeja", "Betulia", "Bolívar", 
+            "Bucaramanga", "Cabrera", "California", "Capitanejo", "Carcasí", "Cepitá", "Cerrito", "Charalá", 
+            "Charta", "Chima", "Chipatá", "Cimitarra", "Concepción", "Confines", "Contratación", "Coromoro", 
+            "Curití", "El Carmen de Chucurí", "El Guacamayo", "El Peñón", "El Playón", "Encino", "Enciso", 
+            "Floridablanca", "Florián", "Galán", "Gámbita", "Girón", "Guaca", "Guadalupe", "Guapotá", 
+            "Guavatá", "Güepsa", "Hato", "Jesús María", "Jordán", "La Belleza", "La Paz", "Landázuri", 
+            "Lebrija", "Los Santos", "Macaravita", "Málaga", "Matanza", "Mogotes", "Molagavita", "Ocamonte", 
+            "Oiba", "Onzaga", "Palmar", "Palmas del Socorro", "Páramo", "Piedecuesta", "Pinchote", "Puente Nacional", 
+            "Puerto Parra", "Puerto Wilches", "Rionegro", "Sabana de Torres", "San Andrés", "San Benito", "San Gil", 
+            "San Joaquín", "San José de Miranda", "San Miguel", "San Vicente de Chucurí", "Santa Bárbara", 
+            "Santa Helena del Opón", "Simacota", "Socorro", "Suaita", "Sucre", "Suratá", "Tona", "Valle de San José", 
+            "Vélez", "Vetas", "Zapatoca"
+        ];
+
+        const CENTROS_SANTANDER = [
+            "Centro de Servicios Empresariales y Turísticos (Bucaramanga)",
+            "Centro Industrial de Mantenimiento Integral (Girón)",
+            "Centro Industrial del Diseño y la Manufactura (Floridablanca)",
+            "Centro de Atención al Sector Agropecuario (Piedecuesta)",
+            "Centro Industrial y del Desarrollo Tecnológico (Barrancabermeja)",
+            "Centro de Gestión Agroempresarial del Oriente (Vélez)",
+            "Centro Agroturístico (San Gil)",
+            "Centro Agroempresarial y Turístico de los Andes (Málaga)"
+        ];
+
+        const NOMBRES_17_PUNTOS = [
+            "1. Cliente / Mercado Objetivo",
+            "2. Definición del Problema / Necesidad",
+            "3. Análisis de Competencia",
+            "4. Descripción del Proyecto / Solución",
+            "5. Ficha Técnica Productos / Servicios",
+            "6. Proceso Técnico / Operativo",
+            "7. Trámites Legales y Normativa",
+            "8. Estrategia de Canales y Comercialización",
+            "9. Proyección de Ventas y Unidades",
+            "10. Estructura de Costos y Gastos",
+            "11. Equipo de Trabajo y Perfiles",
+            "12. Necesidades e Inversiones",
+            "13. Avances y Hitos Ejecutados",
+            "14. Plan Operativo y Cronograma",
+            "15. Evaluación de Impactos (Social/Ambiental)",
+            "16. Mapa de Actores Clave",
+            "17. Componente de Asociatividad"
+        ];
+
+        window.emprendedoresData = [];
+        let isMasked = true;
+        let phaseChartInstance = null;
+        let centroChartInstance = null;
+        let financialMetricsChartInstance = null;
+        let jobsMetricsChartInstance = null;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            populateDropdowns();
+            renderPuntosFormulacionForm();
+            document.getElementById('printDate').innerText = new Date().toLocaleDateString('es-CO');
+        });
+
+        function populateDropdowns() {
+            const selectMunFilter = document.getElementById('filterMunicipio');
+            const selectMunForm = document.getElementById('formMunicipio');
+
+            selectMunFilter.innerHTML = '<option value="">Todos los 87 Municipios de Santander</option>';
+            selectMunForm.innerHTML = '';
+
+            MUNICIPIOS_SANTANDER.forEach(m => {
+                selectMunFilter.innerHTML += `<option value="${m}">${m}</option>`;
+                selectMunForm.innerHTML += `<option value="${m}">${m}</option>`;
+            });
+        }
+
+        function renderPuntosFormulacionForm() {
+            const container = document.getElementById('puntosFormulacionContainer');
+            container.innerHTML = '';
+            NOMBRES_17_PUNTOS.forEach((p, idx) => {
+                container.innerHTML += `
+                    <div class="p-2 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between">
+                        <label for="punto_${idx}" class="cursor-pointer font-medium text-slate-700">${p}</label>
+                        <input type="checkbox" id="punto_${idx}" class="punto-checkbox rounded text-sena-green w-4 h-4">
+                    </div>
+                `;
+            });
+        }
+
+        function selectAllPuntos(status) {
+            document.querySelectorAll('.punto-checkbox').forEach(cb => cb.checked = status);
+        }
+
+        function maskText(str, visibleChars = 3) {
+            if (!str) return '---';
+            if (!isMasked) return str;
+            if (str.length <= visibleChars) return '••••';
+            return str.substring(0, visibleChars) + '•'.repeat(Math.min(str.length - visibleChars, 8));
+        }
+
+        function maskCedula(ced) {
+            if (!ced) return '---';
+            if (!isMasked) return ced;
+            return ced.substring(0, 3) + '••••' + ced.slice(-2);
+        }
+
+        function maskTelefono(tel) {
+            if (!tel) return '---';
+            if (!isMasked) return tel;
+            return tel.substring(0, 3) + ' ••• ••' + tel.slice(-2);
+        }
+
+        function toggleMaskSensitiveData() {
+            isMasked = !isMasked;
+            const btnText = document.getElementById('maskBtnText');
+            const icon = document.getElementById('maskIcon');
+
+            if (isMasked) {
+                btnText.innerText = "Datos Sensibles: Ocultos";
+                icon.className = "fa-solid fa-eye-slash text-amber-700";
+            } else {
+                btnText.innerText = "Datos Sensibles: Visibles";
+                icon.className = "fa-solid fa-eye text-emerald-700";
+            }
+
+            renderTopProgressTable();
+            renderEmprendedoresTable(window.emprendedoresData);
+        }
+
+        // REQUERIMIENTO 7: MOTOR DE CÁLCULO DE AVANCE RESTRUCTURADO Y PONDERADO
+        function calculateProgress(emp) {
+            let score = 0;
+
+            // 1. Orientación (5%)
+            if (emp.orientacionEvidencia) score += 5;
+            
+            // 2. Ideación (10%)
+            const countIde = (emp.ideacion1 ? 1 : 0) + (emp.ideacion2 ? 1 : 0) + (emp.ideacion3 ? 1 : 0);
+            score += Math.round((countIde / 3) * 10);
+
+            // 3. Validación (10%)
+            const countVal = (emp.validacion1 ? 1 : 0) + (emp.validacion2 ? 1 : 0) + (emp.validacion3 ? 1 : 0);
+            score += Math.round((countVal / 3) * 10);
+
+            // 4. Formulación Plan de Negocios (17 Puntos) (35%)
+            const countForm = (emp.puntosFormulacion || []).filter(Boolean).length;
+            score += Math.round((countForm / 17) * 35);
+
+            // 5. Viabilidad y Recursos (15%)
+            if (emp.viabilidad === "Viable") score += 15;
+
+            // 6. Puesta en marcha e indicadores de cumplimiento (20%)
+            let pmScore = 0;
+            // Puesta en marcha (fechas registradas)
+            if (emp.fechaInicioPuestaEnMarcha && emp.fechaFinPuestaEnMarcha) pmScore += 3;
+            
+            // Cumplimiento de Empleos
+            if (emp.empleosProyectados > 0) {
+                const ratioEmp = Math.min((emp.empleosGenerados || 0) / emp.empleosProyectados, 1);
+                pmScore += ratioEmp * 4;
+            }
+
+            // Cumplimiento de Ventas
+            if (emp.ventasProyectadas > 0) {
+                const ratioVen = Math.min((emp.ventasRealizadas || 0) / emp.ventasProyectadas, 1);
+                pmScore += ratioVen * 4;
+            }
+
+            // Ejecución de Recursos Financiados
+            if (emp.recursos > 0) {
+                const ratioRec = Math.min((emp.recursosEjecutados || 0) / emp.recursos, 1);
+                pmScore += ratioRec * 4;
+            }
+
+            // Actas de Seguimiento Técnico Operativo (mínimo 1)
+            if ((emp.actasSeguimientoTecnico || 0) > 0) pmScore += 3;
+
+            score += Math.round(pmScore);
+
+            return Math.min(score, 100);
+        }
+
+        function getFaseActual(emp) {
+            if (emp.condonado === "Sí" || emp.visitasInterventoria > 0) return "Interventoría";
+            if (emp.fechaInicioPuestaEnMarcha || (emp.actasSeguimientoTecnico || 0) > 0 || (emp.ventasRealizadas || 0) > 0) return "Puesta en Marcha";
+            if (emp.viabilidad === "Viable") return "Viable";
+            const countForm = (emp.puntosFormulacion || []).filter(Boolean).length;
+            if (countForm > 0) return "Formulación";
+            if (emp.validacion1 || emp.validacion2 || emp.validacion3) return "Validación";
+            if (emp.ideacion1 || emp.ideacion2 || emp.ideacion3) return "Ideación";
+            return "Orientación";
+        }
+
+        window.renderDashboard = function() {
+            const list = window.emprendedoresData || [];
+            const total = list.length;
+            let formulacion = 0, recursos = 0, condonados = 0;
+
+            let faseCounts = { "Orientación": 0, "Ideación": 0, "Validación": 0, "Formulación": 0, "Viable": 0, "Puesta en Marcha": 0, "Interventoría": 0 };
+            let centroCounts = {};
+
+            CENTROS_SANTANDER.forEach(c => centroCounts[c] = 0);
+
+            list.forEach(e => {
+                const fase = getFaseActual(e);
+                faseCounts[fase] = (faseCounts[fase] || 0) + 1;
+
+                if(e.centro) centroCounts[e.centro] = (centroCounts[e.centro] || 0) + 1;
+
+                if(fase === "Formulación") formulacion++;
+                if(e.viabilidad === "Viable") recursos++;
+                if(e.condonado === "Sí") condonados++;
+            });
+
+            document.getElementById('kpi-total').innerText = total;
+            document.getElementById('kpi-formulacion').innerText = formulacion;
+            document.getElementById('kpi-recursos').innerText = recursos;
+            document.getElementById('kpi-condonados').innerText = condonados;
+
+            renderPhaseChart(faseCounts);
+            renderCentroChart(centroCounts);
+            renderFinancialMetricsChart(list);
+            renderJobsMetricsChart(list);
+            renderTopProgressTable();
+        }
+
+        function renderPhaseChart(faseCounts) {
+            const ctx = document.getElementById('phaseChart').getContext('2d');
+            if(phaseChartInstance) phaseChartInstance.destroy();
+
+            phaseChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(faseCounts),
+                    datasets: [{
+                        label: 'Número de Emprendedores',
+                        data: Object.values(faseCounts),
+                        backgroundColor: ['#64748b', '#f59e0b', '#3b82f6', '#a855f7', '#39A900', '#0284c7', '#4f46e5'],
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+                }
+            });
+        }
+
+        function renderCentroChart(centroCounts) {
+            const ctx = document.getElementById('centroChart').getContext('2d');
+            if(centroChartInstance) centroChartInstance.destroy();
+
+            const shortLabels = Object.keys(centroCounts).map(c => c.split('(')[1]?.replace(')', '') || c);
+
+            centroChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: shortLabels,
+                    datasets: [{
+                        data: Object.values(centroCounts),
+                        backgroundColor: ['#39A900', '#00324D', '#3b82f6', '#f59e0b', '#ec4899', '#8b5cf6', '#14b8a6', '#f97316']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'right', labels: { boxWidth: 10, font: { size: 9 } } } }
+                }
+            });
+        }
+
+        // REQUERIMIENTO 7: NUEVO GRÁFICO FINANCIAL METRICS (VENTAS Y RECURSOS)
+        function renderFinancialMetricsChart(list) {
+            const ctx = document.getElementById('financialMetricsChart').getContext('2d');
+            if(financialMetricsChartInstance) financialMetricsChartInstance.destroy();
+
+            let totalVentasProyectadas = 0;
+            let totalVentasRealizadas = 0;
+            let totalRecursosAsignados = 0;
+            let totalRecursosEjecutados = 0;
+
+            list.forEach(e => {
+                totalVentasProyectadas += parseFloat(e.ventasProyectadas) || 0;
+                totalVentasRealizadas += parseFloat(e.ventasRealizadas) || 0;
+                totalRecursosAsignados += parseFloat(e.recursos) || 0;
+                totalRecursosEjecutados += parseFloat(e.recursosEjecutados) || 0;
+            });
+
+            financialMetricsChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Ventas Proyectadas vs Realizadas', 'Recursos Asignados vs Ejecutados'],
+                    datasets: [
+                        {
+                            label: 'Proyectado / Asignado',
+                            data: [totalVentasProyectadas, totalRecursosAsignados],
+                            backgroundColor: '#94a3b8',
+                            borderRadius: 6
+                        },
+                        {
+                            label: 'Realizado / Ejecutado',
+                            data: [totalVentasRealizadas, totalRecursosEjecutados],
+                            backgroundColor: '#39A900',
+                            borderRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top', labels: { font: { size: 10 } } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let val = context.raw || 0;
+                                    return context.dataset.label + ': $' + val.toLocaleString('es-CO');
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + (value / 1000000).toFixed(0) + 'M';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // REQUERIMIENTO 7: NUEVO GRÁFICO JOBS METRICS (EMPLEOS PROYECTADOS VS GENERADOS)
+        function renderJobsMetricsChart(list) {
+            const ctx = document.getElementById('jobsMetricsChart').getContext('2d');
+            if(jobsMetricsChartInstance) jobsMetricsChartInstance.destroy();
+
+            let totalEmpleosProyectados = 0;
+            let totalEmpleosGenerados = 0;
+
+            list.forEach(e => {
+                totalEmpleosProyectados += parseInt(e.empleosProyectados) || 0;
+                totalEmpleosGenerados += parseInt(e.empleosGenerados) || 0;
+            });
+
+            jobsMetricsChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Métricas Regionales de Empleo Directo'],
+                    datasets: [
+                        {
+                            label: 'Empleos Proyectados',
+                            data: [totalEmpleosProyectados],
+                            backgroundColor: '#3b82f6',
+                            borderRadius: 6
+                        },
+                        {
+                            label: 'Empleos Generados (Reales)',
+                            data: [totalEmpleosGenerados],
+                            backgroundColor: '#00324D',
+                            borderRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'top', labels: { font: { size: 10 } } } },
+                    scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+                }
+            });
+        }
+
+        function renderTopProgressTable() {
+            const tbody = document.getElementById('topProgresstableBody');
+            tbody.innerHTML = '';
+
+            const list = window.emprendedoresData || [];
+            const recent = [...list].reverse().slice(0, 5);
+
+            recent.forEach((emp) => {
+                const originalIndex = list.indexOf(emp);
+                const prog = calculateProgress(emp);
+                const fase = getFaseActual(emp);
+                const centroShort = emp.centro ? emp.centro.split('(')[1]?.replace(')', '') : 'N/A';
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-3.5">
+                            <span class="font-bold text-slate-800 block">${maskText(emp.emprendimiento, 4)}</span>
+                            <span class="text-[11px] text-slate-400">${maskText(emp.nombre, 3)}</span>
+                        </td>
+                        <td class="p-3.5">
+                            <span class="font-semibold text-sena-navy block">${centroShort}</span>
+                            <span class="text-[10px] text-slate-500"><i class="fa-solid fa-location-dot"></i> ${emp.municipio}</span>
+                        </td>
+                        <td class="p-3.5 text-slate-600">${emp.orientadorFormulacion || 'Por asignar'}</td>
+                        <td class="p-3.5 text-center">
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-sena-navy border">${fase}</span>
+                        </td>
+                        <td class="p-3.5">
+                            <div class="flex items-center gap-2">
+                                <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-sena-green h-full" style="width: ${prog}%"></div>
+                                </div>
+                                <span class="font-bold text-slate-700 text-[11px]">${prog}%</span>
+                            </div>
+                        </td>
+                        <td class="p-3.5 text-center">
+                            <button onclick="openDetailModal(${originalIndex})" class="text-sena-navy hover:text-sena-green p-1">
+                                <i class="fa-solid fa-eye text-sm"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        window.renderEmprendedoresTable = function(list) {
+            const tbody = document.getElementById('mainTableBody');
+            tbody.innerHTML = '';
+            const allList = window.emprendedoresData || [];
+
+            (list || []).forEach((emp) => {
+                const originalIndex = allList.indexOf(emp);
+                const prog = calculateProgress(emp);
+                const fase = getFaseActual(emp);
+                const centroShort = emp.centro ? emp.centro.split('(')[1]?.replace(')', '') : 'N/A';
+                const formatoDinero = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(emp.recursos || 0);
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-3.5">
+                            <span class="font-bold text-slate-800 block flex items-center gap-1.5">
+                                <i class="fa-solid fa-lock text-[10px] text-red-500" title="Protegido Ley 1581"></i>
+                                ${maskText(emp.nombre, 4)}
+                            </span>
+                            <span class="text-[10px] text-slate-400">C.C. ${maskCedula(emp.cedula)}</span>
+                        </td>
+                        <td class="p-3.5 font-semibold text-sena-navy">
+                            ${maskText(emp.emprendimiento, 5)}
+                        </td>
+                        <td class="p-3.5">
+                            <span class="font-bold text-slate-700 block">${centroShort}</span>
+                            <span class="text-[10px] text-slate-500">${emp.municipio}</span>
+                        </td>
+                        <td class="p-3.5 text-slate-600 text-[11px]">${emp.tipoProyecto}</td>
+                        <td class="p-3.5 text-slate-600">${emp.orientadorFormulacion || 'Sin asignar'}</td>
+                        <td class="p-3.5 text-center">
+                            <span class="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-emerald-50 text-sena-green border border-sena-green/30">${fase}</span>
+                        </td>
+                        <td class="p-3.5 text-center">
+                            <span class="font-bold ${prog >= 80 ? 'text-sena-green' : 'text-slate-700'}">${prog}%</span>
+                        </td>
+                        <td class="p-3.5 text-center font-bold text-slate-800">
+                            ${emp.recursos > 0 ? `<span class="text-sena-green">${formatoDinero}</span>` : '<span class="text-slate-400">$0</span>'}
+                        </td>
+                        <td class="p-3.5 text-center space-x-1">
+                            <button onclick="openDetailModal(${originalIndex})" title="Ver Ficha / Timeline" class="p-1.5 text-slate-600 hover:text-sena-navy rounded-lg hover:bg-slate-100">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                            <button onclick="editEmprendedor(${originalIndex})" title="Editar" class="p-1.5 text-slate-600 hover:text-sena-green rounded-lg hover:bg-slate-100">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button onclick="deleteEmprendedor('${emp._fbKey}')" title="Eliminar de Firebase" class="p-1.5 text-slate-400 hover:text-red-600 rounded-lg hover:bg-slate-100">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('recordCount').innerText = `Mostrando ${(list || []).length} de ${allList.length} emprendedores registrados`;
+        }
+
+        function filterEmprendedores() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const centro = document.getElementById('filterCentro').value;
+            const mun = document.getElementById('filterMunicipio').value;
+            const fase = document.getElementById('filterFase').value;
+
+            const filtered = (window.emprendedoresData || []).filter(e => {
+                const matchSearch = (e.nombre || '').toLowerCase().includes(search) || 
+                                    (e.cedula || '').toLowerCase().includes(search) || 
+                                    (e.emprendimiento || '').toLowerCase().includes(search);
+                const matchCentro = !centro || e.centro === centro;
+                const matchMun = !mun || e.municipio === mun;
+                const matchFase = !fase || getFaseActual(e) === fase;
+
+                return matchSearch && matchCentro && matchMun && matchFase;
+            });
+
+            renderEmprendedoresTable(filtered);
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('filterCentro').value = '';
+            document.getElementById('filterMunicipio').value = '';
+            document.getElementById('filterFase').value = '';
+            renderEmprendedoresTable(window.emprendedoresData);
+        }
+
+        function formatCurrency(val) {
+            return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(parseFloat(val) || 0);
+        }
+
+        function openDetailModal(index) {
+            const emp = window.emprendedoresData[index];
+            if (!emp) return;
+            const prog = calculateProgress(emp);
+
+            document.getElementById('modalCentroTag').innerText = emp.centro || 'Centro SENA Santander';
+            document.getElementById('modalNombreEmprendimiento').innerText = maskText(emp.emprendimiento, 5);
+            document.getElementById('modalEmprendedorInfo').innerText = `Emprendedor: ${maskText(emp.nombre, 4)} | C.C: ${maskCedula(emp.cedula)} | Tel: ${maskTelefono(emp.telefono)}`;
+            document.getElementById('modalMunicipio').innerText = emp.municipio;
+            document.getElementById('modalTipoProyecto').innerText = emp.tipoProyecto;
+            document.getElementById('modalOrientadorIdeacion').innerText = emp.orientadorIdeacion || 'N/A';
+            document.getElementById('modalOrientadorFormulacion').innerText = emp.orientadorFormulacion || 'N/A';
+
+            document.getElementById('modalAvancePorcentaje').innerText = `${prog}%`;
+            document.getElementById('modalAvanceBar').style.width = `${prog}%`;
+
+            const iconO = document.getElementById('icon-orientacion');
+            if(emp.orientacionEvidencia) {
+                iconO.className = "absolute left-1 top-0.5 w-6 h-6 rounded-full bg-sena-green text-white flex items-center justify-center text-xs";
+                document.getElementById('fecha-orientacion-tag').innerText = `Completado: ${emp.orientacionFecha || 'Registrada'}`;
+            } else {
+                iconO.className = "absolute left-1 top-0.5 w-6 h-6 rounded-full bg-slate-300 text-white flex items-center justify-center text-xs";
+                document.getElementById('fecha-orientacion-tag').innerText = "Pendiente";
+            }
+
+            const ideCount = (emp.ideacion1?1:0) + (emp.ideacion2?1:0) + (emp.ideacion3?1:0);
+            document.getElementById('status-ideacion-tag').innerText = `${ideCount} / 3 Entrenamientos`;
+            document.getElementById('modalIdeacionDetails').innerHTML = `
+                <div class="p-1.5 rounded border ${emp.ideacion1 ? 'bg-amber-100 text-amber-900 border-amber-300' : 'bg-slate-100 text-slate-400'}">01: ¿A quién le sirve lo que hago?</div>
+                <div class="p-1.5 rounded border ${emp.ideacion2 ? 'bg-amber-100 text-amber-900 border-amber-300' : 'bg-slate-100 text-slate-400'}">02: ¡Diferentes, pero competentes!</div>
+                <div class="p-1.5 rounded border ${emp.ideacion3 ? 'bg-amber-100 text-amber-900 border-amber-300' : 'bg-slate-100 text-slate-400'}">03: ¡Lo que no se mide no existe!</div>
+            `;
+
+            const valCount = (emp.validacion1?1:0) + (emp.validacion2?1:0) + (emp.validacion3?1:0);
+            document.getElementById('status-validacion-tag').innerText = `${valCount} / 3 Entrenamientos`;
+            document.getElementById('modalValidacionDetails').innerHTML = `
+                <div class="p-1.5 rounded border ${emp.validacion1 ? 'bg-blue-100 text-blue-900 border-blue-300' : 'bg-slate-100 text-slate-400'}">01: Manos a la obra</div>
+                <div class="p-1.5 rounded border ${emp.validacion2 ? 'bg-blue-100 text-blue-900 border-blue-300' : 'bg-slate-100 text-slate-400'}">02: Esto es diciendo y haciendo</div>
+                <div class="p-1.5 rounded border ${emp.validacion3 ? 'bg-blue-100 text-blue-900 border-blue-300' : 'bg-slate-100 text-slate-400'}">03: Presentación PITCH</div>
+            `;
+
+            const formCount = (emp.puntosFormulacion || []).filter(Boolean).length;
+            document.getElementById('status-formulacion-tag').innerText = `${formCount} / 17 Módulos Completados`;
+            const formGrid = document.getElementById('modalFormulacionGrid');
+            formGrid.innerHTML = '';
+            NOMBRES_17_PUNTOS.forEach((p, i) => {
+                const done = emp.puntosFormulacion && emp.puntosFormulacion[i];
+                formGrid.innerHTML += `
+                    <div class="p-1.5 rounded border text-[9px] ${done ? 'bg-purple-100 text-purple-900 border-purple-300 font-semibold' : 'bg-slate-50 text-slate-400'}">
+                        ${done ? '<i class="fa-solid fa-check text-purple-700"></i>' : '<i class="fa-solid fa-minus"></i>'} ${p}
+                    </div>
+                `;
+            });
+
+            document.getElementById('status-recursos-tag').innerText = formatCurrency(emp.recursos);
+            document.getElementById('modalViabilidadText').innerText = emp.viabilidad || 'En Proceso';
+            document.getElementById('modalActaText').innerText = emp.actaContrato || 'En trámite';
+            document.getElementById('modalVisitasText').innerText = `${emp.visitasInterventoria || 0} / 4 Visitas`;
+            document.getElementById('modalCondonadoText').innerText = emp.condonado === "Sí" ? `Sí (${emp.resolucion})` : 'No';
+            document.getElementById('modalRecursosEjecutadosText').innerText = formatCurrency(emp.recursosEjecutados);
+            document.getElementById('modalActasSeguimientoText').innerText = `${emp.actasSeguimientoTecnico || 0} actas`;
+
+            // ACTUALIZACIÓN DE FICHA / TIMELINE CON NUEVAS VARIABLES
+            const iconPM = document.getElementById('icon-puesta-en-marcha');
+            if (emp.fechaInicioPuestaEnMarcha || emp.fechaFinPuestaEnMarcha) {
+                iconPM.className = "absolute left-1 top-0.5 w-6 h-6 rounded-full bg-sena-green text-white flex items-center justify-center text-xs";
+                document.getElementById('modalFechasPuestaEnMarchaTag').innerText = `Puesta en marcha: ${emp.fechaInicioPuestaEnMarcha || '--'} a ${emp.fechaFinPuestaEnMarcha || '--'}`;
+            } else {
+                iconPM.className = "absolute left-1 top-0.5 w-6 h-6 rounded-full bg-slate-300 text-white flex items-center justify-center text-xs";
+                document.getElementById('modalFechasPuestaEnMarchaTag').innerText = "Fechas: No registradas";
+            }
+
+            document.getElementById('modalEmpProyText').innerText = emp.empleosProyectados || 0;
+            document.getElementById('modalEmpGenText').innerText = emp.empleosGenerados || 0;
+            document.getElementById('modalVenProyText').innerText = formatCurrency(emp.ventasProyectadas);
+            document.getElementById('modalVenRealText').innerText = formatCurrency(emp.ventasRealizadas);
+            document.getElementById('modalContProyText').innerText = formatCurrency(emp.contrapartidasProyectadas);
+            document.getElementById('modalContEjecText').innerText = formatCurrency(emp.contrapartidasEjecutadas);
+            document.getElementById('modalEventosMercadeoText').innerText = `${emp.eventosMercadeoProyectados || 0} / ${emp.eventosMercadeoEjecutados || 0}`;
+            document.getElementById('modalEventosComercializacionText').innerText = `${emp.eventosComercializacionProyectados || 0} / ${emp.eventosComercializacionEjecutados || 0}`;
+
+            document.getElementById('modalDetail').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('modalDetail').classList.add('hidden');
+        }
+
+        // GUARDAR / SINCRONIZAR CON LAS 8 NUEVAS VARIABLES EN FIREBASE REALTIME DB
+        function handleFormSubmit(e) {
+            e.preventDefault();
+
+            const editKey = document.getElementById('editKey').value;
+            const cedula = document.getElementById('formCedula').value.trim();
+            const firebaseKey = editKey || cedula.replace(/[^a-zA-Z0-9]/g, '_');
+
+            const puntosArr = [];
+            for(let i=0; i<17; i++) {
+                puntosArr.push(document.getElementById(`punto_${i}`).checked);
+            }
+
+            const payload = {
+                nombre: document.getElementById('formNombre').value.trim(),
+                cedula: cedula,
+                telefono: document.getElementById('formTelefono').value.trim(),
+                emprendimiento: document.getElementById('formEmprendimiento').value.trim(),
+                centro: document.getElementById('formCentro').value,
+                municipio: document.getElementById('formMunicipio').value,
+                tipoProyecto: document.getElementById('formTipoProyecto').value,
+                orientadorIdeacion: document.getElementById('formOrientadorIdeacion').value.trim(),
+                orientadorFormulacion: document.getElementById('formOrientadorFormulacion').value.trim(),
+                orientacionEvidencia: document.getElementById('checkOrientacion').checked,
+                orientacionFecha: document.getElementById('fechaOrientacion').value,
+                ideacion1: document.getElementById('checkIdeacion1').checked,
+                ideacion2: document.getElementById('checkIdeacion2').checked,
+                ideacion3: document.getElementById('checkIdeacion3').checked,
+                ideacionFecha: document.getElementById('fechaIdeacion').value,
+                validacion1: document.getElementById('checkValidacion1').checked,
+                validacion2: document.getElementById('checkValidacion2').checked,
+                validacion3: document.getElementById('checkValidacion3').checked,
+                validacionFecha: document.getElementById('fechaValidacion').value,
+                puntosFormulacion: puntosArr,
+                convocatoria: document.getElementById('formConvocatoria').value.trim(),
+                fechaFormalizacion: document.getElementById('formFechaFormalizacion').value,
+                viabilidad: document.getElementById('formViabilidad').value,
+                recursos: parseFloat(document.getElementById('formRecursos').value) || 0,
+                recursosEjecutados: parseFloat(document.getElementById('formRecursosEjecutados').value) || 0,
+                actaContrato: document.getElementById('formActaContrato').value.trim(),
+                visitasInterventoria: parseInt(document.getElementById('formVisitas').value) || 0,
+                actasSeguimientoTecnico: parseInt(document.getElementById('formActasSeguimientoTecnico').value) || 0,
+                condonado: document.getElementById('formCondonado').value,
+                resolucion: document.getElementById('formResolucion').value.trim(),
+                // Nuevas variables
+                fechaInicioPuestaEnMarcha: document.getElementById('formFechaInicioPuestaEnMarcha').value,
+                fechaFinPuestaEnMarcha: document.getElementById('formFechaFinPuestaEnMarcha').value,
+                empleosProyectados: parseInt(document.getElementById('formEmpleosProyectados').value) || 0,
+                empleosGenerados: parseInt(document.getElementById('formEmpleosGenerados').value) || 0,
+                ventasProyectadas: parseFloat(document.getElementById('formVentasProyectadas').value) || 0,
+                ventasRealizadas: parseFloat(document.getElementById('formVentasRealizadas').value) || 0,
+                contrapartidasProyectadas: parseFloat(document.getElementById('formContrapartidasProyectadas').value) || 0,
+                contrapartidasEjecutadas: parseFloat(document.getElementById('formContrapartidasEjecutadas').value) || 0,
+                eventosMercadeoProyectados: parseInt(document.getElementById('formEventosMercadeoProyectados').value) || 0,
+                eventosMercadeoEjecutados: parseInt(document.getElementById('formEventosMercadeoEjecutados').value) || 0,
+                eventosComercializacionProyectados: parseInt(document.getElementById('formEventosComercializacionProyectados').value) || 0,
+                eventosComercializacionEjecutados: parseInt(document.getElementById('formEventosComercializacionEjecutados').value) || 0
+            };
+
+            if(window.fbSet && window.fbRef && window.fbDB) {
+                window.fbSet(window.fbRef(window.fbDB, 'emprendedores/' + firebaseKey), payload)
+                .then(() => {
+                    switchTab('emprendedores');
+                    document.getElementById('emprendedorForm').reset();
+                    document.getElementById('editIndex').value = "-1";
+                    document.getElementById('editKey').value = "";
+                })
+                .catch(err => {
+                    alert("Error al guardar en Firebase: " + err.message);
+                });
+            }
+        }
+
+        function editEmprendedor(index) {
+            const emp = window.emprendedoresData[index];
+            if (!emp) return;
+
+            document.getElementById('editIndex').value = index;
+            document.getElementById('editKey').value = emp._fbKey || '';
+            document.getElementById('formTitle').innerText = "Editar Registro de Emprendedor";
+
+            document.getElementById('formNombre').value = emp.nombre || '';
+            document.getElementById('formCedula').value = emp.cedula || '';
+            document.getElementById('formTelefono').value = emp.telefono || '';
+            document.getElementById('formEmprendimiento').value = emp.emprendimiento || '';
+            document.getElementById('formCentro').value = emp.centro || '';
+            document.getElementById('formMunicipio').value = emp.municipio || '';
+            document.getElementById('formTipoProyecto').value = emp.tipoProyecto || 'Individual CREAR';
+            document.getElementById('formOrientadorIdeacion').value = emp.orientadorIdeacion || '';
+            document.getElementById('formOrientadorFormulacion').value = emp.orientadorFormulacion || '';
+
+            document.getElementById('checkOrientacion').checked = emp.orientacionEvidencia || false;
+            document.getElementById('fechaOrientacion').value = emp.orientacionFecha || '';
+
+            document.getElementById('checkIdeacion1').checked = emp.ideacion1 || false;
+            document.getElementById('checkIdeacion2').checked = emp.ideacion2 || false;
+            document.getElementById('checkIdeacion3').checked = emp.ideacion3 || false;
+            document.getElementById('fechaIdeacion').value = emp.ideacionFecha || '';
+
+            document.getElementById('checkValidacion1').checked = emp.validacion1 || false;
+            document.getElementById('checkValidacion2').checked = emp.validacion2 || false;
+            document.getElementById('checkValidacion3').checked = emp.validacion3 || false;
+            document.getElementById('fechaValidacion').value = emp.validacionFecha || '';
+
+            (emp.puntosFormulacion || []).forEach((val, i) => {
+                const cb = document.getElementById(`punto_${i}`);
+                if(cb) cb.checked = val;
+            });
+
+            document.getElementById('formConvocatoria').value = emp.convocatoria || '';
+            document.getElementById('formFechaFormalizacion').value = emp.fechaFormalizacion || '';
+            document.getElementById('formViabilidad').value = emp.viabilidad || 'En Proceso';
+            document.getElementById('formRecursos').value = emp.recursos || 0;
+            document.getElementById('formRecursosEjecutados').value = emp.recursosEjecutados || 0;
+            document.getElementById('formActaContrato').value = emp.actaContrato || '';
+            document.getElementById('formVisitas').value = emp.visitasInterventoria || 0;
+            document.getElementById('formActasSeguimientoTecnico').value = emp.actasSeguimientoTecnico || 0;
+            document.getElementById('formCondonado').value = emp.condonado || 'No';
+            document.getElementById('formResolucion').value = emp.resolucion || '';
+
+            // Cargar nuevas variables al editar
+            document.getElementById('formFechaInicioPuestaEnMarcha').value = emp.fechaInicioPuestaEnMarcha || '';
+            document.getElementById('formFechaFinPuestaEnMarcha').value = emp.fechaFinPuestaEnMarcha || '';
+            document.getElementById('formEmpleosProyectados').value = emp.empleosProyectados || 0;
+            document.getElementById('formEmpleosGenerados').value = emp.empleosGenerados || 0;
+            document.getElementById('formVentasProyectadas').value = emp.ventasProyectadas || 0;
+            document.getElementById('formVentasRealizadas').value = emp.ventasRealizadas || 0;
+            document.getElementById('formContrapartidasProyectadas').value = emp.contrapartidasProyectadas || 0;
+            document.getElementById('formContrapartidasEjecutadas').value = emp.contrapartidasEjecutadas || 0;
+            document.getElementById('formEventosMercadeoProyectados').value = emp.eventosMercadeoProyectados || 0;
+            document.getElementById('formEventosMercadeoEjecutados').value = emp.eventosMercadeoEjecutados || 0;
+            document.getElementById('formEventosComercializacionProyectados').value = emp.eventosComercializacionProyectados || 0;
+            document.getElementById('formEventosComercializacionEjecutados').value = emp.eventosComercializacionEjecutados || 0;
+
+            switchTab('nuevo');
+        }
+
+        function deleteEmprendedor(fbKey) {
+            if (!fbKey) return;
+            if (confirm("¿Está seguro de eliminar permanentemente este emprendedor de Firebase Database?")) {
+                window.fbRemove(window.fbRef(window.fbDB, 'emprendedores/' + fbKey))
+                .catch(err => alert("Error al eliminar: " + err.message));
+            }
+        }
+
+        // REQUERIMIENTO 8: EXPORTACIÓN DE LA MATRIZ EXPANDIDA A CSV (>75 COLUMNAS DE CONTROL)
+        function exportDataToCSV() {
+            let csvContent = "data:text/csv;charset=utf-8,";
+            
+            const headers = [
+                "Nombre Completo","Cedula","Telefono","Nombre Emprendimiento","Centro Emprendimiento Comunitario","Municipio",
+                "Modalidad Proyecto","Orientador Ideacion","Orientador Formulacion","Orientacion Evidencia","Orientacion Fecha",
+                "Ideacion 01","Ideacion 02","Ideacion 03","Ideacion Fecha",
+                "Validacion 01","Validacion 02","Validacion 03 Pitch","Validacion Fecha",
+                "Punto 1 Cliente","Punto 2 Problema","Punto 3 Competencia","Punto 4 Descripcion","Punto 5 Ficha Tecnica",
+                "Punto 6 Proceso Tecnico","Punto 7 Tramites","Punto 8 Canales","Punto 9 Ventas","Punto 10 Costos",
+                "Punto 11 Equipo","Punto 12 Necesidades","Punto 13 Avances","Punto 14 Plan Operativo","Punto 15 Impactos",
+                "Punto 16 Mapa Actores","Punto 17 Asociatividad",
+                "Convocatoria","Fecha Formalizacion","Viabilidad","Recursos Asignados ($ COP)","Recursos Ejecutados ($ COP)","Acta o Contrato","Visitas Interventoria","Actas Seguimiento Tecnico Operativo","Condonado","Resolucion",
+                "Fecha Inicio Puesta en Marcha","Fecha Fin Puesta en Marcha","Empleos Proyectados","Empleos Generados Reales","Ventas Proyectadas ($ COP)","Ventas Realizadas ($ COP)","Contrapartidas Proyectadas ($ COP)","Contrapartidas Ejecutadas ($ COP)","Eventos Mercadeo Proyectados","Eventos Mercadeo Ejecutados","Eventos Comercialización Proyectados","Eventos Comercialización Ejecutados","Porcentaje Avance Ponderado (%)","Fase Actual Ruta"
+            ];
+
+            csvContent += headers.join(",") + "\n";
+
+            (window.emprendedoresData || []).forEach(e => {
+                const prog = calculateProgress(e);
+                const fase = getFaseActual(e);
+
+                const row = [
+                    `"${maskText(e.nombre, 4)}"`,
+                    `"${maskCedula(e.cedula)}"`,
+                    `"${maskTelefono(e.telefono)}"`,
+                    `"${maskText(e.emprendimiento, 5)}"`,
+                    `"${e.centro || ''}"`,
+                    `"${e.municipio || ''}"`,
+                    `"${e.tipoProyecto || ''}"`,
+                    `"${e.orientadorIdeacion || ''}"`,
+                    `"${e.orientadorFormulacion || ''}"`,
+                    `"${e.orientacionEvidencia?'Si':'No'}"`,
+                    `"${e.orientacionFecha || ''}"`,
+                    `"${e.ideacion1?'Si':'No'}"`,`"${e.ideacion2?'Si':'No'}"`,`"${e.ideacion3?'Si':'No'}"`,`"${e.ideacionFecha || ''}"`,
+                    `"${e.validacion1?'Si':'No'}"`,`"${e.validacion2?'Si':'No'}"`,`"${e.validacion3?'Si':'No'}"`,`"${e.validacionFecha || ''}"`,
+                    ...Array.from({length:17}, (_,i) => `"${(e.puntosFormulacion && e.puntosFormulacion[i])?'Si':'No'}"`),
+                    `"${e.convocatoria || ''}"`,
+                    `"${e.fechaFormalizacion || ''}"`,
+                    `"${e.viabilidad || ''}"`,
+                    `"${e.recursos || 0}"`,
+                    `"${e.recursosEjecutados || 0}"`,
+                    `"${e.actaContrato || ''}"`,
+                    `"${e.visitasInterventoria || 0}"`,
+                    `"${e.actasSeguimientoTecnico || 0}"`,
+                    `"${e.condonado || 'No'}"`,
+                    `"${e.resolucion || ''}"`,
+                    `"${e.fechaInicioPuestaEnMarcha || ''}"`,
+                    `"${e.fechaFinPuestaEnMarcha || ''}"`,
+                    `"${e.empleosProyectados || 0}"`,
+                    `"${e.empleosGenerados || 0}"`,
+                    `"${e.ventasProyectadas || 0}"`,
+                    `"${e.ventasRealizadas || 0}"`,
+                    `"${e.contrapartidasProyectadas || 0}"`,
+                    `"${e.contrapartidasEjecutadas || 0}"`,
+                    `"${e.eventosMercadeoProyectados || 0}"`,
+                    `"${e.eventosMercadeoEjecutados || 0}"`,
+                    `"${e.eventosComercializacionProyectados || 0}"`,
+                    `"${e.eventosComercializacionEjecutados || 0}"`,
+                    `"${prog}%"`,
+                    `"${fase}"`
+                ];
+                csvContent += row.join(",") + "\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `Matriz_Expandida_Ruta_Emprendedora_SENA_Santander_${isMasked?'Protegido':'Completo'}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function switchTab(tabId) {
+            const tabs = ['dashboard', 'emprendedores', 'nuevo', 'reportes'];
+            tabs.forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                const navBtn = document.getElementById(`nav-${t}`);
+                if(navBtn) navBtn.className = "nav-item w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl text-slate-300 hover:bg-sena-navyLight hover:text-white transition";
+            });
+
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`nav-${tabId}`);
+            if(activeBtn) activeBtn.className = "nav-item w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl text-white bg-sena-green shadow-sm transition";
+
+            const titles = {
+                dashboard: 'Dashboard de Impacto y Gestión',
+                emprendedores: 'Directorio de Emprendedores y Avance en la Ruta',
+                nuevo: 'Formulario de Registro y Edición de Avance',
+                reportes: 'Centro de Generación de Reportes Consolidados'
+            };
+            document.getElementById('pageTitle').innerText = titles[tabId];
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+        }
+    </script>
+</body>
+</html>
