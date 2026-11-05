@@ -197,7 +197,7 @@
                 <div id="firebaseStatusDot" class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></div>
                 <span id="firebaseStatusText" class="text-slate-200 font-medium">Conectando Firebase...</span>
             </div>
-            <p class="text-[10px] text-slate-400">SISTEMA FONDO EMPRENDER v4.0</p>
+            <p class="text-[10px] text-slate-400">SISTEMA FONDO EMPRENDER v4.1</p>
         </div>
     </aside>
 
@@ -299,7 +299,7 @@
                     </div>
                 </div>
 
-                <!-- GRÁFICOS CHART.JS EXISTENTES Y NUEVOS -->
+                <!-- GRÁFICOS CHART.JS -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
                         <div class="flex justify-between items-center mb-4">
@@ -325,7 +325,6 @@
                         </div>
                     </div>
 
-                    <!-- NUEVO GRÁFICO 1: VENTAS Y RECURSOS -->
                     <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
                         <div class="flex justify-between items-center mb-4">
                             <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
@@ -338,7 +337,6 @@
                         </div>
                     </div>
 
-                    <!-- NUEVO GRÁFICO 2: EMPLEOS GENERADOS VS PROYECTADOS -->
                     <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
                         <div class="flex justify-between items-center mb-4">
                             <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
@@ -605,10 +603,10 @@
                             </div>
                         </div>
 
-                        <!-- SECCIÓN 4: CONVOCATORIA, RECURSOS E INTERVENTORÍA -->
+                        <!-- SECCIÓN 4: CONVOCATORIA, RECURSOS E INTERVENTORÍA (Actualizada sin campos trasladados) -->
                         <div class="pt-4 border-t border-slate-200">
                             <h4 class="text-xs font-bold text-sena-navy uppercase tracking-wider mb-3 flex items-center gap-2">
-                                <i class="fa-solid fa-sack-dollar text-sena-green"></i> 4. Convocatoria, Viabilidad, Recursos e Interventoría
+                                <i class="fa-solid fa-sack-dollar text-sena-green"></i> 4. Convocatoria, Viabilidad y Recursos Iniciales
                             </h4>
 
                             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
@@ -632,50 +630,21 @@
                                     <label class="block font-medium text-slate-700 mb-1">Recursos Asignados ($ COP)</label>
                                     <input type="number" id="formRecursos" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
                                 </div>
-
-                                <!-- NUEVO REQUERIMIENTO 5: RECURSOS FINANCIEROS EJECUTADOS -->
-                                <div>
-                                    <label class="block font-medium text-slate-700 mb-1">Recursos Ejecutados ($ COP) *</label>
-                                    <input type="number" id="formRecursosEjecutados" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
-                                </div>
-
                                 <div>
                                     <label class="block font-medium text-slate-700 mb-1">Nº Acta Asignación / Contrato</label>
                                     <input type="text" id="formActaContrato" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="Acta 045-2026">
                                 </div>
-                                <div>
-                                    <label class="block font-medium text-slate-700 mb-1">Visitas Interventoría (0 - 4)</label>
-                                    <input type="number" min="0" max="4" id="formVisitas" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" value="0">
-                                </div>
-
-                                <!-- NUEVO REQUERIMIENTO 6: SEGUIMIENTO TÉCNICO OPERATIVO -->
-                                <div>
-                                    <label class="block font-medium text-slate-700 mb-1">Nº Actas Seguimiento Técnico Operativo *</label>
-                                    <input type="number" min="0" id="formActasSeguimientoTecnico" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
-                                </div>
-
-                                <div>
-                                    <label class="block font-medium text-slate-700 mb-1">Estado de Condonación</label>
-                                    <select id="formCondonado" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none bg-white">
-                                        <option value="No">En Ejecución / No Condonado</option>
-                                        <option value="Sí">Sí - Condonación Aprobada</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block font-medium text-slate-700 mb-1">Resolución Condonación</label>
-                                    <input type="text" id="formResolucion" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="Res. 1024-2026">
-                                </div>
                             </div>
                         </div>
 
-                        <!-- NUEVA SECCIÓN 5: PUESTA EN MARCHA E INDICADORES DE IMPACTO (REQUERIMIENTOS 1 AL 4) -->
+                        <!-- SECCIÓN 5: PUESTA EN MARCHA E INDICADORES DE IMPACTO (Trasladados aquí: Recursos ejecutados, Visitas de interventoría, Actas de seguimiento técnico operativo, Resolución y Estado de condonación) -->
                         <div class="pt-4 border-t border-slate-200">
                             <h4 class="text-xs font-bold text-sena-navy uppercase tracking-wider mb-3 flex items-center gap-2">
-                                <i class="fa-solid fa-rocket text-sena-green"></i> 5. Puesta en Marcha e Indicadores de Impacto (Proyectados vs Reales)
+                                <i class="fa-solid fa-rocket text-sena-green"></i> 5. Puesta en Marcha, Ejecución, Interventoría y Condonación
                             </h4>
 
                             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
-                                <!-- 1) Fechas de Puesta en Marcha -->
+                                <!-- Fechas de Puesta en Marcha -->
                                 <div>
                                     <label class="block font-medium text-slate-700 mb-1">Fecha Inicio Puesta en Marcha</label>
                                     <input type="date" id="formFechaInicioPuestaEnMarcha" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none">
@@ -685,7 +654,7 @@
                                     <input type="date" id="formFechaFinPuestaEnMarcha" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none">
                                 </div>
 
-                                <!-- 2) Empleos -->
+                                <!-- Empleos -->
                                 <div>
                                     <label class="block font-medium text-slate-700 mb-1">Empleos Proyectados (Entero)</label>
                                     <input type="number" min="0" id="formEmpleosProyectados" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
@@ -695,7 +664,7 @@
                                     <input type="number" min="0" id="formEmpleosGenerados" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
                                 </div>
 
-                                <!-- 2) Ventas -->
+                                <!-- Ventas -->
                                 <div>
                                     <label class="block font-medium text-slate-700 mb-1">Ventas Proyectadas ($ COP)</label>
                                     <input type="number" min="0" id="formVentasProyectadas" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
@@ -705,7 +674,7 @@
                                     <input type="number" min="0" id="formVentasRealizadas" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
                                 </div>
 
-                                <!-- 3) Contrapartidas -->
+                                <!-- Contrapartidas -->
                                 <div>
                                     <label class="block font-medium text-slate-700 mb-1">Contrapartidas Proyectadas ($ COP)</label>
                                     <input type="number" min="0" id="formContrapartidasProyectadas" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
@@ -715,7 +684,7 @@
                                     <input type="number" min="0" id="formContrapartidasEjecutadas" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
                                 </div>
 
-                                <!-- 4) Eventos -->
+                                <!-- Eventos -->
                                 <div>
                                     <label class="block font-medium text-slate-700 mb-1">Eventos Mercadeo (Proyectados)</label>
                                     <input type="number" min="0" id="formEventosMercadeoProyectados" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
@@ -731,6 +700,31 @@
                                 <div>
                                     <label class="block font-medium text-slate-700 mb-1">Eventos Comercialización (Ejecutados)</label>
                                     <input type="number" min="0" id="formEventosComercializacionEjecutados" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
+                                </div>
+
+                                <!-- CAMPOS TRASLADADOS DESDE EL NUMERAL 4 -->
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Recursos Ejecutados ($ COP)</label>
+                                    <input type="number" id="formRecursosEjecutados" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Visitas de Interventoría (0 - 4)</label>
+                                    <input type="number" min="0" max="4" id="formVisitas" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" value="0">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Nº Actas Seguimiento Técnico Operativo</label>
+                                    <input type="number" min="0" id="formActasSeguimientoTecnico" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Estado de Condonación</label>
+                                    <select id="formCondonado" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none bg-white">
+                                        <option value="No">En Ejecución / No Condonado</option>
+                                        <option value="Sí">Sí - Condonación Aprobada</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Resolución de Condonación</label>
+                                    <input type="text" id="formResolucion" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="Res. 1024-2026">
                                 </div>
                             </div>
                         </div>
@@ -763,7 +757,7 @@
                                     <i class="fa-solid fa-file-excel"></i>
                                 </div>
                                 <h4 class="font-bold text-slate-800 text-sm">Matriz Consolidada CSV / Excel (Matriz Expandida >75 Campos)</h4>
-                                <p class="text-xs text-slate-500 mt-1">Exporta la totalidad de columnas incluyendo Puesta en Marcha, Ventas, Empleos, Contrapartidas, Eventos de Mercadeo/Comercialización, Recursos Ejecutados, Actas de Seguimiento Técnico y las evidencias de Orientación, Ideación, Validación, Formulación (17 Puntos), Recursos e Interventoría.</p>
+                                <p class="text-xs text-slate-500 mt-1">Exporta la totalidad de columnas incluyendo Puesta en Marcha, Ventas, Empleos, Contrapartidas, Eventos de Mercadeo/Comercialización, Recursos Ejecutados, Actas de Seguimiento Técnico, Interventoría y Condonación.</p>
                             </div>
                             <button onclick="exportDataToCSV()" class="mt-4 w-full py-2.5 bg-sena-navy hover:bg-sena-navyLight text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition">
                                 <i class="fa-solid fa-download"></i> Descargar Matriz Consolidada Expandida (CSV)
@@ -927,28 +921,24 @@
                             </div>
                             <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 w-full space-y-2">
                                 <div class="flex justify-between items-center">
-                                    <span class="font-bold text-slate-800">5. Convocatoria, Recursos & Interventoría</span>
+                                    <span class="font-bold text-slate-800">5. Convocatoria & Recursos Asignados</span>
                                     <span id="status-recursos-tag" class="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">$0 COP</span>
                                 </div>
                                 <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-[10px] text-slate-600 border-t pt-2">
                                     <div><strong>Viabilidad:</strong> <span id="modalViabilidadText">--</span></div>
                                     <div><strong>Contrato / Acta:</strong> <span id="modalActaText">--</span></div>
-                                    <div><strong>Visitas Interventoría:</strong> <span id="modalVisitasText">0 / 4</span></div>
-                                    <div><strong>Condonación:</strong> <span id="modalCondonadoText">No</span></div>
-                                    <div class="col-span-2"><strong>Recursos Ejecutados:</strong> <span id="modalRecursosEjecutadosText" class="font-semibold text-emerald-700">$0 COP</span></div>
-                                    <div class="col-span-2"><strong>Actas Seguimiento Técnico:</strong> <span id="modalActasSeguimientoText" class="font-semibold text-sena-navy">0 actas</span></div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- NUEVO HITO 6: PUESTA EN MARCHA E INDICADORES DE IMPACTO -->
+                        <!-- HITO 6: PUESTA EN MARCHA E INDICADORES DE IMPACTO (Incluyendo Ejecución, Interventoría y Condonación) -->
                         <div class="relative flex items-start gap-4 pl-8">
                             <div id="icon-puesta-en-marcha" class="absolute left-1 top-0.5 w-6 h-6 rounded-full bg-slate-300 text-white flex items-center justify-center text-xs">
                                 <i class="fa-solid fa-rocket"></i>
                             </div>
                             <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 w-full space-y-2">
                                 <div class="flex justify-between items-center">
-                                    <span class="font-bold text-slate-800">6. Puesta en Marcha & Métricas de Impacto Operativo</span>
+                                    <span class="font-bold text-slate-800">6. Puesta en Marcha, Interventoría y Condonación</span>
                                     <span id="modalFechasPuestaEnMarchaTag" class="text-[10px] font-semibold text-slate-600 bg-white px-2 py-0.5 rounded border">Fechas: --</span>
                                 </div>
                                 <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-[10px] text-slate-600 border-t pt-2">
@@ -960,6 +950,10 @@
                                     <div><strong>Contrapartidas Ejecutadas:</strong> <span id="modalContEjecText">$0 COP</span></div>
                                     <div><strong>Ev. Mercadeo (Proy/Ejec):</strong> <span id="modalEventosMercadeoText">0 / 0</span></div>
                                     <div><strong>Ev. Comercialización (Proy/Ejec):</strong> <span id="modalEventosComercializacionText">0 / 0</span></div>
+                                    <div><strong>Recursos Ejecutados:</strong> <span id="modalRecursosEjecutadosText" class="font-semibold text-emerald-700">$0 COP</span></div>
+                                    <div><strong>Visitas Interventoría:</strong> <span id="modalVisitasText">0 / 4</span></div>
+                                    <div><strong>Actas Seguimiento Técnico:</strong> <span id="modalActasSeguimientoText" class="font-semibold text-sena-navy">0 actas</span></div>
+                                    <div><strong>Condonación:</strong> <span id="modalCondonadoText">No</span></div>
                                 </div>
                             </div>
                         </div>
@@ -1375,52 +1369,40 @@
             renderEmprendedoresTable(window.emprendedoresData);
         }
 
-        // REQUERIMIENTO 7: MOTOR DE CÁLCULO DE AVANCE RESTRUCTURADO Y PONDERADO
         function calculateProgress(emp) {
             let score = 0;
 
-            // 1. Orientación (5%)
             if (emp.orientacionEvidencia) score += 5;
             
-            // 2. Ideación (10%)
             const countIde = (emp.ideacion1 ? 1 : 0) + (emp.ideacion2 ? 1 : 0) + (emp.ideacion3 ? 1 : 0);
             score += Math.round((countIde / 3) * 10);
 
-            // 3. Validación (10%)
             const countVal = (emp.validacion1 ? 1 : 0) + (emp.validacion2 ? 1 : 0) + (emp.validacion3 ? 1 : 0);
             score += Math.round((countVal / 3) * 10);
 
-            // 4. Formulación Plan de Negocios (17 Puntos) (35%)
             const countForm = (emp.puntosFormulacion || []).filter(Boolean).length;
             score += Math.round((countForm / 17) * 35);
 
-            // 5. Viabilidad y Recursos (15%)
             if (emp.viabilidad === "Viable") score += 15;
 
-            // 6. Puesta en marcha e indicadores de cumplimiento (20%)
             let pmScore = 0;
-            // Puesta en marcha (fechas registradas)
             if (emp.fechaInicioPuestaEnMarcha && emp.fechaFinPuestaEnMarcha) pmScore += 3;
             
-            // Cumplimiento de Empleos
             if (emp.empleosProyectados > 0) {
                 const ratioEmp = Math.min((emp.empleosGenerados || 0) / emp.empleosProyectados, 1);
                 pmScore += ratioEmp * 4;
             }
 
-            // Cumplimiento de Ventas
             if (emp.ventasProyectadas > 0) {
                 const ratioVen = Math.min((emp.ventasRealizadas || 0) / emp.ventasProyectadas, 1);
                 pmScore += ratioVen * 4;
             }
 
-            // Ejecución de Recursos Financiados
             if (emp.recursos > 0) {
                 const ratioRec = Math.min((emp.recursosEjecutados || 0) / emp.recursos, 1);
                 pmScore += ratioRec * 4;
             }
 
-            // Actas de Seguimiento Técnico Operativo (mínimo 1)
             if ((emp.actasSeguimientoTecnico || 0) > 0) pmScore += 3;
 
             score += Math.round(pmScore);
@@ -1519,7 +1501,6 @@
             });
         }
 
-        // REQUERIMIENTO 7: NUEVO GRÁFICO FINANCIAL METRICS (VENTAS Y RECURSOS)
         function renderFinancialMetricsChart(list) {
             const ctx = document.getElementById('financialMetricsChart').getContext('2d');
             if(financialMetricsChartInstance) financialMetricsChartInstance.destroy();
@@ -1583,7 +1564,6 @@
             });
         }
 
-        // REQUERIMIENTO 7: NUEVO GRÁFICO JOBS METRICS (EMPLEOS PROYECTADOS VS GENERADOS)
         function renderJobsMetricsChart(list) {
             const ctx = document.getElementById('jobsMetricsChart').getContext('2d');
             if(jobsMetricsChartInstance) jobsMetricsChartInstance.destroy();
@@ -1815,12 +1795,7 @@
             document.getElementById('status-recursos-tag').innerText = formatCurrency(emp.recursos);
             document.getElementById('modalViabilidadText').innerText = emp.viabilidad || 'En Proceso';
             document.getElementById('modalActaText').innerText = emp.actaContrato || 'En trámite';
-            document.getElementById('modalVisitasText').innerText = `${emp.visitasInterventoria || 0} / 4 Visitas`;
-            document.getElementById('modalCondonadoText').innerText = emp.condonado === "Sí" ? `Sí (${emp.resolucion})` : 'No';
-            document.getElementById('modalRecursosEjecutadosText').innerText = formatCurrency(emp.recursosEjecutados);
-            document.getElementById('modalActasSeguimientoText').innerText = `${emp.actasSeguimientoTecnico || 0} actas`;
 
-            // ACTUALIZACIÓN DE FICHA / TIMELINE CON NUEVAS VARIABLES
             const iconPM = document.getElementById('icon-puesta-en-marcha');
             if (emp.fechaInicioPuestaEnMarcha || emp.fechaFinPuestaEnMarcha) {
                 iconPM.className = "absolute left-1 top-0.5 w-6 h-6 rounded-full bg-sena-green text-white flex items-center justify-center text-xs";
@@ -1838,6 +1813,10 @@
             document.getElementById('modalContEjecText').innerText = formatCurrency(emp.contrapartidasEjecutadas);
             document.getElementById('modalEventosMercadeoText').innerText = `${emp.eventosMercadeoProyectados || 0} / ${emp.eventosMercadeoEjecutados || 0}`;
             document.getElementById('modalEventosComercializacionText').innerText = `${emp.eventosComercializacionProyectados || 0} / ${emp.eventosComercializacionEjecutados || 0}`;
+            document.getElementById('modalRecursosEjecutadosText').innerText = formatCurrency(emp.recursosEjecutados);
+            document.getElementById('modalVisitasText').innerText = `${emp.visitasInterventoria || 0} / 4`;
+            document.getElementById('modalActasSeguimientoText').innerText = `${emp.actasSeguimientoTecnico || 0} actas`;
+            document.getElementById('modalCondonadoText').innerText = emp.condonado === "Sí" ? `Sí (${emp.resolucion || 'Sin resolución'})` : 'No';
 
             document.getElementById('modalDetail').classList.remove('hidden');
         }
@@ -1846,7 +1825,6 @@
             document.getElementById('modalDetail').classList.add('hidden');
         }
 
-        // GUARDAR / SINCRONIZAR CON LAS 8 NUEVAS VARIABLES EN FIREBASE REALTIME DB
         function handleFormSubmit(e) {
             e.preventDefault();
 
@@ -1884,13 +1862,13 @@
                 fechaFormalizacion: document.getElementById('formFechaFormalizacion').value,
                 viabilidad: document.getElementById('formViabilidad').value,
                 recursos: parseFloat(document.getElementById('formRecursos').value) || 0,
-                recursosEjecutados: parseFloat(document.getElementById('formRecursosEjecutados').value) || 0,
                 actaContrato: document.getElementById('formActaContrato').value.trim(),
+                // Campos ubicados en la sección 5
+                recursosEjecutados: parseFloat(document.getElementById('formRecursosEjecutados').value) || 0,
                 visitasInterventoria: parseInt(document.getElementById('formVisitas').value) || 0,
                 actasSeguimientoTecnico: parseInt(document.getElementById('formActasSeguimientoTecnico').value) || 0,
                 condonado: document.getElementById('formCondonado').value,
                 resolucion: document.getElementById('formResolucion').value.trim(),
-                // Nuevas variables
                 fechaInicioPuestaEnMarcha: document.getElementById('formFechaInicioPuestaEnMarcha').value,
                 fechaFinPuestaEnMarcha: document.getElementById('formFechaFinPuestaEnMarcha').value,
                 empleosProyectados: parseInt(document.getElementById('formEmpleosProyectados').value) || 0,
@@ -1959,14 +1937,14 @@
             document.getElementById('formFechaFormalizacion').value = emp.fechaFormalizacion || '';
             document.getElementById('formViabilidad').value = emp.viabilidad || 'En Proceso';
             document.getElementById('formRecursos').value = emp.recursos || 0;
-            document.getElementById('formRecursosEjecutados').value = emp.recursosEjecutados || 0;
             document.getElementById('formActaContrato').value = emp.actaContrato || '';
+
+            // Cargar en Sección 5
+            document.getElementById('formRecursosEjecutados').value = emp.recursosEjecutados || 0;
             document.getElementById('formVisitas').value = emp.visitasInterventoria || 0;
             document.getElementById('formActasSeguimientoTecnico').value = emp.actasSeguimientoTecnico || 0;
             document.getElementById('formCondonado').value = emp.condonado || 'No';
             document.getElementById('formResolucion').value = emp.resolucion || '';
-
-            // Cargar nuevas variables al editar
             document.getElementById('formFechaInicioPuestaEnMarcha').value = emp.fechaInicioPuestaEnMarcha || '';
             document.getElementById('formFechaFinPuestaEnMarcha').value = emp.fechaFinPuestaEnMarcha || '';
             document.getElementById('formEmpleosProyectados').value = emp.empleosProyectados || 0;
@@ -1991,7 +1969,6 @@
             }
         }
 
-        // REQUERIMIENTO 8: EXPORTACIÓN DE LA MATRIZ EXPANDIDA A CSV (>75 COLUMNAS DE CONTROL)
         function exportDataToCSV() {
             let csvContent = "data:text/csv;charset=utf-8,";
             
@@ -2004,8 +1981,9 @@
                 "Punto 6 Proceso Tecnico","Punto 7 Tramites","Punto 8 Canales","Punto 9 Ventas","Punto 10 Costos",
                 "Punto 11 Equipo","Punto 12 Necesidades","Punto 13 Avances","Punto 14 Plan Operativo","Punto 15 Impactos",
                 "Punto 16 Mapa Actores","Punto 17 Asociatividad",
-                "Convocatoria","Fecha Formalizacion","Viabilidad","Recursos Asignados ($ COP)","Recursos Ejecutados ($ COP)","Acta o Contrato","Visitas Interventoria","Actas Seguimiento Tecnico Operativo","Condonado","Resolucion",
-                "Fecha Inicio Puesta en Marcha","Fecha Fin Puesta en Marcha","Empleos Proyectados","Empleos Generados Reales","Ventas Proyectadas ($ COP)","Ventas Realizadas ($ COP)","Contrapartidas Proyectadas ($ COP)","Contrapartidas Ejecutadas ($ COP)","Eventos Mercadeo Proyectados","Eventos Mercadeo Ejecutados","Eventos Comercialización Proyectados","Eventos Comercialización Ejecutados","Porcentaje Avance Ponderado (%)","Fase Actual Ruta"
+                "Convocatoria","Fecha Formalizacion","Viabilidad","Recursos Asignados ($ COP)","Acta o Contrato",
+                "Fecha Inicio Puesta en Marcha","Fecha Fin Puesta en Marcha","Empleos Proyectados","Empleos Generados Reales","Ventas Proyectadas ($ COP)","Ventas Realizadas ($ COP)","Contrapartidas Proyectadas ($ COP)","Contrapartidas Ejecutadas ($ COP)","Eventos Mercadeo Proyectados","Eventos Mercadeo Ejecutados","Eventos Comercialización Proyectados","Eventos Comercialización Ejecutados","Recursos Ejecutados ($ COP)","Visitas Interventoria","Actas Seguimiento Tecnico Operativo","Condonado","Resolucion",
+                "Porcentaje Avance Ponderado (%)","Fase Actual Ruta"
             ];
 
             csvContent += headers.join(",") + "\n";
@@ -2033,12 +2011,7 @@
                     `"${e.fechaFormalizacion || ''}"`,
                     `"${e.viabilidad || ''}"`,
                     `"${e.recursos || 0}"`,
-                    `"${e.recursosEjecutados || 0}"`,
                     `"${e.actaContrato || ''}"`,
-                    `"${e.visitasInterventoria || 0}"`,
-                    `"${e.actasSeguimientoTecnico || 0}"`,
-                    `"${e.condonado || 'No'}"`,
-                    `"${e.resolucion || ''}"`,
                     `"${e.fechaInicioPuestaEnMarcha || ''}"`,
                     `"${e.fechaFinPuestaEnMarcha || ''}"`,
                     `"${e.empleosProyectados || 0}"`,
@@ -2051,6 +2024,11 @@
                     `"${e.eventosMercadeoEjecutados || 0}"`,
                     `"${e.eventosComercializacionProyectados || 0}"`,
                     `"${e.eventosComercializacionEjecutados || 0}"`,
+                    `"${e.recursosEjecutados || 0}"`,
+                    `"${e.visitasInterventoria || 0}"`,
+                    `"${e.actasSeguimientoTecnico || 0}"`,
+                    `"${e.condonado || 'No'}"`,
+                    `"${e.resolucion || ''}"`,
                     `"${prog}%"`,
                     `"${fase}"`
                 ];
