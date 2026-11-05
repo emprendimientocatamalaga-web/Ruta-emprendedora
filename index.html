@@ -1,1076 +1,1733 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ruta Emprendedora - SENA Regional Santander</title>
-  <!-- Chart.js for analytics dashboard -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- FontAwesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <style>
-    :root {
-      --sena-green: #39A900;
-      --sena-dark-blue: #00324D;
-      --sena-light-gray: #F5F7FA;
-      --sena-border: #E2E8F0;
-      --sena-text: #2D3748;
-      --sena-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    body {
-      background-color: var(--sena-light-gray);
-      color: var(--sena-text);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* Header & Navigation */
-    header {
-      background-color: var(--sena-dark-blue);
-      color: white;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: var(--sena-shadow);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .brand-logo {
-      background-color: var(--sena-green);
-      color: white;
-      font-weight: bold;
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      font-size: 1.2rem;
-      letter-spacing: 1px;
-    }
-
-    .brand-title h1 {
-      font-size: 1.2rem;
-      font-weight: 600;
-    }
-
-    .brand-title p {
-      font-size: 0.8rem;
-      color: #CBD5E0;
-    }
-
-    .user-controls {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .btn {
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      border: none;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.9rem;
-    }
-
-    .btn-green {
-      background-color: var(--sena-green);
-      color: white;
-    }
-
-    .btn-green:hover {
-      background-color: #2e8800;
-    }
-
-    .btn-outline {
-      background-color: transparent;
-      border: 1px solid white;
-      color: white;
-    }
-
-    .btn-outline:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-
-    .btn-secondary {
-      background-color: #718096;
-      color: white;
-    }
-
-    .btn-secondary:hover {
-      background-color: #4a5568;
-    }
-
-    /* Container layout */
-    .container {
-      padding: 2rem;
-      max-width: 1600px;
-      margin: 0 auto;
-      width: 100%;
-      flex: 1;
-    }
-
-    /* Auth Modal / Screen */
-    .auth-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: rgba(0, 50, 77, 0.9);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-
-    .auth-card {
-      background-color: white;
-      padding: 2.5rem;
-      border-radius: 12px;
-      width: 100%;
-      max-width: 420px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      text-align: center;
-    }
-
-    .auth-card h2 {
-      color: var(--sena-dark-blue);
-      margin-bottom: 0.5rem;
-    }
-
-    .auth-card p {
-      color: #718096;
-      font-size: 0.9rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .form-group {
-      margin-bottom: 1.2rem;
-      text-align: left;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-      color: var(--sena-text);
-    }
-
-    .form-control {
-      width: 100%;
-      padding: 0.65rem 0.8rem;
-      border: 1px solid var(--sena-border);
-      border-radius: 6px;
-      font-size: 0.95rem;
-      outline: none;
-      transition: border 0.2s;
-    }
-
-    .form-control:focus {
-      border-color: var(--sena-green);
-      box-shadow: 0 0 0 3px rgba(57, 169, 0, 0.15);
-    }
-
-    /* Dashboard Widgets */
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-    }
-
-    .stat-card {
-      background-color: white;
-      padding: 1.5rem;
-      border-radius: 10px;
-      box-shadow: var(--sena-shadow);
-      display: flex;
-      align-items: center;
-      gap: 1.2rem;
-      border-left: 4px solid var(--sena-green);
-    }
-
-    .stat-icon {
-      width: 50px;
-      height: 50px;
-      border-radius: 10px;
-      background-color: rgba(57, 169, 0, 0.1);
-      color: var(--sena-green);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-    }
-
-    .stat-info h3 {
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: var(--sena-dark-blue);
-    }
-
-    .stat-info p {
-      font-size: 0.85rem;
-      color: #718096;
-    }
-
-    .charts-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-    }
-
-    @media (max-width: 1024px) {
-      .charts-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .chart-card {
-      background-color: white;
-      padding: 1.5rem;
-      border-radius: 10px;
-      box-shadow: var(--sena-shadow);
-    }
-
-    .chart-card h3 {
-      font-size: 1rem;
-      color: var(--sena-dark-blue);
-      margin-bottom: 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    /* Control Panel & Table */
-    .panel-card {
-      background-color: white;
-      padding: 1.5rem;
-      border-radius: 10px;
-      box-shadow: var(--sena-shadow);
-    }
-
-    .filters-bar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .search-box {
-      flex: 1;
-      min-width: 250px;
-    }
-
-    .filter-selects {
-      display: flex;
-      gap: 0.8rem;
-      flex-wrap: wrap;
-    }
-
-    .table-responsive {
-      overflow-x: auto;
-      border-radius: 8px;
-      border: 1px solid var(--sena-border);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.85rem;
-      text-align: left;
-    }
-
-    th {
-      background-color: var(--sena-dark-blue);
-      color: white;
-      padding: 0.8rem 1rem;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-
-    td {
-      padding: 0.8rem 1rem;
-      border-bottom: 1px solid var(--sena-border);
-      vertical-align: middle;
-      white-space: nowrap;
-    }
-
-    tr:hover {
-      background-color: #F8FAFC;
-    }
-
-    .badge {
-      padding: 0.25rem 0.6rem;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      display: inline-block;
-    }
-
-    .badge-orientacion { background-color: #EBF8FF; color: #2B6CB0; }
-    .badge-ideacion { background-color: #FEFCBF; color: #975A16; }
-    .badge-validacion { background-color: #E9D8FD; color: #6B46C1; }
-    .badge-formulacion { background-color: #C6F6D5; color: #22543D; }
-    .badge-interventoria { background-color: #FED7D7; color: #9B2C2C; }
-
-    /* Modal Styling */
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: rgba(0,0,0,0.5);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 500;
-      padding: 1rem;
-    }
-
-    .modal-content {
-      background-color: white;
-      border-radius: 12px;
-      width: 100%;
-      max-width: 900px;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    }
-
-    .modal-header {
-      padding: 1.2rem 1.5rem;
-      background-color: var(--sena-dark-blue);
-      color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-radius: 12px 12px 0 0;
-    }
-
-    .modal-body {
-      padding: 1.5rem;
-    }
-
-    .modal-footer {
-      padding: 1rem 1.5rem;
-      border-top: 1px solid var(--sena-border);
-      display: flex;
-      justify-content: flex-end;
-      gap: 1rem;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1rem;
-    }
-
-    .section-title {
-      grid-column: 1 / -1;
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--sena-dark-blue);
-      border-bottom: 2px solid var(--sena-green);
-      padding-bottom: 0.4rem;
-      margin-top: 1rem;
-      margin-bottom: 0.5rem;
-    }
-
-    /* Masked Sensitive Data */
-    .masked {
-      letter-spacing: 2px;
-      font-family: monospace;
-      color: #718096;
-    }
-  </style>
-</head>
-<body>
-
-  <!-- AUTH SCREEN -->
-  <div id="authScreen" class="auth-overlay">
-    <div class="auth-card">
-      <div style="margin-bottom: 1rem;">
-        <span class="brand-logo">SENA</span>
-      </div>
-      <h2>Ruta Emprendedora</h2>
-      <p>Regional Santander - Unidad de Emprendimiento</p>
-      
-      <div id="authAlert" style="display:none; padding:0.6rem; margin-bottom:1rem; border-radius:6px; font-size:0.85rem; background-color:#FED7D7; color:#9B2C2C;"></div>
-
-      <div class="form-group">
-        <label>Correo Institucional (@sena.edu.co)</label>
-        <input type="email" id="authEmail" class="form-control" placeholder="orientador@sena.edu.co" value="orientador@sena.edu.co">
-      </div>
-      <div class="form-group">
-        <label>Contraseña</label>
-        <input type="password" id="authPassword" class="form-control" placeholder="••••••••" value="123456">
-      </div>
-      
-      <button class="btn btn-green" style="width: 100%; justify-content: center; padding: 0.75rem;" onclick="handleLogin()">
-        <i class="fa-solid fa-right-to-bracket"></i> Iniciar Sesión
-      </button>
-
-      <div style="margin-top: 1.2rem; text-align: center;">
-        <a href="#" onclick="handleResetPassword()" style="font-size: 0.85rem; color: var(--sena-dark-blue); text-decoration: none; font-weight: 600;">
-          ¿Olvidaste tu contraseña o deseas cambiarla?
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- MAIN HEADER -->
-  <header>
-    <div class="brand">
-      <span class="brand-logo">SENA</span>
-      <div class="brand-title">
-        <h1>Sistema de Gestión - Ruta Emprendedora</h1>
-        <p>Regional Santander | 87 Municipios | 8 Centros de Formación</p>
-      </div>
-    </div>
-    <div class="user-controls">
-      <button class="btn btn-outline" id="toggleMaskBtn" onclick="toggleSensitiveData()">
-        <i class="fa-solid fa-eye-slash"></i> Datos Sensibles: Ocultos
-      </button>
-      <button class="btn btn-secondary" onclick="handleLogout()">
-        <i class="fa-solid fa-power-off"></i> Salir
-      </button>
-    </div>
-  </header>
-
-  <!-- MAIN CONTENT CONTAINER -->
-  <div class="container">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SENA - Sistema de Seguimiento Ruta Emprendedora (Regional Santander)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
-    <!-- DASHBOARD KPIS -->
-    <div class="dashboard-grid">
-      <div class="stat-card">
-        <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
-        <div class="stat-info">
-          <h3 id="kpiTotal">0</h3>
-          <p>Emprendedores Activos</p>
-        </div>
-      </div>
-      <div class="stat-card" style="border-left-color: #3182CE;">
-        <div class="stat-icon" style="background-color: rgba(49,130,206,0.1); color: #3182CE;"><i class="fa-solid fa-briefcase"></i></div>
-        <div class="stat-info">
-          <h3 id="kpiEmpleos">0</h3>
-          <p>Empleos Generados Total</p>
-        </div>
-      </div>
-      <div class="stat-card" style="border-left-color: #805AD5;">
-        <div class="stat-icon" style="background-color: rgba(128,90,213,0.1); color: #805AD5;"><i class="fa-solid fa-chart-line"></i></div>
-        <div class="stat-info">
-          <h3 id="kpiVentas">$0</h3>
-          <p>Ventas Realizadas Total</p>
-        </div>
-      </div>
-      <div class="stat-card" style="border-left-color: #DD6B20;">
-        <div class="stat-icon" style="background-color: rgba(221,107,32,0.1); color: #DD6B20;"><i class="fa-solid fa-sack-dollar"></i></div>
-        <div class="stat-info">
-          <h3 id="kpiRecursos">$0</h3>
-          <p>Recursos Ejecutados</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- CHARTS ROW -->
-    <div class="charts-grid">
-      <div class="chart-card">
-        <h3><span><i class="fa-solid fa-chart-bar"></i> Distribución por Fases de la Ruta</span></h3>
-        <canvas id="fasesChart" height="110"></canvas>
-      </div>
-      <div class="chart-card">
-        <h3><span><i class="fa-solid fa-chart-pie"></i> Centros Comunitarios</span></h3>
-        <canvas id="centrosChart" height="220"></canvas>
-      </div>
-    </div>
-
-    <!-- PANEL TABLE CARD -->
-    <div class="panel-card">
-      <div class="filters-bar">
-        <div class="search-box">
-          <input type="text" id="searchInput" class="form-control" placeholder="🔍 Buscar por nombre, cédula o emprendimiento..." oninput="renderTable()">
-        </div>
-        <div class="filter-selects">
-          <select id="filterCentro" class="form-control" onchange="renderTable()">
-            <option value="">Todos los Centros (8)</option>
-            <option>Centro de Servicios Empresariales y Turísticos (Bucaramanga)</option>
-            <option>Centro Industrial de Mantenimiento Integral (Girón)</option>
-            <option>Centro Industrial del Diseño y la Manufactura (Floridablanca)</option>
-            <option>Centro de Atención al Sector Agropecuario (Piedecuesta)</option>
-            <option>Centro Industrial y del Desarrollo Tecnológico (Barrancabermeja)</option>
-            <option>Centro de Gestión Agroempresarial del Oriente (Vélez)</option>
-            <option>Centro Agroturístico (San Gil)</option>
-            <option>Centro Agroempresarial y Turístico de los Andes (Málaga)</option>
-          </select>
-          <select id="filterMunicipio" class="form-control" onchange="renderTable()">
-            <option value="">Todos los Municipios (87)</option>
-          </select>
-          <select id="filterFase" class="form-control" onchange="renderTable()">
-            <option value="">Todas las Fases</option>
-            <option value="Orientación">Orientación</option>
-            <option value="Ideación">Ideación</option>
-            <option value="Validación">Validación</option>
-            <option value="Formulación">Formulación</option>
-            <option value="Interventoría/Puesta en Marcha">Interventoría / Puesta en Marcha</option>
-          </select>
-          <button class="btn btn-green" onclick="openModal('nuevo')">
-            <i class="fa-solid fa-plus"></i> Nuevo Registro
-          </button>
-          <button class="btn btn-secondary" onclick="exportCSV()">
-            <i class="fa-solid fa-file-excel"></i> Exportar (79 Campos)
-          </button>
-        </div>
-      </div>
-
-      <div class="table-responsive">
-        <table>
-          <thead>
-            <tr>
-              <th>ID / Emprendedor</th>
-              <th>Emprendimiento</th>
-              <th>Centro Comunitario</th>
-              <th>Municipio</th>
-              <th>Fase Actual</th>
-              <th>Empleos (Proy / Gen)</th>
-              <th>Ventas (Proy / Real)</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="tableBody">
-            <!-- Dynamic rows will be inserted here -->
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL EDIT/NEW -->
-  <div id="recordModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 id="modalTitle">Registro de Emprendedor en Ruta</h3>
-        <button onclick="closeModal()" style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="modal-body">
-        <form id="recordForm">
-          <div class="form-grid">
-            <div class="section-title">1. Datos Básicos del Emprendedor (Habeas Data)</div>
-            
-            <div class="form-group">
-              <label>Nombre Completo *</label>
-              <input type="text" id="nombre" class="form-control" required>
-            </div>
-            <div class="form-group">
-              <label>Cédula *</label>
-              <input type="text" id="cedula" class="form-control" required>
-            </div>
-            <div class="form-group">
-              <label>Número Telefónico *</label>
-              <input type="text" id="telefono" class="form-control" required>
-            </div>
-            <div class="form-group">
-              <label>Nombre del Emprendimiento *</label>
-              <input type="text" id="emprendimiento" class="form-control" required>
-            </div>
-            <div class="form-group">
-              <label>Sector Económico</label>
-              <select id="sector" class="form-control">
-                <option>Agroindustrial</option>
-                <option>Comercio y Servicios</option>
-                <option>Manufactura y Artesanías</option>
-                <option>Tecnología e Innovación</option>
-                <option>Turismo y Gastronomía</option>
-              </select>
-            </div>
-
-            <div class="section-title">2. Ubicación y Centro Comunitario</div>
-
-            <div class="form-group">
-              <label>Centro de Emprendimiento Comunitario *</label>
-              <select id="centro" class="form-control" required>
-                <option value="">Seleccione Centro...</option>
-                <option>Centro de Servicios Empresariales y Turísticos (Bucaramanga)</option>
-                <option>Centro Industrial de Mantenimiento Integral (Girón)</option>
-                <option>Centro Industrial del Diseño y la Manufactura (Floridablanca)</option>
-                <option>Centro de Atención al Sector Agropecuario (Piedecuesta)</option>
-                <option>Centro Industrial y del Desarrollo Tecnológico (Barrancabermeja)</option>
-                <option>Centro de Gestión Agroempresarial del Oriente (Vélez)</option>
-                <option>Centro Agroturístico (San Gil)</option>
-                <option>Centro Agroempresarial y Turístico de los Andes (Málaga)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Municipio de Santander *</label>
-              <select id="municipio" class="form-control" required>
-                <!-- Populated JS -->
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Fase de Avance Actual</label>
-              <select id="fase" class="form-control">
-                <option>Orientación</option>
-                <option>Ideación</option>
-                <option>Validación</option>
-                <option>Formulación</option>
-                <option>Interventoría/Puesta en Marcha</option>
-              </select>
-            </div>
-
-            <div class="section-title">3. Indicadores de Puesta en Marcha y Gestión</div>
-
-            <div class="form-group">
-              <label>Fecha Inicio Puesta en Marcha</label>
-              <input type="date" id="fechaInicioPuesta" class="form-control">
-            </div>
-            <div class="form-group">
-              <label>Fecha Final Puesta en Marcha</label>
-              <input type="date" id="fechaFinPuesta" class="form-control">
-            </div>
-            <div class="form-group">
-              <label>Empleos Proyectados</label>
-              <input type="number" id="empleosProyectados" class="form-control" value="0">
-            </div>
-            <div class="form-group">
-              <label>Empleos Generados Real</label>
-              <input type="number" id="empleosGenerados" class="form-control" value="0">
-            </div>
-            <div class="form-group">
-              <label>Ventas Proyectadas ($)</label>
-              <input type="number" id="ventasProyectadas" class="form-control" value="0">
-            </div>
-            <div class="form-group">
-              <label>Ventas Realizadas ($)</label>
-              <input type="number" id="ventasRealizadas" class="form-control" value="0">
-            </div>
-            <div class="form-group">
-              <label>Contrapartidas Proyectadas</label>
-              <input type="number" id="contrapartidasProyectadas" class="form-control" value="0">
-            </div>
-            <div class="form-group">
-              <label>Contrapartidas Ejecutadas</label>
-              <input type="number" id="contrapartidasEjecutadas" class="form-control" value="0">
-            </div>
-            <div class="form-group">
-              <label>Eventos Mercadeo Proyectados</label>
-              <input type="number" id="eventosMercadeoProyectados" class="form-control" value="0">
-            </div>
-            <div class="form-group">
-              <label>Eventos Mercadeo Ejecutados</label>
-              <input type="number" id="eventosMercadeoEjecutados" class="form-control" value="0">
-            </div>
-            <div class="form-group">
-              <label>Eventos Comercialización Proyectados</label>
-              <input type="number" id="eventosComercializacionProyectados" class="form-control" value="0">
-            </div>
-            <div class="form-group">
-              <label>Eventos Comercialización Ejecutados</label>
-              <input type="number" id="eventosComercializacionEjecutados" class="form-control" value="0">
-            </div>
-            <div class="form-group">
-              <label>Recursos Ejecutados ($)</label>
-              <input type="number" id="recursosEjecutados" class="form-control" value="0">
-            </div>
-            <div class="form-group">
-              <label>N° Actas Seguimiento Técnico Operativo</label>
-              <input type="number" id="numActasSeguimiento" class="form-control" value="0">
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
-        <button class="btn btn-green" onclick="saveRecord()">Guardar Registro</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- SCRIPT & APPLICATION LOGIC -->
-  <script>
-    // 87 Santander Municipalities
-    const santanderMunicipios = [
-      "Aguada", "Albania", "Aratoca", "Barbosa", "Barichara", "Barrancabermeja", "Betulia", "Bolívar", 
-      "Bucaramanga", "Cabrera", "California", "Capitanejo", "Carcasí", "Cepitá", "Cerrito", "Charalá", 
-      "Charta", "Chima", "Chipatá", "Cimitarra", "Concepción", "Confines", "Contratación", "Coromoro", 
-      "Curití", "El Carmen de Chucurí", "El Guacamayo", "El Peñón", "El Playón", "Encino", "Enciso", 
-      "Floridablanca", "Florián", "Galán", "Gámbita", "Girón", "Guaca", "Guadalupe", "Guapotá", 
-      "Guavatá", "Güepsa", "Hato", "Jesús María", "Jordán", "La Belleza", "La Paz", "Landázuri", 
-      "Lebrija", "Los Santos", "Macaravita", "Málaga", "Matanza", "Mogotes", "Molagavita", "Ocamonte", 
-      "Oiba", "Onzaga", "Palmar", "Palmas del Socorro", "Páramo", "Piedecuesta", "Pinchote", 
-      "Puente Nacional", "Puerto Parra", "Puerto Wilches", "Rionegro", "Sabana de Torres", "San Andrés", 
-      "San Benito", "San Gil", "San Joaquín", "San José de Miranda", "San Miguel", "San Vicente de Chucurí", 
-      "Santa Bárbara", "Santa Helena del Opón", "Simacota", "Socorro", "Suaita", "Sucre", "Suratá", 
-      "Tona", "Valle de San José", "Vélez", "Vetas", "Zapatoca"
-    ];
-
-    // Initial Mock Data with full 79 fields structure
-    let emprendedoresData = [
-      {
-        id: "1098654321",
-        nombre: "María Fernanda Suárez",
-        cedula: "1098654321",
-        telefono: "3158901234",
-        emprendimiento: "Café Don Antonio",
-        sector: "Agroindustrial",
-        centro: "Centro Agroempresarial y Turístico de los Andes (Málaga)",
-        municipio: "Málaga",
-        fase: "Interventoría/Puesta en Marcha",
-        fechaInicioPuesta: "2025-02-15",
-        fechaFinPuesta: "2026-02-15",
-        empleosProyectados: 3,
-        empleosGenerados: 4,
-        ventasProyectadas: 45000000,
-        ventasRealizadas: 52000000,
-        contrapartidasProyectadas: 2,
-        contrapartidasEjecutadas: 2,
-        eventosMercadeoProyectados: 4,
-        eventosMercadeoEjecutados: 3,
-        eventosComercializacionProyectados: 2,
-        eventosComercializacionEjecutados: 2,
-        recursosEjecutados: 85000000,
-        numActasSeguimiento: 4
-      },
-      {
-        id: "1095789123",
-        nombre: "Carlos Eduardo Gómez",
-        cedula: "1095789123",
-        telefono: "3174567890",
-        emprendimiento: "Calzado Santander Craft",
-        sector: "Manufactura y Artesanías",
-        centro: "Centro Industrial del Diseño y la Manufactura (Floridablanca)",
-        municipio: "Floridablanca",
-        fase: "Formulación",
-        fechaInicioPuesta: "",
-        fechaFinPuesta: "",
-        empleosProyectados: 2,
-        empleosGenerados: 0,
-        ventasProyectadas: 30000000,
-        ventasRealizadas: 0,
-        contrapartidasProyectadas: 1,
-        contrapartidasEjecutadas: 0,
-        eventosMercadeoProyectados: 2,
-        eventosMercadeoEjecutados: 0,
-        eventosComercializacionProyectados: 1,
-        eventosComercializacionEjecutados: 0,
-        recursosEjecutados: 0,
-        numActasSeguimiento: 0
-      }
-    ];
-
-    let isMasked = true;
-    let editingId = null;
-    let fasesChartObj = null;
-    let centrosChartObj = null;
-
-    // DOM Ready Initialization
-    document.addEventListener("DOMContentLoaded", () => {
-      populateMunicipiosSelects();
-      renderTable();
-      renderCharts();
-    });
-
-    function populateMunicipiosSelects() {
-      const filterMun = document.getElementById("filterMunicipio");
-      const modalMun = document.getElementById("municipio");
-
-      santanderMunicipios.forEach(m => {
-        filterMun.innerHTML += `<option value="${m}">${m}</option>`;
-        modalMun.innerHTML += `<option value="${m}">${m}</option>`;
-      });
-    }
-
-    // Auth Simulation & Password Reset
-    function handleLogin() {
-      const email = document.getElementById("authEmail").value;
-      if (email.endsWith("@sena.edu.co")) {
-        document.getElementById("authScreen").style.display = "none";
-      } else {
-        const alertBox = document.getElementById("authAlert");
-        alertBox.style.display = "block";
-        alertBox.innerText = "Acceso denegado. Debe ingresar un correo institucional @sena.edu.co";
-      }
-    }
-
-    function handleResetPassword() {
-      const email = prompt("Ingrese su correo institucional (@sena.edu.co) para enviarle el enlace de restablecimiento:");
-      if (email && email.endsWith("@sena.edu.co")) {
-        alert(`Se ha enviado un correo de restablecimiento de contraseña a: ${email}`);
-      } else if (email) {
-        alert("El correo ingresado no pertenece al dominio @sena.edu.co");
-      }
-    }
-
-    function handleLogout() {
-      document.getElementById("authScreen").style.display = "flex";
-    }
-
-    function toggleSensitiveData() {
-      isMasked = !isMasked;
-      const btn = document.getElementById("toggleMaskBtn");
-      if (isMasked) {
-        btn.innerHTML = `<i class="fa-solid fa-eye-slash"></i> Datos Sensibles: Ocultos`;
-      } else {
-        btn.innerHTML = `<i class="fa-solid fa-eye"></i> Datos Sensibles: Visibles`;
-      }
-      renderTable();
-    }
-
-    function renderTable() {
-      const tbody = document.getElementById("tableBody");
-      const search = document.getElementById("searchInput").value.toLowerCase();
-      const centroFilter = document.getElementById("filterCentro").value;
-      const muniFilter = document.getElementById("filterMunicipio").value;
-      const faseFilter = document.getElementById("filterFase").value;
-
-      tbody.innerHTML = "";
-
-      let filtered = emprendedoresData.filter(item => {
-        const matchSearch = item.nombre.toLowerCase().includes(search) || 
-                            item.cedula.includes(search) || 
-                            item.emprendimiento.toLowerCase().includes(search);
-        const matchCentro = !centroFilter || item.centro === centroFilter;
-        const matchMuni = !muniFilter || item.municipio === muniFilter;
-        const matchFase = !faseFilter || item.fase.includes(faseFilter);
-
-        return matchSearch && matchCentro && matchMuni && matchFase;
-      });
-
-      let totalEmpleos = 0;
-      let totalVentas = 0;
-      let totalRecursos = 0;
-
-      filtered.forEach(item => {
-        totalEmpleos += Number(item.empleosGenerados || 0);
-        totalVentas += Number(item.ventasRealizadas || 0);
-        totalRecursos += Number(item.recursosEjecutados || 0);
-
-        const displayName = isMasked ? "••••••••••••" : item.nombre;
-        const displayCedula = isMasked ? "••••••••" : item.cedula;
-        const displayEmprendimiento = isMasked ? "••••••••••••" : item.emprendimiento;
-
-        let badgeClass = "badge-orientacion";
-        if(item.fase.includes("Ideación")) badgeClass = "badge-ideacion";
-        if(item.fase.includes("Validación")) badgeClass = "badge-validacion";
-        if(item.fase.includes("Formulación")) badgeClass = "badge-formulacion";
-        if(item.fase.includes("Interventoría")) badgeClass = "badge-interventoria";
-
-        tbody.innerHTML += `
-          <tr>
-            <td>
-              <strong>${displayCedula}</strong><br>
-              <small>${displayName}</small>
-            </td>
-            <td><strong>${displayEmprendimiento}</strong><br><small>${item.sector}</small></td>
-            <td><small>${item.centro}</small></td>
-            <td>${item.municipio}</td>
-            <td><span class="badge ${badgeClass}">${item.fase}</span></td>
-            <td>${item.empleosProyectados} / <strong>${item.empleosGenerados}</strong></td>
-            <td>$${Number(item.ventasProyectadas).toLocaleString()} / <strong>$${Number(item.ventasRealizadas).toLocaleString()}</strong></td>
-            <td>
-              <button class="btn btn-secondary" style="padding:0.3rem 0.6rem; font-size:0.8rem;" onclick="openModal('edit', '${item.id}')">
-                <i class="fa-solid fa-pen-to-square"></i>
-              </button>
-            </td>
-          </tr>
-        `;
-      });
-
-      // Update KPIs
-      document.getElementById("kpiTotal").innerText = filtered.length;
-      document.getElementById("kpiEmpleos").innerText = totalEmpleos;
-      document.getElementById("kpiVentas").innerText = "$" + totalVentas.toLocaleString();
-      document.getElementById("kpiRecursos").innerText = "$" + totalRecursos.toLocaleString();
-
-      updateChartsData();
-    }
-
-    function openModal(mode, id = null) {
-      editingId = id;
-      const modal = document.getElementById("recordModal");
-      const form = document.getElementById("recordForm");
-
-      if (mode === 'nuevo') {
-        document.getElementById("modalTitle").innerText = "Nuevo Registro en Ruta Emprendedora";
-        form.reset();
-        editingId = null;
-      } else {
-        document.getElementById("modalTitle").innerText = "Editar Registro de Emprendimiento";
-        const item = emprendedoresData.find(x => x.id === id);
-        if (item) {
-          document.getElementById("nombre").value = item.nombre;
-          document.getElementById("cedula").value = item.cedula;
-          document.getElementById("telefono").value = item.telefono;
-          document.getElementById("emprendimiento").value = item.emprendimiento;
-          document.getElementById("sector").value = item.sector;
-          document.getElementById("centro").value = item.centro;
-          document.getElementById("municipio").value = item.municipio;
-          document.getElementById("fase").value = item.fase;
-          document.getElementById("fechaInicioPuesta").value = item.fechaInicioPuesta;
-          document.getElementById("fechaFinPuesta").value = item.fechaFinPuesta;
-          document.getElementById("empleosProyectados").value = item.empleosProyectados;
-          document.getElementById("empleosGenerados").value = item.empleosGenerados;
-          document.getElementById("ventasProyectadas").value = item.ventasProyectadas;
-          document.getElementById("ventasRealizadas").value = item.ventasRealizadas;
-          document.getElementById("contrapartidasProyectadas").value = item.contrapartidasProyectadas;
-          document.getElementById("contrapartidasEjecutadas").value = item.contrapartidasEjecutadas;
-          document.getElementById("eventosMercadeoProyectados").value = item.eventosMercadeoProyectados;
-          document.getElementById("eventosMercadeoEjecutados").value = item.eventosMercadeoEjecutados;
-          document.getElementById("eventosComercializacionProyectados").value = item.eventosComercializacionProyectados;
-          document.getElementById("eventosComercializacionEjecutados").value = item.eventosComercializacionEjecutados;
-          document.getElementById("recursosEjecutados").value = item.recursosEjecutados;
-          document.getElementById("numActasSeguimiento").value = item.numActasSeguimiento;
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sena: {
+                            green: '#39A900',
+                            greenHover: '#2e8700',
+                            navy: '#00324D',
+                            navyLight: '#004b73',
+                            grayBg: '#F4F6F8',
+                            accent: '#FF6B00'
+                        }
+                    }
+                }
+            }
         }
-      }
-      modal.style.display = "flex";
-    }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&display=swap');
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background-color: #F4F6F8;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { background-color: white; }
+            .print-container { width: 100%; margin: 0; padding: 0; box-shadow: none; }
+        }
+    </style>
+</head>
+<body class="text-slate-800 flex h-screen overflow-hidden">
 
-    function closeModal() {
-      document.getElementById("recordModal").style.display = "none";
-    }
+    <!-- ================= LOGO VECTORIAL SVG SENA | FONDO EMPRENDER ================= -->
+    <svg class="hidden">
+        <defs>
+            <!-- Logo Versión Fondo Claro (Login / Topbar Light / Reportes) -->
+            <g id="sena-fondo-emprender-logo">
+                <g transform="translate(0, 0)">
+                    <circle cx="28" cy="10" r="7" fill="#39A900" />
+                    <text x="28" y="27" font-family="'Work Sans', sans-serif" font-weight="900" font-size="12" fill="#39A900" text-anchor="middle" letter-spacing="1">SENA</text>
+                    <path d="M 28 30 L 12 55 L 18 55 L 28 38 L 38 55 L 44 55 Z" fill="#39A900" />
+                    <path d="M 28 38 L 8 52 L 8 57 L 14 57 L 28 46 L 42 57 L 48 57 L 48 52 Z" fill="#39A900" />
+                </g>
+                <line x1="62" y1="5" x2="62" y2="55" stroke="#94A3B8" stroke-width="2.5" stroke-linecap="round" />
+                <g transform="translate(74, 5)">
+                    <path d="M 12 6 C 25 2, 45 3, 58 12 C 40 10, 25 12, 12 18 Z" fill="#182C53" />
+                    <path d="M 4 21 C 20 17, 45 18, 58 27 C 40 24, 20 26, 4 33 Z" fill="#80C226" />
+                    <path d="M 22 36 C 34 33, 48 35, 58 42 C 45 39, 32 40, 22 45 Z" fill="#69C1E2" />
+                    <text x="70" y="20" font-family="'Work Sans', sans-serif" font-weight="700" font-style="italic" font-size="17" fill="#69C1E2" letter-spacing="1">FONDO</text>
+                    <text x="70" y="42" font-family="'Work Sans', sans-serif" font-weight="900" font-style="italic" font-size="22" fill="#182C53" letter-spacing="0.5">EMPRENDER</text>
+                </g>
+            </g>
 
-    function saveRecord() {
-      const record = {
-        id: editingId || document.getElementById("cedula").value,
-        nombre: document.getElementById("nombre").value,
-        cedula: document.getElementById("cedula").value,
-        telefono: document.getElementById("telefono").value,
-        emprendimiento: document.getElementById("emprendimiento").value,
-        sector: document.getElementById("sector").value,
-        centro: document.getElementById("centro").value,
-        municipio: document.getElementById("municipio").value,
-        fase: document.getElementById("fase").value,
-        fechaInicioPuesta: document.getElementById("fechaInicioPuesta").value,
-        fechaFinPuesta: document.getElementById("fechaFinPuesta").value,
-        empleosProyectados: document.getElementById("empleosProyectados").value,
-        empleosGenerados: document.getElementById("empleosGenerados").value,
-        ventasProyectadas: document.getElementById("ventasProyectadas").value,
-        ventasRealizadas: document.getElementById("ventasRealizadas").value,
-        contrapartidasProyectadas: document.getElementById("contrapartidasProyectadas").value,
-        contrapartidasEjecutadas: document.getElementById("contrapartidasEjecutadas").value,
-        eventosMercadeoProyectados: document.getElementById("eventosMercadeoProyectados").value,
-        eventosMercadeoEjecutados: document.getElementById("eventosMercadeoEjecutados").value,
-        eventosComercializacionProyectados: document.getElementById("eventosComercializacionProyectados").value,
-        eventosComercializacionEjecutados: document.getElementById("eventosComercializacionEjecutados").value,
-        recursosEjecutados: document.getElementById("recursosEjecutados").value,
-        numActasSeguimiento: document.getElementById("numActasSeguimiento").value
-      };
+            <!-- Logo Versión Fondo Oscuro (Sidebar Navy) -->
+            <g id="sena-fondo-emprender-logo-white">
+                <g transform="translate(0, 0)">
+                    <circle cx="28" cy="10" r="7" fill="#39A900" />
+                    <text x="28" y="27" font-family="'Work Sans', sans-serif" font-weight="900" font-size="12" fill="#39A900" text-anchor="middle" letter-spacing="1">SENA</text>
+                    <path d="M 28 30 L 12 55 L 18 55 L 28 38 L 38 55 L 44 55 Z" fill="#39A900" />
+                    <path d="M 28 38 L 8 52 L 8 57 L 14 57 L 28 46 L 42 57 L 48 57 L 48 52 Z" fill="#39A900" />
+                </g>
+                <line x1="62" y1="5" x2="62" y2="55" stroke="#475569" stroke-width="2.5" stroke-linecap="round" />
+                <g transform="translate(74, 5)">
+                    <path d="M 12 6 C 25 2, 45 3, 58 12 C 40 10, 25 12, 12 18 Z" fill="#FFFFFF" />
+                    <path d="M 4 21 C 20 17, 45 18, 58 27 C 40 24, 20 26, 4 33 Z" fill="#80C226" />
+                    <path d="M 22 36 C 34 33, 48 35, 58 42 C 45 39, 32 40, 22 45 Z" fill="#69C1E2" />
+                    <text x="70" y="20" font-family="'Work Sans', sans-serif" font-weight="700" font-style="italic" font-size="17" fill="#69C1E2" letter-spacing="1">FONDO</text>
+                    <text x="70" y="42" font-family="'Work Sans', sans-serif" font-weight="900" font-style="italic" font-size="22" fill="#FFFFFF" letter-spacing="0.5">EMPRENDER</text>
+                </g>
+            </g>
+        </defs>
+    </svg>
 
-      if (!record.nombre || !record.cedula || !record.centro || !record.municipio) {
-        alert("Por favor complete los campos obligatorios (*) del formulario.");
-        return;
-      }
+    <!-- ================= PANTALLA LOGIN CON FIREBASE AUTH (@sena.edu.co) ================= -->
+    <div id="loginScreen" class="fixed inset-0 bg-sena-navy z-50 flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl p-6 md:p-8 space-y-5 relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-2 bg-sena-green"></div>
 
-      if (editingId) {
-        const index = emprendedoresData.findIndex(x => x.id === editingId);
-        if (index !== -1) emprendedoresData[index] = record;
-      } else {
-        emprendedoresData.push(record);
-      }
+            <div class="text-center space-y-2">
+                <div class="flex justify-center items-center py-2">
+                    <svg class="w-64 h-16">
+                        <use href="#sena-fondo-emprender-logo"></use>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold text-sena-navy">Acceso Institucional</h2>
+                    <p class="text-xs text-sena-green font-bold uppercase tracking-wider">Regional Santander • Unidad de Emprendimiento</p>
+                </div>
+            </div>
 
-      closeModal();
-      renderTable();
-    }
+            <div class="p-3 bg-red-50 border border-red-200 rounded-xl text-[11px] text-red-800 flex items-start gap-2">
+                <i class="fa-solid fa-user-shield text-red-600 text-sm mt-0.5"></i>
+                <div>
+                    <strong>Protección de Datos Personales (Ley 1581 de 2012):</strong> Plataforma restringida para profesionales y orientadores de emprendimiento SENA. Autenticación con correo corporativo @sena.edu.co.
+                </div>
+            </div>
 
-    function exportCSV() {
-      let csv = "ID,Nombre,Cedula,Telefono,Emprendimiento,Sector,Centro,Municipio,Fase,FechaInicioPuesta,FechaFinPuesta,EmpleosProyectados,EmpleosGenerados,VentasProyectadas,VentasRealizadas,ContrapartidasProyectadas,ContrapartidasEjecutadas,EventosMercadeoProyectados,EventosMercadeoEjecutados,EventosComercializacionProyectados,EventosComercializacionEjecutados,RecursosEjecutados,NumActasSeguimiento\n";
-      
-      emprendedoresData.forEach(item => {
-        csv += `"${item.id}","${item.nombre}","${item.cedula}","${item.telefono}","${item.emprendimiento}","${item.sector}","${item.centro}","${item.municipio}","${item.fase}","${item.fechaInicioPuesta}","${item.fechaFinPuesta}","${item.empleosProyectados}","${item.empleosGenerados}","${item.ventasProyectadas}","${item.ventasRealizadas}","${item.contrapartidasProyectadas}","${item.contrapartidasEjecutadas}","${item.eventosMercadeoProyectados}","${item.eventosMercadeoEjecutados}","${item.eventosComercializacionProyectados}","${item.eventosComercializacionEjecutados}","${item.recursosEjecutados}","${item.numActasSeguimiento}"\n`;
-      });
+            <form id="loginForm" onsubmit="handleLoginSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Correo Electrónico Institucional *</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                        <input type="email" id="loginEmail" required placeholder="usuario@sena.edu.co" class="w-full pl-9 pr-3 py-2 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-sena-green focus:outline-none">
+                    </div>
+                    <p class="text-[10px] text-slate-400 mt-1">Debe pertenecer al dominio institucional @sena.edu.co</p>
+                </div>
 
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.setAttribute("download", `Ruta_Emprendedora_SENA_Santander_${new Date().toISOString().slice(0,10)}.csv`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="block text-xs font-semibold text-slate-700">Contraseña de Acceso *</label>
+                        <button type="button" onclick="handleResetPasswordPrompt()" class="text-[11px] font-semibold text-sena-green hover:underline">
+                            ¿Olvidaste o deseas cambiar tu contraseña?
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <i class="fa-solid fa-key absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                        <input type="password" id="loginPassword" required placeholder="••••••••" class="w-full pl-9 pr-3 py-2 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-sena-green focus:outline-none">
+                    </div>
+                </div>
 
-    function renderCharts() {
-      const ctxFases = document.getElementById('fasesChart').getContext('2d');
-      fasesChartObj = new Chart(ctxFases, {
-        type: 'bar',
-        data: {
-          labels: ['Orientación', 'Ideación', 'Validación', 'Formulación', 'Interventoría'],
-          datasets: [{
-            label: 'Cantidad de Emprendedores',
-            data: [0, 0, 0, 0, 0],
-            backgroundColor: '#39A900'
-          }]
-        },
-        options: { responsive: true, plugins: { legend: { display: false } } }
-      });
+                <div id="loginError" class="hidden p-2.5 bg-red-50 border border-red-300 rounded-xl text-xs text-red-800 font-medium"></div>
+                <div id="loginSuccess" class="hidden p-2.5 bg-emerald-50 border border-emerald-300 rounded-xl text-xs text-emerald-800 font-medium"></div>
 
-      const ctxCentros = document.getElementById('centrosChart').getContext('2d');
-      centrosChartObj = new Chart(ctxCentros, {
-        type: 'doughnut',
-        data: {
-          labels: ['Bucaramanga', 'Girón', 'Floridablanca', 'Piedecuesta', 'Barrancabermeja', 'Vélez', 'San Gil', 'Málaga'],
-          datasets: [{
-            data: [0, 0, 0, 0, 0, 0, 0, 0],
-            backgroundColor: ['#00324D', '#39A900', '#3182CE', '#805AD5', '#DD6B20', '#319795', '#D69E2E', '#E53E3E']
-          }]
-        },
-        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
-      });
-    }
+                <button type="submit" id="btnLoginSubmit" class="w-full py-2.5 bg-sena-green hover:bg-sena-greenHover text-white text-xs font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-right-to-bracket"></i> Iniciar Sesión Segura
+                </button>
+            </form>
 
-    function updateChartsData() {
-      if (!fasesChartObj || !centrosChartObj) return;
+            <div class="text-center text-[10px] text-slate-400 border-t pt-3">
+                Dirección de Empleo, Trabajo y Emprendimiento &copy; SENA 2026
+            </div>
+        </div>
+    </div>
 
-      const fasesCounts = [0, 0, 0, 0, 0];
-      emprendedoresData.forEach(item => {
-        if (item.fase.includes("Orientación")) fasesCounts[0]++;
-        else if (item.fase.includes("Ideación")) fasesCounts[1]++;
-        else if (item.fase.includes("Validación")) fasesCounts[2]++;
-        else if (item.fase.includes("Formulación")) fasesCounts[3]++;
-        else if (item.fase.includes("Interventoría")) fasesCounts[4]++;
-      });
+    <!-- ================= SIDEBAR NAUTICO SENA ================= -->
+    <aside id="sidebar" class="w-64 bg-sena-navy text-white flex flex-col justify-between transition-all duration-300 z-30 fixed inset-y-0 left-0 md:relative md:translate-x-0 -translate-x-full">
+        <div>
+            <div class="p-4 border-b border-sena-navyLight flex flex-col items-center justify-center text-center gap-2">
+                <svg class="w-56 h-14">
+                    <use href="#sena-fondo-emprender-logo-white"></use>
+                </svg>
+                <div class="w-full pt-1 border-t border-slate-700/50">
+                    <p class="text-[11px] text-sena-green font-bold uppercase tracking-wider">Regional Santander</p>
+                    <p class="text-[10px] text-slate-300">Unidad de Emprendimiento</p>
+                </div>
+            </div>
 
-      fasesChartObj.data.datasets[0].data = fasesCounts;
-      fasesChartObj.update();
+            <nav class="mt-6 px-3 space-y-1">
+                <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-item w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl text-white bg-sena-green shadow-sm transition">
+                    <i class="fa-solid fa-chart-pie w-5 text-center"></i>
+                    <span>Dashboard General</span>
+                </button>
+                <button onclick="switchTab('emprendedores')" id="nav-emprendedores" class="nav-item w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl text-slate-300 hover:bg-sena-navyLight hover:text-white transition">
+                    <i class="fa-solid fa-users w-5 text-center"></i>
+                    <span>Directorio y Ruta</span>
+                </button>
+                <button onclick="switchTab('nuevo')" id="nav-nuevo" class="nav-item w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl text-slate-300 hover:bg-sena-navyLight hover:text-white transition">
+                    <i class="fa-solid fa-user-plus w-5 text-center"></i>
+                    <span>Registrar Emprendedor</span>
+                </button>
+                <button onclick="switchTab('reportes')" id="nav-reportes" class="nav-item w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl text-slate-300 hover:bg-sena-navyLight hover:text-white transition">
+                    <i class="fa-solid fa-file-invoice w-5 text-center"></i>
+                    <span>Centro de Reportes</span>
+                </button>
+            </nav>
+        </div>
 
-      const centrosCounts = [0,0,0,0,0,0,0,0];
-      emprendedoresData.forEach(item => {
-        if (item.centro.includes("Bucaramanga")) centrosCounts[0]++;
-        else if (item.centro.includes("Girón")) centrosCounts[1]++;
-        else if (item.centro.includes("Floridablanca")) centrosCounts[2]++;
-        else if (item.centro.includes("Piedecuesta")) centrosCounts[3]++;
-        else if (item.centro.includes("Barrancabermeja")) centrosCounts[4]++;
-        else if (item.centro.includes("Vélez")) centrosCounts[5]++;
-        else if (item.centro.includes("San Gil")) centrosCounts[6]++;
-        else if (item.centro.includes("Málaga")) centrosCounts[7]++;
-      });
+        <div class="p-4 border-t border-sena-navyLight text-xs text-slate-400 space-y-1">
+            <div class="flex items-center gap-2">
+                <div id="firebaseStatusDot" class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></div>
+                <span id="firebaseStatusText" class="text-slate-200 font-medium">Conectando Firebase...</span>
+            </div>
+            <p class="text-[10px] text-slate-400">SISTEMA FONDO EMPRENDER v3.6</p>
+        </div>
+    </aside>
 
-      centrosChartObj.data.datasets[0].data = centrosCounts;
-      centrosChartObj.update();
-    }
-  </script>
+    <!-- ================= CONTENIDO PRINCIPAL ================= -->
+    <div class="flex-1 flex flex-col h-screen overflow-hidden">
+
+        <!-- BARRA SUPERIOR (HEADER) -->
+        <header class="bg-white border-b border-slate-200 px-6 py-3 flex items-center justify-between no-print shadow-sm">
+            <div class="flex items-center gap-4">
+                <button id="sidebarToggle" onclick="toggleSidebar()" class="md:hidden text-slate-600 hover:text-sena-navy focus:outline-none">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+                <div>
+                    <h2 id="pageTitle" class="text-lg font-bold text-sena-navy">Dashboard de Impacto y Gestión</h2>
+                    <p class="text-xs text-slate-500 flex items-center gap-2">
+                        <span class="font-semibold text-sena-green">Regional Santander</span>
+                        <span>•</span>
+                        <span>Unidad de Emprendimiento</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <!-- BOTÓN SENSITIVE DATA ENMASCARAMIENTO -->
+                <button onclick="toggleMaskSensitiveData()" id="btnMaskData" class="bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-2 shadow-sm transition">
+                    <i class="fa-solid fa-eye-slash text-amber-700" id="maskIcon"></i>
+                    <span id="maskBtnText" class="hidden sm:inline">Datos Sensibles: Ocultos</span>
+                </button>
+
+                <div class="hidden sm:flex items-center gap-2 bg-sena-grayBg px-3 py-1.5 rounded-full border border-slate-200">
+                    <i class="fa-solid fa-user-check text-sena-green"></i>
+                    <span id="userBadge" class="text-xs font-semibold text-slate-700">orientador@sena.edu.co</span>
+                </div>
+
+                <!-- CAMBIAR CONTRASEÑA EN PANEL INTERNO -->
+                <button onclick="handleResetPasswordCurrent()" title="Cambiar Contraseña" class="bg-blue-50 hover:bg-blue-100 text-blue-700 px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1 border border-blue-200 transition">
+                    <i class="fa-solid fa-key"></i>
+                    <span class="hidden md:inline">Cambiar Clave</span>
+                </button>
+
+                <button onclick="handleLogout()" title="Cerrar Sesión" class="bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1 border border-red-200 transition">
+                    <i class="fa-solid fa-power-off"></i>
+                </button>
+
+                <button onclick="exportDataToCSV()" class="bg-sena-navy hover:bg-sena-navyLight text-white px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-2 shadow-sm transition">
+                    <i class="fa-solid fa-file-excel text-emerald-400"></i>
+                    <span class="hidden sm:inline">Exportar Excel (66 campos)</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- MAIN SCROLLABLE CONTAINER -->
+        <main class="flex-1 overflow-y-auto p-4 md:p-6 bg-slate-50">
+
+            <!-- AVISO HABEAS DATA -->
+            <div class="mb-4 bg-emerald-50 border border-emerald-200 p-3 rounded-xl flex items-center justify-between text-xs text-emerald-900">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-shield-halved text-sena-green text-base"></i>
+                    <span><strong>Entorno Seguro SENA (Habeas Data):</strong> Cédulas, Teléfonos, Nombres y Proyectos protegidos por Ley 1581 de 2012 y sincronizados con Firebase Authentication y Realtime Database.</span>
+                </div>
+            </div>
+
+            <!-- ================= TAB 1: DASHBOARD ================= -->
+            <section id="tab-dashboard" class="space-y-6">
+
+                <!-- TARJETAS KPI -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between hover:border-sena-green transition">
+                        <div class="flex justify-between items-center text-slate-500 mb-2">
+                            <span class="text-xs font-semibold uppercase tracking-wider">Total Emprendedores</span>
+                            <i class="fa-solid fa-users text-sena-navy"></i>
+                        </div>
+                        <p id="kpi-total" class="text-2xl font-bold text-sena-navy">0</p>
+                        <span class="text-[10px] text-slate-400 mt-1">Registrados Santander</span>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between hover:border-sena-green transition">
+                        <div class="flex justify-between items-center text-slate-500 mb-2">
+                            <span class="text-xs font-semibold uppercase tracking-wider">En Formulación</span>
+                            <i class="fa-solid fa-file-signature text-purple-500"></i>
+                        </div>
+                        <p id="kpi-formulacion" class="text-2xl font-bold text-purple-700">0</p>
+                        <span class="text-[10px] text-purple-600 font-medium mt-1">17 Puntos en desarrollo</span>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between hover:border-sena-green transition">
+                        <div class="flex justify-between items-center text-slate-500 mb-2">
+                            <span class="text-xs font-semibold uppercase tracking-wider">Viables con Recursos</span>
+                            <i class="fa-solid fa-sack-dollar text-sena-green"></i>
+                        </div>
+                        <p id="kpi-recursos" class="text-2xl font-bold text-sena-green">0</p>
+                        <span class="text-[10px] text-emerald-600 font-medium mt-1">Asignados Fondo Emprender</span>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between hover:border-sena-green transition">
+                        <div class="flex justify-between items-center text-slate-500 mb-2">
+                            <span class="text-xs font-semibold uppercase tracking-wider">Condonados</span>
+                            <i class="fa-solid fa-award text-indigo-600"></i>
+                        </div>
+                        <p id="kpi-condonados" class="text-2xl font-bold text-indigo-700">0</p>
+                        <span class="text-[10px] text-indigo-600 font-medium mt-1">Resolución emitida</span>
+                    </div>
+                </div>
+
+                <!-- GRÁFICOS CHART.JS -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-chart-bar text-sena-green"></i>
+                                Emprendedores por Fase de la Ruta Emprendedora
+                            </h3>
+                        </div>
+                        <div class="relative h-64 w-full flex items-center justify-center">
+                            <canvas id="phaseChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-building-columns text-sena-navy"></i>
+                                Distribución por Centro de Emprendimiento Comunitario
+                            </h3>
+                        </div>
+                        <div class="relative h-64 w-full flex items-center justify-center">
+                            <canvas id="centroChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TABLA TOP AVANCE -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-base">Últimos Emprendedores Actualizados</h3>
+                            <p class="text-xs text-slate-500">Mapeo en los 87 municipios de Santander y 8 Centros de Formación</p>
+                        </div>
+                        <button onclick="switchTab('emprendedores')" class="text-xs font-semibold text-sena-green hover:text-sena-navy flex items-center gap-1 transition">
+                            Ver Directorio Completo <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-slate-600">
+                            <thead class="bg-slate-50 text-slate-700 font-semibold uppercase border-b border-slate-200">
+                                <tr>
+                                    <th class="p-3.5">Emprendedor / Negocio</th>
+                                    <th class="p-3.5">Centro / Municipio</th>
+                                    <th class="p-3.5">Orientador Formulación</th>
+                                    <th class="p-3.5 text-center">Fase Actual</th>
+                                    <th class="p-3.5 w-36">% Avance</th>
+                                    <th class="p-3.5 text-center">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody id="topProgresstableBody" class="divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </section>
+
+
+            <!-- ================= TAB 2: DIRECTORIO Y FILTROS ================= -->
+            <section id="tab-emprendedores" class="hidden space-y-4">
+
+                <!-- BARRA DE BÚSQUEDA Y FILTROS COMPLETOS -->
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                        <!-- Buscador por Cédula / Nombre / Negocio -->
+                        <div class="relative md:col-span-1">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                            <input type="text" id="searchInput" oninput="filterEmprendedores()" placeholder="Buscar por Nombre, Cédula o Proyecto..." class="w-full pl-9 pr-4 py-2 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-sena-green focus:outline-none">
+                        </div>
+
+                        <!-- Filtro por Centro de Emprendimiento Comunitario (8 Centros) -->
+                        <div>
+                            <select id="filterCentro" onchange="filterEmprendedores()" class="w-full text-xs border border-slate-300 rounded-xl px-3 py-2 bg-white text-slate-700 focus:ring-2 focus:ring-sena-green focus:outline-none">
+                                <option value="">Todos los 8 Centros SENA Santander</option>
+                                <option value="Centro de Servicios Empresariales y Turísticos (Bucaramanga)">CSET (Bucaramanga)</option>
+                                <option value="Centro Industrial de Mantenimiento Integral (Girón)">CIMI (Girón)</option>
+                                <option value="Centro Industrial del Diseño y la Manufactura (Floridablanca)">CIDM (Floridablanca)</option>
+                                <option value="Centro de Atención al Sector Agropecuario (Piedecuesta)">CASA (Piedecuesta)</option>
+                                <option value="Centro Industrial y del Desarrollo Tecnológico (Barrancabermeja)">CIDT (Barrancabermeja)</option>
+                                <option value="Centro de Gestión Agroempresarial del Oriente (Vélez)">CGAO (Vélez)</option>
+                                <option value="Centro Agroturístico (San Gil)">CAG (San Gil)</option>
+                                <option value="Centro Agroempresarial y Turístico de los Andes (Málaga)">CATA (Málaga)</option>
+                            </select>
+                        </div>
+
+                        <!-- Filtro por Municipio (87 Municipios de Santander) -->
+                        <div>
+                            <select id="filterMunicipio" onchange="filterEmprendedores()" class="w-full text-xs border border-slate-300 rounded-xl px-3 py-2 bg-white text-slate-700 focus:ring-2 focus:ring-sena-green focus:outline-none">
+                                <option value="">Todos los 87 Municipios de Santander</option>
+                                <!-- Se llenan dinámicamente -->
+                            </select>
+                        </div>
+
+                        <!-- Filtro por Fase -->
+                        <div class="flex gap-2">
+                            <select id="filterFase" onchange="filterEmprendedores()" class="w-full text-xs border border-slate-300 rounded-xl px-3 py-2 bg-white text-slate-700 focus:ring-2 focus:ring-sena-green focus:outline-none">
+                                <option value="">Todas las Fases</option>
+                                <option value="Orientación">Orientación</option>
+                                <option value="Ideación">Ideación</option>
+                                <option value="Validación">Validación</option>
+                                <option value="Formulación">Formulación (17 Puntos)</option>
+                                <option value="Viable">Viable con Recursos</option>
+                                <option value="Interventoría">Interventoría / Condonado</option>
+                            </select>
+
+                            <button onclick="resetFilters()" class="px-3 py-2 text-xs bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl font-medium transition" title="Limpiar Filtros">
+                                <i class="fa-solid fa-rotate-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TABLA PRINCIPAL DE PROYECTOS -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-slate-600">
+                            <thead class="bg-sena-navy text-white font-semibold uppercase tracking-wider">
+                                <tr>
+                                    <th class="p-3.5">Emprendedor & Cédula</th>
+                                    <th class="p-3.5">Nombre Emprendimiento</th>
+                                    <th class="p-3.5">Centro & Municipio</th>
+                                    <th class="p-3.5">Modalidad</th>
+                                    <th class="p-3.5">Orientador Formulación</th>
+                                    <th class="p-3.5 text-center">Fase Actual</th>
+                                    <th class="p-3.5 text-center">% Avance</th>
+                                    <th class="p-3.5 text-center">Recursos ($)</th>
+                                    <th class="p-3.5 text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="mainTableBody" class="divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
+                    <div class="p-3 bg-slate-50 border-t border-slate-200 text-xs text-slate-500 flex justify-between items-center">
+                        <span id="recordCount">Mostrando 0 emprendedores</span>
+                        <span>SENA Regional Santander • Fondo Emprender</span>
+                    </div>
+                </div>
+
+            </section>
+
+
+            <!-- ================= TAB 3: REGISTRO / EDICIÓN ================= -->
+            <section id="tab-nuevo" class="hidden max-w-5xl mx-auto space-y-6">
+
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                    <div class="border-b border-slate-200 pb-4 mb-6 flex justify-between items-center">
+                        <div>
+                            <h3 id="formTitle" class="text-lg font-bold text-sena-navy">Registrar Nuevo Emprendedor en la Ruta</h3>
+                            <p class="text-xs text-slate-500">Formulario integrado con sincronización en tiempo real a Firebase Database</p>
+                        </div>
+                        <span class="bg-sena-green/10 text-sena-green font-bold text-xs px-3 py-1 rounded-full">Sincronizado en la Nube</span>
+                    </div>
+
+                    <form id="emprendedorForm" onsubmit="handleFormSubmit(event)" class="space-y-6">
+
+                        <input type="hidden" id="editIndex" value="-1">
+                        <input type="hidden" id="editKey" value="">
+
+                        <!-- SECCIÓN 1: DATOS PERSONALES Y EMPRENDIMIENTO -->
+                        <div>
+                            <h4 class="text-xs font-bold text-sena-navy uppercase tracking-wider mb-3 flex items-center gap-2">
+                                <i class="fa-solid fa-address-card text-sena-green"></i> 1. Datos Personales y Caracterización del Proyecto
+                            </h4>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Nombre Completo * (Sensible)</label>
+                                    <input type="text" id="formNombre" required class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="Ej: Martha Lucia Gómez">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Cédula de Ciudadanía * (Sensible)</label>
+                                    <input type="text" id="formCedula" required class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="Ej: 1098654321">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Número Telefónico (Sensible)</label>
+                                    <input type="text" id="formTelefono" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="316 455 1289">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Nombre del Emprendimiento * (Sensible)</label>
+                                    <input type="text" id="formEmprendimiento" required class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="Ej: AgroFlores de Florián">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Centro de Emprendimiento Comunitario (8 Centros) *</label>
+                                    <select id="formCentro" required class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none bg-white">
+                                        <option value="Centro de Servicios Empresariales y Turísticos (Bucaramanga)">Centro de Servicios Empresariales y Turísticos (Bucaramanga)</option>
+                                        <option value="Centro Industrial de Mantenimiento Integral (Girón)">Centro Industrial de Mantenimiento Integral (Girón)</option>
+                                        <option value="Centro Industrial del Diseño y la Manufactura (Floridablanca)">Centro Industrial del Diseño y la Manufactura (Floridablanca)</option>
+                                        <option value="Centro de Atención al Sector Agropecuario (Piedecuesta)">Centro de Atención al Sector Agropecuario (Piedecuesta)</option>
+                                        <option value="Centro Industrial y del Desarrollo Tecnológico (Barrancabermeja)">Centro Industrial y del Desarrollo Tecnológico (Barrancabermeja)</option>
+                                        <option value="Centro de Gestión Agroempresarial del Oriente (Vélez)">Centro de Gestión Agroempresarial del Oriente (Vélez)</option>
+                                        <option value="Centro Agroturístico (San Gil)">Centro Agroturístico (San Gil)</option>
+                                        <option value="Centro Agroempresarial y Turístico de los Andes (Málaga)">Centro Agroempresarial y Turístico de los Andes (Málaga)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Municipio (87 Municipios Santander) *</label>
+                                    <select id="formMunicipio" required class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none bg-white">
+                                        <!-- Se puebla por JS -->
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Modalidad del Proyecto *</label>
+                                    <select id="formTipoProyecto" required class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none bg-white">
+                                        <option value="Individual CREAR">Individual CREAR</option>
+                                        <option value="Asociativo CREAR">Asociativo CREAR</option>
+                                        <option value="Individual FORTALECIMIENTO">Individual FORTALECIMIENTO</option>
+                                        <option value="Asociativo FORTALECIMIENTO">Asociativo FORTALECIMIENTO</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Orientador Ideación / Validación</label>
+                                    <input type="text" id="formOrientadorIdeacion" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="Carlos Ramírez">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Orientador Formulación</label>
+                                    <input type="text" id="formOrientadorFormulacion" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="Andrea Gómez">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SECCIÓN 2: ORIENTACIÓN, IDEACIÓN Y VALIDACIÓN -->
+                        <div class="pt-4 border-t border-slate-200">
+                            <h4 class="text-xs font-bold text-sena-navy uppercase tracking-wider mb-3 flex items-center gap-2">
+                                <i class="fa-solid fa-graduation-cap text-sena-green"></i> 2. Jornada de Orientación y Entrenamientos
+                            </h4>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                                <!-- Orientación -->
+                                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                                    <span class="font-bold text-slate-800 block">Jornada de Orientación</span>
+                                    <div class="flex items-center gap-2">
+                                        <input type="checkbox" id="checkOrientacion" class="w-4 h-4 text-sena-green rounded">
+                                        <label for="checkOrientacion">Evidencia Registrada (Sí)</label>
+                                    </div>
+                                    <input type="date" id="fechaOrientacion" class="w-full p-1.5 border border-slate-300 rounded bg-white">
+                                </div>
+
+                                <!-- Entrenamientos Ideación -->
+                                <div class="p-3 bg-amber-50/50 border border-amber-200 rounded-xl space-y-2">
+                                    <span class="font-bold text-amber-900 block">Entrenamientos de Ideación</span>
+                                    <div class="space-y-1.5 text-[11px]">
+                                        <div class="flex items-center justify-between">
+                                            <span>01: ¿A quién le sirve lo que hago?</span>
+                                            <input type="checkbox" id="checkIdeacion1" class="rounded text-amber-600">
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <span>02: ¡Diferentes, pero competentes!</span>
+                                            <input type="checkbox" id="checkIdeacion2" class="rounded text-amber-600">
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <span>03: ¡Lo que no se mide no existe!</span>
+                                            <input type="checkbox" id="checkIdeacion3" class="rounded text-amber-600">
+                                        </div>
+                                    </div>
+                                    <input type="date" id="fechaIdeacion" class="w-full p-1.5 border border-slate-300 rounded bg-white">
+                                </div>
+
+                                <!-- Entrenamientos Validación -->
+                                <div class="p-3 bg-blue-50/50 border border-blue-200 rounded-xl space-y-2">
+                                    <span class="font-bold text-blue-900 block">Entrenamientos de Validación</span>
+                                    <div class="space-y-1.5 text-[11px]">
+                                        <div class="flex items-center justify-between">
+                                            <span>01: Manos a la obra</span>
+                                            <input type="checkbox" id="checkValidacion1" class="rounded text-blue-600">
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <span>02: Esto es diciendo y haciendo</span>
+                                            <input type="checkbox" id="checkValidacion2" class="rounded text-blue-600">
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <span>03: Presentación PITCH</span>
+                                            <input type="checkbox" id="checkValidacion3" class="rounded text-blue-600">
+                                        </div>
+                                    </div>
+                                    <input type="date" id="fechaValidacion" class="w-full p-1.5 border border-slate-300 rounded bg-white">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SECCIÓN 3: FORMULACIÓN DE LOS 17 PUNTOS -->
+                        <div class="pt-4 border-t border-slate-200">
+                            <h4 class="text-xs font-bold text-sena-navy uppercase tracking-wider mb-2 flex items-center justify-between">
+                                <span class="flex items-center gap-2">
+                                    <i class="fa-solid fa-list-check text-sena-green"></i> 3. Formulación Plan de Negocios (17 Puntos)
+                                </span>
+                                <button type="button" onclick="selectAllPuntos(true)" class="text-[11px] text-sena-green hover:underline">Marcar Todos</button>
+                            </h4>
+                            <p class="text-[11px] text-slate-500 mb-3">Marque cada uno de los módulos formulados con sus evidencias:</p>
+
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-[11px]" id="puntosFormulacionContainer">
+                                <!-- 17 Puntos Checkboxes generados por JS -->
+                            </div>
+                        </div>
+
+                        <!-- SECCIÓN 4: CONVOCATORIA, RECURSOS E INTERVENTORÍA -->
+                        <div class="pt-4 border-t border-slate-200">
+                            <h4 class="text-xs font-bold text-sena-navy uppercase tracking-wider mb-3 flex items-center gap-2">
+                                <i class="fa-solid fa-sack-dollar text-sena-green"></i> 4. Convocatoria, Viabilidad, Recursos e Interventoría
+                            </h4>
+
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Nombre Convocatoria</label>
+                                    <input type="text" id="formConvocatoria" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="Nacional 2026 / Santander">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Fecha Formalización</label>
+                                    <input type="date" id="formFechaFormalizacion" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Estado Viabilidad</label>
+                                    <select id="formViabilidad" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none bg-white">
+                                        <option value="En Proceso">En Proceso / Formulación</option>
+                                        <option value="Viable">Viable con Recursos Asignados</option>
+                                        <option value="No Viable">No Viable</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Recursos Asignados ($ COP)</label>
+                                    <input type="number" id="formRecursos" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="0">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Nº Acta Asignación / Contrato</label>
+                                    <input type="text" id="formActaContrato" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="Acta 045-2026">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Visitas Interventoría (0 - 4)</label>
+                                    <input type="number" min="0" max="4" id="formVisitas" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" value="0">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Estado de Condonación</label>
+                                    <select id="formCondonado" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none bg-white">
+                                        <option value="No">En Ejecución / No Condonado</option>
+                                        <option value="Sí">Sí - Condonación Aprobada</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Resolución Condonación</label>
+                                    <input type="text" id="formResolucion" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sena-green focus:outline-none" placeholder="Res. 1024-2026">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ACCIONES -->
+                        <div class="pt-4 border-t border-slate-200 flex justify-end gap-3">
+                            <button type="button" onclick="switchTab('emprendedores')" class="px-4 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
+                                Cancelar
+                            </button>
+                            <button type="submit" class="px-6 py-2 bg-sena-green hover:bg-sena-greenHover text-white rounded-xl text-xs font-bold shadow transition flex items-center gap-2">
+                                <i class="fa-solid fa-cloud-arrow-up"></i> Guardar en Firebase
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+
+            </section>
+
+
+            <!-- ================= TAB 4: CENTRO DE REPORTES ================= -->
+            <section id="tab-reportes" class="hidden space-y-6">
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                    <h3 class="text-base font-bold text-sena-navy mb-2">Generación de Reportes Consolidados de la Matriz (66 Campos)</h3>
+                    <p class="text-xs text-slate-500 mb-6">Descargue o imprima los informes analíticos para la gestión de la Unidad de Emprendimiento.</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="p-5 border border-slate-200 rounded-xl bg-slate-50 flex flex-col justify-between">
+                            <div>
+                                <div class="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg mb-3">
+                                    <i class="fa-solid fa-file-excel"></i>
+                                </div>
+                                <h4 class="font-bold text-slate-800 text-sm">Matriz Consolidada CSV / Excel (66 Campos)</h4>
+                                <p class="text-xs text-slate-500 mt-1">Exporta la totalidad de columnas incluyendo las evidencias de Orientación, Ideación (1-3), Validación (1-3), Formulación (1-17), Recursos e Interventoría.</p>
+                            </div>
+                            <button onclick="exportDataToCSV()" class="mt-4 w-full py-2.5 bg-sena-navy hover:bg-sena-navyLight text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition">
+                                <i class="fa-solid fa-download"></i> Descargar Matriz Consolidada (CSV)
+                            </button>
+                        </div>
+
+                        <div class="p-5 border border-slate-200 rounded-xl bg-slate-50 flex flex-col justify-between">
+                            <div>
+                                <div class="w-10 h-10 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-lg mb-3">
+                                    <i class="fa-solid fa-print"></i>
+                                </div>
+                                <h4 class="font-bold text-slate-800 text-sm">Informe Ejecutivo Impreso Regional Santander</h4>
+                                <p class="text-xs text-slate-500 mt-1">Imprime el resumen de métricas del Dashboard con gráficos e indicadores de los 8 Centros SENA Santander.</p>
+                            </div>
+                            <button onclick="window.print()" class="mt-4 w-full py-2.5 bg-sena-green hover:bg-sena-greenHover text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition">
+                                <i class="fa-solid fa-print"></i> Imprimir Informe Regional
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- ================= MODAL DETALLE / FICHA / TIMELINE ================= -->
+    <div id="modalDetail" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+            
+            <div class="p-5 bg-sena-navy text-white flex justify-between items-start no-print">
+                <div>
+                    <span id="modalCentroTag" class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded bg-sena-green text-white">Centro SENA</span>
+                    <h3 id="modalNombreEmprendimiento" class="text-xl font-bold mt-1">Nombre Emprendimiento</h3>
+                    <p id="modalEmprendedorInfo" class="text-xs text-slate-300">Emprendedor: - | Cédula: -</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="window.print()" class="bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1 transition">
+                        <i class="fa-solid fa-print"></i> Imprimir Ficha
+                    </button>
+                    <button onclick="closeModal()" class="text-slate-300 hover:text-white p-1 text-lg">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- CUERPO FICHA IMPRIMIBLE -->
+            <div id="modalPrintArea" class="p-6 overflow-y-auto space-y-6 text-xs text-slate-700">
+
+                <div class="hidden print-only mb-6 border-b border-slate-300 pb-4">
+                    <div class="flex justify-between items-center">
+                        <svg class="w-64 h-16">
+                            <use href="#sena-fondo-emprender-logo"></use>
+                        </svg>
+                        <div class="text-right text-xs text-slate-600">
+                            <p class="font-bold text-sena-navy text-sm">REGIONAL SANTANDER</p>
+                            <p class="font-medium">Unidad de Emprendimiento • Expediente de Ruta</p>
+                            <p class="text-[10px] text-slate-400 mt-1">Fecha Expedición: <span id="printDate">--/--/----</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARACTERIZACIÓN GENERAL -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <div>
+                        <span class="text-slate-400 font-medium block">Municipio:</span>
+                        <span id="modalMunicipio" class="font-semibold text-slate-800">--</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 font-medium block">Modalidad:</span>
+                        <span id="modalTipoProyecto" class="font-semibold text-slate-800">--</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 font-medium block">Orientador Ideación:</span>
+                        <span id="modalOrientadorIdeacion" class="font-semibold text-slate-800">--</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 font-medium block">Orientador Formulación:</span>
+                        <span id="modalOrientadorFormulacion" class="font-semibold text-slate-800">--</span>
+                    </div>
+                </div>
+
+                <!-- BARRA DE PORCENTAJE DE AVANCE -->
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="font-bold text-sena-navy text-xs uppercase tracking-wider">Avance Consolidado en la Ruta Emprendedora</span>
+                        <span id="modalAvancePorcentaje" class="font-bold text-sena-green text-sm">0%</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
+                        <div id="modalAvanceBar" class="bg-sena-green h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- TIMELINE DETALLADO DE HITOS -->
+                <div>
+                    <h4 class="font-bold text-sena-navy text-sm mb-4 pb-2 border-b border-slate-200 flex items-center gap-2">
+                        <i class="fa-solid fa-timeline text-sena-green"></i>
+                        Detalle de Evidencias y Hitos de la Ruta
+                    </h4>
+
+                    <div class="space-y-4 relative before:absolute before:inset-0 before:left-3.5 before:w-0.5 before:bg-slate-200">
+
+                        <!-- Milestone 1 -->
+                        <div class="relative flex items-start gap-4 pl-8">
+                            <div id="icon-orientacion" class="absolute left-1 top-0.5 w-6 h-6 rounded-full bg-slate-300 text-white flex items-center justify-center text-xs">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 w-full">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-slate-800">1. Jornada de Orientación</span>
+                                    <span id="fecha-orientacion-tag" class="text-[10px] text-slate-500 bg-white px-2 py-0.5 rounded border">--</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Milestone 2 -->
+                        <div class="relative flex items-start gap-4 pl-8">
+                            <div id="icon-ideacion" class="absolute left-1 top-0.5 w-6 h-6 rounded-full bg-slate-300 text-white flex items-center justify-center text-xs">
+                                <i class="fa-solid fa-lightbulb"></i>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 w-full">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-bold text-slate-800">2. Entrenamientos de Ideación</span>
+                                    <span id="status-ideacion-tag" class="text-[10px] font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">0/3</span>
+                                </div>
+                                <div id="modalIdeacionDetails" class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[10px]"></div>
+                            </div>
+                        </div>
+
+                        <!-- Milestone 3 -->
+                        <div class="relative flex items-start gap-4 pl-8">
+                            <div id="icon-validacion" class="absolute left-1 top-0.5 w-6 h-6 rounded-full bg-slate-300 text-white flex items-center justify-center text-xs">
+                                <i class="fa-solid fa-vial"></i>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 w-full">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-bold text-slate-800">3. Entrenamientos de Validación</span>
+                                    <span id="status-validacion-tag" class="text-[10px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">0/3</span>
+                                </div>
+                                <div id="modalValidacionDetails" class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[10px]"></div>
+                            </div>
+                        </div>
+
+                        <!-- Milestone 4 -->
+                        <div class="relative flex items-start gap-4 pl-8">
+                            <div id="icon-formulacion" class="absolute left-1 top-0.5 w-6 h-6 rounded-full bg-slate-300 text-white flex items-center justify-center text-xs">
+                                <i class="fa-solid fa-file-signature"></i>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 w-full">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-bold text-slate-800">4. Formulación del Plan de Negocios (17 Puntos)</span>
+                                    <span id="status-formulacion-tag" class="text-[10px] font-semibold text-purple-700 bg-purple-50 px-2 py-0.5 rounded border border-purple-200">0 / 17</span>
+                                </div>
+                                <div id="modalFormulacionGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-[10px]"></div>
+                            </div>
+                        </div>
+
+                        <!-- Milestone 5 -->
+                        <div class="relative flex items-start gap-4 pl-8">
+                            <div id="icon-recursos" class="absolute left-1 top-0.5 w-6 h-6 rounded-full bg-slate-300 text-white flex items-center justify-center text-xs">
+                                <i class="fa-solid fa-award"></i>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 w-full space-y-2">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-slate-800">5. Convocatoria, Recursos & Interventoría</span>
+                                    <span id="status-recursos-tag" class="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">$0 COP</span>
+                                </div>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-[10px] text-slate-600 border-t pt-2">
+                                    <div><strong>Viabilidad:</strong> <span id="modalViabilidadText">--</span></div>
+                                    <div><strong>Contrato / Acta:</strong> <span id="modalActaText">--</span></div>
+                                    <div><strong>Visitas Interventoría:</strong> <span id="modalVisitasText">0 / 4</span></div>
+                                    <div><strong>Condonación:</strong> <span id="modalCondonadoText">No</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="p-4 bg-slate-50 border-t border-slate-200 flex justify-end gap-2 no-print">
+                <button onclick="closeModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl text-xs font-semibold transition">
+                    Cerrar Ficha
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================= FIREBASE V10 SDK (AUTH + REALTIME DATABASE) ================= -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { 
+            getAuth, 
+            signInWithEmailAndPassword, 
+            sendPasswordResetEmail, 
+            onAuthStateChanged, 
+            signOut 
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getDatabase, ref, set, remove, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        // CONFIGURACIÓN OFICIAL FIREBASE
+        const firebaseConfig = {
+            apiKey: "AIzaSyBZ9iaQCTWfJ92VARzEXGhu7lB6Fw03DuI",
+            authDomain: "ruta-emprendedora-santander.firebaseapp.com",
+            databaseURL: "https://ruta-emprendedora-santander-default-rtdb.firebaseio.com",
+            projectId: "ruta-emprendedora-santander",
+            storageBucket: "ruta-emprendedora-santander.firebasestorage.app",
+            messagingSenderId: "225756593228",
+            appId: "1:225756593228:web:501d20b0119df8ab1b48e9",
+            measurementId: "G-6KCGC61DDX"
+        };
+
+        // Inicialización
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        // Exponer funciones e instancias globalmente
+        window.fbAuth = auth;
+        window.fbDB = db;
+        window.fbRef = ref;
+        window.fbSet = set;
+        window.fbRemove = remove;
+        window.fbOnValue = onValue;
+
+        // Manejo de estado de autenticación de Firebase
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                if (!user.email.endsWith('@sena.edu.co')) {
+                    signOut(auth);
+                    showLoginError("Error de Autorización: El correo no pertenece al dominio @sena.edu.co");
+                    return;
+                }
+                window.currentUserEmail = user.email;
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('userBadge').innerText = user.email;
+            } else {
+                window.currentUserEmail = null;
+                document.getElementById('loginScreen').classList.remove('hidden');
+            }
+        });
+
+        // Inicio de sesión con Firebase Auth
+        window.handleLoginSubmit = async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+            const password = document.getElementById('loginPassword').value;
+            const btn = document.getElementById('btnLoginSubmit');
+
+            hideLoginAlerts();
+
+            if (!email.endsWith('@sena.edu.co')) {
+                showLoginError("Dominio no permitido. Debe usar su correo institucional @sena.edu.co");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Autenticando...';
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+            } catch (error) {
+                console.error("Error Auth:", error);
+                let message = "Credenciales incorrectas o usuario no registrado.";
+                if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+                    message = "Correo o contraseña inválidos. Verifique e intente de nuevo.";
+                } else if (error.code === 'auth/too-many-requests') {
+                    message = "Demasiados intentos fallidos. Intente más tarde o restablezca su clave.";
+                }
+                showLoginError(message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Iniciar Sesión Segura';
+            }
+        };
+
+        // Restablecimiento de contraseña por correo (Prompt desde login)
+        window.handleResetPasswordPrompt = async function() {
+            hideLoginAlerts();
+            const emailInput = document.getElementById('loginEmail').value.trim().toLowerCase();
+            const email = prompt("Ingrese su correo institucional (@sena.edu.co) para enviar el enlace de restablecimiento de contraseña:", emailInput || "");
+            
+            if (!email) return;
+
+            if (!email.endsWith('@sena.edu.co')) {
+                alert("El correo debe pertenecer al dominio institucional @sena.edu.co");
+                return;
+            }
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                showLoginSuccess(`Se ha enviado un enlace de restablecimiento de contraseña al correo: ${email}. Verifique su bandeja de entrada o spam.`);
+            } catch (error) {
+                console.error("Error Reset Password:", error);
+                showLoginError("No se pudo enviar el correo de restablecimiento. Verifique si el usuario está registrado en Firebase Auth.");
+            }
+        };
+
+        // Restablecimiento de contraseña desde la barra superior interna
+        window.handleResetPasswordCurrent = async function() {
+            if (!window.currentUserEmail) return;
+            if (confirm(`Se enviará un correo a ${window.currentUserEmail} para restablecer o cambiar su contraseña. ¿Desea continuar?`)) {
+                try {
+                    await sendPasswordResetEmail(auth, window.currentUserEmail);
+                    alert(`Enlace enviado con éxito a ${window.currentUserEmail}. Revise su correo institucional.`);
+                } catch (error) {
+                    alert("Error al solicitar cambio de contraseña: " + error.message);
+                }
+            }
+        };
+
+        // Cerrar sesión
+        window.handleLogout = function() {
+            signOut(auth).then(() => {
+                document.getElementById('loginForm').reset();
+                hideLoginAlerts();
+            });
+        };
+
+        function showLoginError(msg) {
+            const errDiv = document.getElementById('loginError');
+            errDiv.innerText = msg;
+            errDiv.classList.remove('hidden');
+        }
+
+        function showLoginSuccess(msg) {
+            const succDiv = document.getElementById('loginSuccess');
+            succDiv.innerText = msg;
+            succDiv.classList.remove('hidden');
+        }
+
+        function hideLoginAlerts() {
+            document.getElementById('loginError').classList.add('hidden');
+            document.getElementById('loginSuccess').classList.add('hidden');
+        }
+
+        // Sincronización Realtime Database
+        const empRef = ref(db, 'emprendedores');
+        onValue(empRef, (snapshot) => {
+            const data = snapshot.val();
+            window.emprendedoresData = [];
+            
+            if (data) {
+                Object.keys(data).forEach(key => {
+                    window.emprendedoresData.push({
+                        _fbKey: key,
+                        ...data[key]
+                    });
+                });
+            }
+
+            if (window.emprendedoresData.length === 0 && !window.hasSeededDefault) {
+                seedInitialData();
+            } else {
+                updateUIState(true);
+            }
+        }, (error) => {
+            console.error("Error Firebase Database:", error);
+            updateUIState(false);
+        });
+
+        function seedInitialData() {
+            window.hasSeededDefault = true;
+            const defaultRecords = [
+                {
+                    nombre: "Martha Lucia Gómez",
+                    cedula: "1098654321",
+                    telefono: "3164551289",
+                    emprendimiento: "AgroFlores de Florián",
+                    centro: "Centro de Gestión Agroempresarial del Oriente (Vélez)",
+                    municipio: "Florián",
+                    tipoProyecto: "Individual CREAR",
+                    orientadorIdeacion: "Carlos Ramírez",
+                    orientadorFormulacion: "Andrea Gómez",
+                    orientacionEvidencia: true,
+                    orientacionFecha: "2026-01-15",
+                    ideacion1: true, ideacion2: true, ideacion3: true, ideacionFecha: "2026-02-10",
+                    validacion1: true, validacion2: true, validacion3: true, validacionFecha: "2026-03-01",
+                    puntosFormulacion: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
+                    convocatoria: "Nacional 2026",
+                    fechaFormalizacion: "2026-03-15",
+                    viabilidad: "Viable",
+                    recursos: 95000000,
+                    actaContrato: "Acta 012-2026",
+                    visitasInterventoria: 2,
+                    condonado: "No",
+                    resolucion: ""
+                },
+                {
+                    nombre: "Javier Eduardo Ríos",
+                    cedula: "91234567",
+                    telefono: "3119876543",
+                    emprendimiento: "TechSantander Solutions",
+                    centro: "Centro de Servicios Empresariales y Turísticos (Bucaramanga)",
+                    municipio: "Bucaramanga",
+                    tipoProyecto: "Individual CREAR",
+                    orientadorIdeacion: "Laura Beltrán",
+                    orientadorFormulacion: "Jorge Pinto",
+                    orientacionEvidencia: true,
+                    orientacionFecha: "2026-01-20",
+                    ideacion1: true, ideacion2: true, ideacion3: true, ideacionFecha: "2026-02-15",
+                    validacion1: true, validacion2: true, validacion3: false, validacionFecha: "2026-03-05",
+                    puntosFormulacion: [true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false],
+                    convocatoria: "Santander Tech 2026",
+                    fechaFormalizacion: "",
+                    viabilidad: "En Proceso",
+                    recursos: 0,
+                    actaContrato: "",
+                    visitasInterventoria: 0,
+                    condonado: "No",
+                    resolucion: ""
+                }
+            ];
+
+            defaultRecords.forEach(rec => {
+                const key = rec.cedula.replace(/[^a-zA-Z0-9]/g, '_');
+                set(ref(db, 'emprendedores/' + key), rec);
+            });
+        }
+
+        function updateUIState(connected) {
+            const dot = document.getElementById('firebaseStatusDot');
+            const txt = document.getElementById('firebaseStatusText');
+
+            if(connected) {
+                dot.className = "w-2.5 h-2.5 rounded-full bg-sena-green";
+                txt.innerText = "Firebase Conectado";
+            } else {
+                dot.className = "w-2.5 h-2.5 rounded-full bg-red-500";
+                txt.innerText = "Error Firebase";
+            }
+
+            if (typeof window.renderDashboard === 'function') {
+                window.renderDashboard();
+                window.renderEmprendedoresTable(window.emprendedoresData);
+            }
+        }
+    </script>
+
+    <!-- ================= LOGICA APLICATIVA JAVASCRIPT ================= -->
+    <script>
+        const MUNICIPIOS_SANTANDER = [
+            "Aguada", "Albania", "Aratoca", "Barbosa", "Barichara", "Barrancabermeja", "Betulia", "Bolívar", 
+            "Bucaramanga", "Cabrera", "California", "Capitanejo", "Carcasí", "Cepitá", "Cerrito", "Charalá", 
+            "Charta", "Chima", "Chipatá", "Cimitarra", "Concepción", "Confines", "Contratación", "Coromoro", 
+            "Curití", "El Carmen de Chucurí", "El Guacamayo", "El Peñón", "El Playón", "Encino", "Enciso", 
+            "Floridablanca", "Florián", "Galán", "Gámbita", "Girón", "Guaca", "Guadalupe", "Guapotá", 
+            "Guavatá", "Güepsa", "Hato", "Jesús María", "Jordán", "La Belleza", "La Paz", "Landázuri", 
+            "Lebrija", "Los Santos", "Macaravita", "Málaga", "Matanza", "Mogotes", "Molagavita", "Ocamonte", 
+            "Oiba", "Onzaga", "Palmar", "Palmas del Socorro", "Páramo", "Piedecuesta", "Pinchote", "Puente Nacional", 
+            "Puerto Parra", "Puerto Wilches", "Rionegro", "Sabana de Torres", "San Andrés", "San Benito", "San Gil", 
+            "San Joaquín", "San José de Miranda", "San Miguel", "San Vicente de Chucurí", "Santa Bárbara", 
+            "Santa Helena del Opón", "Simacota", "Socorro", "Suaita", "Sucre", "Suratá", "Tona", "Valle de San José", 
+            "Vélez", "Vetas", "Zapatoca"
+        ];
+
+        const CENTROS_SANTANDER = [
+            "Centro de Servicios Empresariales y Turísticos (Bucaramanga)",
+            "Centro Industrial de Mantenimiento Integral (Girón)",
+            "Centro Industrial del Diseño y la Manufactura (Floridablanca)",
+            "Centro de Atención al Sector Agropecuario (Piedecuesta)",
+            "Centro Industrial y del Desarrollo Tecnológico (Barrancabermeja)",
+            "Centro de Gestión Agroempresarial del Oriente (Vélez)",
+            "Centro Agroturístico (San Gil)",
+            "Centro Agroempresarial y Turístico de los Andes (Málaga)"
+        ];
+
+        const NOMBRES_17_PUNTOS = [
+            "1. Cliente / Mercado Objetivo",
+            "2. Definición del Problema / Necesidad",
+            "3. Análisis de Competencia",
+            "4. Descripción del Proyecto / Solución",
+            "5. Ficha Técnica Productos / Servicios",
+            "6. Proceso Técnico / Operativo",
+            "7. Trámites Legales y Normativa",
+            "8. Estrategia de Canales y Comercialización",
+            "9. Proyección de Ventas y Unidades",
+            "10. Estructura de Costos y Gastos",
+            "11. Equipo de Trabajo y Perfiles",
+            "12. Necesidades e Inversiones",
+            "13. Avances y Hitos Ejecutados",
+            "14. Plan Operativo y Cronograma",
+            "15. Evaluación de Impactos (Social/Ambiental)",
+            "16. Mapa de Actores Clave",
+            "17. Componente de Asociatividad"
+        ];
+
+        window.emprendedoresData = [];
+        let isMasked = true;
+        let phaseChartInstance = null;
+        let centroChartInstance = null;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            populateDropdowns();
+            renderPuntosFormulacionForm();
+            document.getElementById('printDate').innerText = new Date().toLocaleDateString('es-CO');
+        });
+
+        function populateDropdowns() {
+            const selectMunFilter = document.getElementById('filterMunicipio');
+            const selectMunForm = document.getElementById('formMunicipio');
+
+            selectMunFilter.innerHTML = '<option value="">Todos los 87 Municipios de Santander</option>';
+            selectMunForm.innerHTML = '';
+
+            MUNICIPIOS_SANTANDER.forEach(m => {
+                selectMunFilter.innerHTML += `<option value="${m}">${m}</option>`;
+                selectMunForm.innerHTML += `<option value="${m}">${m}</option>`;
+            });
+        }
+
+        function renderPuntosFormulacionForm() {
+            const container = document.getElementById('puntosFormulacionContainer');
+            container.innerHTML = '';
+            NOMBRES_17_PUNTOS.forEach((p, idx) => {
+                container.innerHTML += `
+                    <div class="p-2 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between">
+                        <label for="punto_${idx}" class="cursor-pointer font-medium text-slate-700">${p}</label>
+                        <input type="checkbox" id="punto_${idx}" class="punto-checkbox rounded text-sena-green w-4 h-4">
+                    </div>
+                `;
+            });
+        }
+
+        function selectAllPuntos(status) {
+            document.querySelectorAll('.punto-checkbox').forEach(cb => cb.checked = status);
+        }
+
+        function maskText(str, visibleChars = 3) {
+            if (!str) return '---';
+            if (!isMasked) return str;
+            if (str.length <= visibleChars) return '••••';
+            return str.substring(0, visibleChars) + '•'.repeat(Math.min(str.length - visibleChars, 8));
+        }
+
+        function maskCedula(ced) {
+            if (!ced) return '---';
+            if (!isMasked) return ced;
+            return ced.substring(0, 3) + '••••' + ced.slice(-2);
+        }
+
+        function maskTelefono(tel) {
+            if (!tel) return '---';
+            if (!isMasked) return tel;
+            return tel.substring(0, 3) + ' ••• ••' + tel.slice(-2);
+        }
+
+        function toggleMaskSensitiveData() {
+            isMasked = !isMasked;
+            const btnText = document.getElementById('maskBtnText');
+            const icon = document.getElementById('maskIcon');
+
+            if (isMasked) {
+                btnText.innerText = "Datos Sensibles: Ocultos";
+                icon.className = "fa-solid fa-eye-slash text-amber-700";
+            } else {
+                btnText.innerText = "Datos Sensibles: Visibles";
+                icon.className = "fa-solid fa-eye text-emerald-700";
+            }
+
+            renderTopProgressTable();
+            renderEmprendedoresTable(window.emprendedoresData);
+        }
+
+        function calculateProgress(emp) {
+            let score = 0;
+            if(emp.orientacionEvidencia) score += 10;
+            
+            const countIde = (emp.ideacion1?1:0) + (emp.ideacion2?1:0) + (emp.ideacion3?1:0);
+            score += countIde * 5;
+
+            const countVal = (emp.validacion1?1:0) + (emp.validacion2?1:0) + (emp.validacion3?1:0);
+            score += countVal * 5;
+
+            const countForm = (emp.puntosFormulacion || []).filter(Boolean).length;
+            score += Math.round((countForm / 17) * 40);
+
+            if(emp.viabilidad === "Viable") score += 20;
+            return Math.min(score, 100);
+        }
+
+        function getFaseActual(emp) {
+            if(emp.condonado === "Sí" || emp.visitasInterventoria > 0) return "Interventoría";
+            if(emp.viabilidad === "Viable") return "Viable";
+            const countForm = (emp.puntosFormulacion || []).filter(Boolean).length;
+            if(countForm > 0) return "Formulación";
+            if(emp.validacion1 || emp.validacion2 || emp.validacion3) return "Validación";
+            if(emp.ideacion1 || emp.ideacion2 || emp.ideacion3) return "Ideación";
+            return "Orientación";
+        }
+
+        window.renderDashboard = function() {
+            const list = window.emprendedoresData || [];
+            const total = list.length;
+            let formulacion = 0, recursos = 0, condonados = 0;
+
+            let faseCounts = { "Orientación": 0, "Ideación": 0, "Validación": 0, "Formulación": 0, "Viable": 0, "Interventoría": 0 };
+            let centroCounts = {};
+
+            CENTROS_SANTANDER.forEach(c => centroCounts[c] = 0);
+
+            list.forEach(e => {
+                const fase = getFaseActual(e);
+                faseCounts[fase] = (faseCounts[fase] || 0) + 1;
+
+                if(e.centro) centroCounts[e.centro] = (centroCounts[e.centro] || 0) + 1;
+
+                if(fase === "Formulación") formulacion++;
+                if(e.viabilidad === "Viable") recursos++;
+                if(e.condonado === "Sí") condonados++;
+            });
+
+            document.getElementById('kpi-total').innerText = total;
+            document.getElementById('kpi-formulacion').innerText = formulacion;
+            document.getElementById('kpi-recursos').innerText = recursos;
+            document.getElementById('kpi-condonados').innerText = condonados;
+
+            renderPhaseChart(faseCounts);
+            renderCentroChart(centroCounts);
+            renderTopProgressTable();
+        }
+
+        function renderPhaseChart(faseCounts) {
+            const ctx = document.getElementById('phaseChart').getContext('2d');
+            if(phaseChartInstance) phaseChartInstance.destroy();
+
+            phaseChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(faseCounts),
+                    datasets: [{
+                        label: 'Número de Emprendedores',
+                        data: Object.values(faseCounts),
+                        backgroundColor: ['#64748b', '#f59e0b', '#3b82f6', '#a855f7', '#39A900', '#4f46e5'],
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+                }
+            });
+        }
+
+        function renderCentroChart(centroCounts) {
+            const ctx = document.getElementById('centroChart').getContext('2d');
+            if(centroChartInstance) centroChartInstance.destroy();
+
+            const shortLabels = Object.keys(centroCounts).map(c => c.split('(')[1]?.replace(')', '') || c);
+
+            centroChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: shortLabels,
+                    datasets: [{
+                        data: Object.values(centroCounts),
+                        backgroundColor: ['#39A900', '#00324D', '#3b82f6', '#f59e0b', '#ec4899', '#8b5cf6', '#14b8a6', '#f97316']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'right', labels: { boxWidth: 10, font: { size: 9 } } } }
+                }
+            });
+        }
+
+        function renderTopProgressTable() {
+            const tbody = document.getElementById('topProgresstableBody');
+            tbody.innerHTML = '';
+
+            const list = window.emprendedoresData || [];
+            const recent = [...list].reverse().slice(0, 5);
+
+            recent.forEach((emp) => {
+                const originalIndex = list.indexOf(emp);
+                const prog = calculateProgress(emp);
+                const fase = getFaseActual(emp);
+                const centroShort = emp.centro ? emp.centro.split('(')[1]?.replace(')', '') : 'N/A';
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-3.5">
+                            <span class="font-bold text-slate-800 block">${maskText(emp.emprendimiento, 4)}</span>
+                            <span class="text-[11px] text-slate-400">${maskText(emp.nombre, 3)}</span>
+                        </td>
+                        <td class="p-3.5">
+                            <span class="font-semibold text-sena-navy block">${centroShort}</span>
+                            <span class="text-[10px] text-slate-500"><i class="fa-solid fa-location-dot"></i> ${emp.municipio}</span>
+                        </td>
+                        <td class="p-3.5 text-slate-600">${emp.orientadorFormulacion || 'Por asignar'}</td>
+                        <td class="p-3.5 text-center">
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-sena-navy border">${fase}</span>
+                        </td>
+                        <td class="p-3.5">
+                            <div class="flex items-center gap-2">
+                                <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-sena-green h-full" style="width: ${prog}%"></div>
+                                </div>
+                                <span class="font-bold text-slate-700 text-[11px]">${prog}%</span>
+                            </div>
+                        </td>
+                        <td class="p-3.5 text-center">
+                            <button onclick="openDetailModal(${originalIndex})" class="text-sena-navy hover:text-sena-green p-1">
+                                <i class="fa-solid fa-eye text-sm"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        window.renderEmprendedoresTable = function(list) {
+            const tbody = document.getElementById('mainTableBody');
+            tbody.innerHTML = '';
+            const allList = window.emprendedoresData || [];
+
+            (list || []).forEach((emp) => {
+                const originalIndex = allList.indexOf(emp);
+                const prog = calculateProgress(emp);
+                const fase = getFaseActual(emp);
+                const centroShort = emp.centro ? emp.centro.split('(')[1]?.replace(')', '') : 'N/A';
+                const formatoDinero = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(emp.recursos || 0);
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-3.5">
+                            <span class="font-bold text-slate-800 block flex items-center gap-1.5">
+                                <i class="fa-solid fa-lock text-[10px] text-red-500" title="Protegido Ley 1581"></i>
+                                ${maskText(emp.nombre, 4)}
+                            </span>
+                            <span class="text-[10px] text-slate-400">C.C. ${maskCedula(emp.cedula)}</span>
+                        </td>
+                        <td class="p-3.5 font-semibold text-sena-navy">
+                            ${maskText(emp.emprendimiento, 5)}
+                        </td>
+                        <td class="p-3.5">
+                            <span class="font-bold text-slate-700 block">${centroShort}</span>
+                            <span class="text-[10px] text-slate-500">${emp.municipio}</span>
+                        </td>
+                        <td class="p-3.5 text-slate-600 text-[11px]">${emp.tipoProyecto}</td>
+                        <td class="p-3.5 text-slate-600">${emp.orientadorFormulacion || 'Sin asignar'}</td>
+                        <td class="p-3.5 text-center">
+                            <span class="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-emerald-50 text-sena-green border border-sena-green/30">${fase}</span>
+                        </td>
+                        <td class="p-3.5 text-center">
+                            <span class="font-bold ${prog >= 80 ? 'text-sena-green' : 'text-slate-700'}">${prog}%</span>
+                        </td>
+                        <td class="p-3.5 text-center font-bold text-slate-800">
+                            ${emp.recursos > 0 ? `<span class="text-sena-green">${formatoDinero}</span>` : '<span class="text-slate-400">$0</span>'}
+                        </td>
+                        <td class="p-3.5 text-center space-x-1">
+                            <button onclick="openDetailModal(${originalIndex})" title="Ver Ficha / Timeline" class="p-1.5 text-slate-600 hover:text-sena-navy rounded-lg hover:bg-slate-100">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                            <button onclick="editEmprendedor(${originalIndex})" title="Editar" class="p-1.5 text-slate-600 hover:text-sena-green rounded-lg hover:bg-slate-100">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button onclick="deleteEmprendedor('${emp._fbKey}')" title="Eliminar de Firebase" class="p-1.5 text-slate-400 hover:text-red-600 rounded-lg hover:bg-slate-100">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('recordCount').innerText = `Mostrando ${(list || []).length} de ${allList.length} emprendedores registrados`;
+        }
+
+        function filterEmprendedores() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const centro = document.getElementById('filterCentro').value;
+            const mun = document.getElementById('filterMunicipio').value;
+            const fase = document.getElementById('filterFase').value;
+
+            const filtered = (window.emprendedoresData || []).filter(e => {
+                const matchSearch = (e.nombre || '').toLowerCase().includes(search) || 
+                                    (e.cedula || '').toLowerCase().includes(search) || 
+                                    (e.emprendimiento || '').toLowerCase().includes(search);
+                const matchCentro = !centro || e.centro === centro;
+                const matchMun = !mun || e.municipio === mun;
+                const matchFase = !fase || getFaseActual(e) === fase;
+
+                return matchSearch && matchCentro && matchMun && matchFase;
+            });
+
+            renderEmprendedoresTable(filtered);
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('filterCentro').value = '';
+            document.getElementById('filterMunicipio').value = '';
+            document.getElementById('filterFase').value = '';
+            renderEmprendedoresTable(window.emprendedoresData);
+        }
+
+        function openDetailModal(index) {
+            const emp = window.emprendedoresData[index];
+            if (!emp) return;
+            const prog = calculateProgress(emp);
+
+            document.getElementById('modalCentroTag').innerText = emp.centro || 'Centro SENA Santander';
+            document.getElementById('modalNombreEmprendimiento').innerText = maskText(emp.emprendimiento, 5);
+            document.getElementById('modalEmprendedorInfo').innerText = `Emprendedor: ${maskText(emp.nombre, 4)} | C.C: ${maskCedula(emp.cedula)} | Tel: ${maskTelefono(emp.telefono)}`;
+            document.getElementById('modalMunicipio').innerText = emp.municipio;
+            document.getElementById('modalTipoProyecto').innerText = emp.tipoProyecto;
+            document.getElementById('modalOrientadorIdeacion').innerText = emp.orientadorIdeacion || 'N/A';
+            document.getElementById('modalOrientadorFormulacion').innerText = emp.orientadorFormulacion || 'N/A';
+
+            document.getElementById('modalAvancePorcentaje').innerText = `${prog}%`;
+            document.getElementById('modalAvanceBar').style.width = `${prog}%`;
+
+            const iconO = document.getElementById('icon-orientacion');
+            if(emp.orientacionEvidencia) {
+                iconO.className = "absolute left-1 top-0.5 w-6 h-6 rounded-full bg-sena-green text-white flex items-center justify-center text-xs";
+                document.getElementById('fecha-orientacion-tag').innerText = `Completado: ${emp.orientacionFecha || 'Registrada'}`;
+            } else {
+                iconO.className = "absolute left-1 top-0.5 w-6 h-6 rounded-full bg-slate-300 text-white flex items-center justify-center text-xs";
+                document.getElementById('fecha-orientacion-tag').innerText = "Pendiente";
+            }
+
+            const ideCount = (emp.ideacion1?1:0) + (emp.ideacion2?1:0) + (emp.ideacion3?1:0);
+            document.getElementById('status-ideacion-tag').innerText = `${ideCount} / 3 Entrenamientos`;
+            document.getElementById('modalIdeacionDetails').innerHTML = `
+                <div class="p-1.5 rounded border ${emp.ideacion1 ? 'bg-amber-100 text-amber-900 border-amber-300' : 'bg-slate-100 text-slate-400'}">01: ¿A quién le sirve lo que hago?</div>
+                <div class="p-1.5 rounded border ${emp.ideacion2 ? 'bg-amber-100 text-amber-900 border-amber-300' : 'bg-slate-100 text-slate-400'}">02: ¡Diferentes, pero competentes!</div>
+                <div class="p-1.5 rounded border ${emp.ideacion3 ? 'bg-amber-100 text-amber-900 border-amber-300' : 'bg-slate-100 text-slate-400'}">03: ¡Lo que no se mide no existe!</div>
+            `;
+
+            const valCount = (emp.validacion1?1:0) + (emp.validacion2?1:0) + (emp.validacion3?1:0);
+            document.getElementById('status-validacion-tag').innerText = `${valCount} / 3 Entrenamientos`;
+            document.getElementById('modalValidacionDetails').innerHTML = `
+                <div class="p-1.5 rounded border ${emp.validacion1 ? 'bg-blue-100 text-blue-900 border-blue-300' : 'bg-slate-100 text-slate-400'}">01: Manos a la obra</div>
+                <div class="p-1.5 rounded border ${emp.validacion2 ? 'bg-blue-100 text-blue-900 border-blue-300' : 'bg-slate-100 text-slate-400'}">02: Esto es diciendo y haciendo</div>
+                <div class="p-1.5 rounded border ${emp.validacion3 ? 'bg-blue-100 text-blue-900 border-blue-300' : 'bg-slate-100 text-slate-400'}">03: Presentación PITCH</div>
+            `;
+
+            const formCount = (emp.puntosFormulacion || []).filter(Boolean).length;
+            document.getElementById('status-formulacion-tag').innerText = `${formCount} / 17 Módulos Completados`;
+            const formGrid = document.getElementById('modalFormulacionGrid');
+            formGrid.innerHTML = '';
+            NOMBRES_17_PUNTOS.forEach((p, i) => {
+                const done = emp.puntosFormulacion && emp.puntosFormulacion[i];
+                formGrid.innerHTML += `
+                    <div class="p-1.5 rounded border text-[9px] ${done ? 'bg-purple-100 text-purple-900 border-purple-300 font-semibold' : 'bg-slate-50 text-slate-400'}">
+                        ${done ? '<i class="fa-solid fa-check text-purple-700"></i>' : '<i class="fa-solid fa-minus"></i>'} ${p}
+                    </div>
+                `;
+            });
+
+            const formatoDinero = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(emp.recursos || 0);
+            document.getElementById('status-recursos-tag').innerText = formatoDinero;
+            document.getElementById('modalViabilidadText').innerText = emp.viabilidad || 'En Proceso';
+            document.getElementById('modalActaText').innerText = emp.actaContrato || 'En trámite';
+            document.getElementById('modalVisitasText').innerText = `${emp.visitasInterventoria || 0} / 4 Visitas`;
+            document.getElementById('modalCondonadoText').innerText = emp.condonado === "Sí" ? `Sí (${emp.resolucion})` : 'No';
+
+            document.getElementById('modalDetail').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('modalDetail').classList.add('hidden');
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+
+            const editKey = document.getElementById('editKey').value;
+            const cedula = document.getElementById('formCedula').value.trim();
+            const firebaseKey = editKey || cedula.replace(/[^a-zA-Z0-9]/g, '_');
+
+            const puntosArr = [];
+            for(let i=0; i<17; i++) {
+                puntosArr.push(document.getElementById(`punto_${i}`).checked);
+            }
+
+            const payload = {
+                nombre: document.getElementById('formNombre').value.trim(),
+                cedula: cedula,
+                telefono: document.getElementById('formTelefono').value.trim(),
+                emprendimiento: document.getElementById('formEmprendimiento').value.trim(),
+                centro: document.getElementById('formCentro').value,
+                municipio: document.getElementById('formMunicipio').value,
+                tipoProyecto: document.getElementById('formTipoProyecto').value,
+                orientadorIdeacion: document.getElementById('formOrientadorIdeacion').value.trim(),
+                orientadorFormulacion: document.getElementById('formOrientadorFormulacion').value.trim(),
+                orientacionEvidencia: document.getElementById('checkOrientacion').checked,
+                orientacionFecha: document.getElementById('fechaOrientacion').value,
+                ideacion1: document.getElementById('checkIdeacion1').checked,
+                ideacion2: document.getElementById('checkIdeacion2').checked,
+                ideacion3: document.getElementById('checkIdeacion3').checked,
+                ideacionFecha: document.getElementById('fechaIdeacion').value,
+                validacion1: document.getElementById('checkValidacion1').checked,
+                validacion2: document.getElementById('checkValidacion2').checked,
+                validacion3: document.getElementById('checkValidacion3').checked,
+                validacionFecha: document.getElementById('fechaValidacion').value,
+                puntosFormulacion: puntosArr,
+                convocatoria: document.getElementById('formConvocatoria').value.trim(),
+                fechaFormalizacion: document.getElementById('formFechaFormalizacion').value,
+                viabilidad: document.getElementById('formViabilidad').value,
+                recursos: parseFloat(document.getElementById('formRecursos').value) || 0,
+                actaContrato: document.getElementById('formActaContrato').value.trim(),
+                visitasInterventoria: parseInt(document.getElementById('formVisitas').value) || 0,
+                condonado: document.getElementById('formCondonado').value,
+                resolucion: document.getElementById('formResolucion').value.trim()
+            };
+
+            if(window.fbSet && window.fbRef && window.fbDB) {
+                window.fbSet(window.fbRef(window.fbDB, 'emprendedores/' + firebaseKey), payload)
+                .then(() => {
+                    switchTab('emprendedores');
+                    document.getElementById('emprendedorForm').reset();
+                    document.getElementById('editIndex').value = "-1";
+                    document.getElementById('editKey').value = "";
+                })
+                .catch(err => {
+                    alert("Error al guardar en Firebase: " + err.message);
+                });
+            }
+        }
+
+        function editEmprendedor(index) {
+            const emp = window.emprendedoresData[index];
+            if (!emp) return;
+
+            document.getElementById('editIndex').value = index;
+            document.getElementById('editKey').value = emp._fbKey || '';
+            document.getElementById('formTitle').innerText = "Editar Registro de Emprendedor";
+
+            document.getElementById('formNombre').value = emp.nombre || '';
+            document.getElementById('formCedula').value = emp.cedula || '';
+            document.getElementById('formTelefono').value = emp.telefono || '';
+            document.getElementById('formEmprendimiento').value = emp.emprendimiento || '';
+            document.getElementById('formCentro').value = emp.centro || '';
+            document.getElementById('formMunicipio').value = emp.municipio || '';
+            document.getElementById('formTipoProyecto').value = emp.tipoProyecto || 'Individual CREAR';
+            document.getElementById('formOrientadorIdeacion').value = emp.orientadorIdeacion || '';
+            document.getElementById('formOrientadorFormulacion').value = emp.orientadorFormulacion || '';
+
+            document.getElementById('checkOrientacion').checked = emp.orientacionEvidencia || false;
+            document.getElementById('fechaOrientacion').value = emp.orientacionFecha || '';
+
+            document.getElementById('checkIdeacion1').checked = emp.ideacion1 || false;
+            document.getElementById('checkIdeacion2').checked = emp.ideacion2 || false;
+            document.getElementById('checkIdeacion3').checked = emp.ideacion3 || false;
+            document.getElementById('fechaIdeacion').value = emp.ideacionFecha || '';
+
+            document.getElementById('checkValidacion1').checked = emp.validacion1 || false;
+            document.getElementById('checkValidacion2').checked = emp.validacion2 || false;
+            document.getElementById('checkValidacion3').checked = emp.validacion3 || false;
+            document.getElementById('fechaValidacion').value = emp.validacionFecha || '';
+
+            (emp.puntosFormulacion || []).forEach((val, i) => {
+                const cb = document.getElementById(`punto_${i}`);
+                if(cb) cb.checked = val;
+            });
+
+            document.getElementById('formConvocatoria').value = emp.convocatoria || '';
+            document.getElementById('formFechaFormalizacion').value = emp.fechaFormalizacion || '';
+            document.getElementById('formViabilidad').value = emp.viabilidad || 'En Proceso';
+            document.getElementById('formRecursos').value = emp.recursos || 0;
+            document.getElementById('formActaContrato').value = emp.actaContrato || '';
+            document.getElementById('formVisitas').value = emp.visitasInterventoria || 0;
+            document.getElementById('formCondonado').value = emp.condonado || 'No';
+            document.getElementById('formResolucion').value = emp.resolucion || '';
+
+            switchTab('nuevo');
+        }
+
+        function deleteEmprendedor(fbKey) {
+            if (!fbKey) return;
+            if (confirm("¿Está seguro de eliminar permanentemente este emprendedor de Firebase Database?")) {
+                window.fbRemove(window.fbRef(window.fbDB, 'emprendedores/' + fbKey))
+                .catch(err => alert("Error al eliminar: " + err.message));
+            }
+        }
+
+        function exportDataToCSV() {
+            let csvContent = "data:text/csv;charset=utf-8,";
+            
+            const headers = [
+                "Nombre Completo","Cedula","Telefono","Nombre Emprendimiento","Centro Emprendimiento Comunitario","Municipio",
+                "Modalidad Proyecto","Orientador Ideacion","Orientador Formulacion","Orientacion Evidencia","Orientacion Fecha",
+                "Ideacion 01","Ideacion 02","Ideacion 03","Ideacion Fecha",
+                "Validacion 01","Validacion 02","Validacion 03 Pitch","Validacion Fecha",
+                "Punto 1 Cliente","Punto 2 Problema","Punto 3 Competencia","Punto 4 Descripcion","Punto 5 Ficha Tecnica",
+                "Punto 6 Proceso Tecnico","Punto 7 Tramites","Punto 8 Canales","Punto 9 Ventas","Punto 10 Costos",
+                "Punto 11 Equipo","Punto 12 Necesidades","Punto 13 Avances","Punto 14 Plan Operativo","Punto 15 Impactos",
+                "Punto 16 Mapa Actores","Punto 17 Asociatividad",
+                "Convocatoria","Fecha Formalizacion","Viabilidad","Recursos Asignados","Acta o Contrato","Visitas Interventoria","Condonado","Resolucion"
+            ];
+
+            csvContent += headers.join(",") + "\n";
+
+            (window.emprendedoresData || []).forEach(e => {
+                const row = [
+                    `"${maskText(e.nombre, 4)}"`,
+                    `"${maskCedula(e.cedula)}"`,
+                    `"${maskTelefono(e.telefono)}"`,
+                    `"${maskText(e.emprendimiento, 5)}"`,
+                    `"${e.centro || ''}"`,
+                    `"${e.municipio || ''}"`,
+                    `"${e.tipoProyecto || ''}"`,
+                    `"${e.orientadorIdeacion || ''}"`,
+                    `"${e.orientadorFormulacion || ''}"`,
+                    `"${e.orientacionEvidencia?'Si':'No'}"`,
+                    `"${e.orientacionFecha || ''}"`,
+                    `"${e.ideacion1?'Si':'No'}"`,`"${e.ideacion2?'Si':'No'}"`,`"${e.ideacion3?'Si':'No'}"`,`"${e.ideacionFecha || ''}"`,
+                    `"${e.validacion1?'Si':'No'}"`,`"${e.validacion2?'Si':'No'}"`,`"${e.validacion3?'Si':'No'}"`,`"${e.validacionFecha || ''}"`,
+                    ...Array.from({length:17}, (_,i) => `"${(e.puntosFormulacion && e.puntosFormulacion[i])?'Si':'No'}"`),
+                    `"${e.convocatoria || ''}"`,`"${e.fechaFormalizacion || ''}"`,`"${e.viabilidad || ''}"`,`"${e.recursos || 0}"`,`"${e.actaContrato || ''}"`,`"${e.visitasInterventoria || 0}"`,`"${e.condonado || 'No'}"`,`"${e.resolucion || ''}"`
+                ];
+                csvContent += row.join(",") + "\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `Matriz_Ruta_Emprendedora_SENA_Santander_${isMasked?'Protegido':'Completo'}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function switchTab(tabId) {
+            const tabs = ['dashboard', 'emprendedores', 'nuevo', 'reportes'];
+            tabs.forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                const navBtn = document.getElementById(`nav-${t}`);
+                if(navBtn) navBtn.className = "nav-item w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl text-slate-300 hover:bg-sena-navyLight hover:text-white transition";
+            });
+
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`nav-${tabId}`);
+            if(activeBtn) activeBtn.className = "nav-item w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl text-white bg-sena-green shadow-sm transition";
+
+            const titles = {
+                dashboard: 'Dashboard de Impacto y Gestión',
+                emprendedores: 'Directorio de Emprendedores y Avance en la Ruta',
+                nuevo: 'Formulario de Registro y Edición de Avance',
+                reportes: 'Centro de Generación de Reportes Consolidados'
+            };
+            document.getElementById('pageTitle').innerText = titles[tabId];
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+        }
+    </script>
 </body>
 </html>
