@@ -212,7 +212,7 @@
         </div>
     </main>
 
-    <!-- ================= SCRIPTS DE FIREBASE CON CONFIGURACIÓN REAL ================= -->
+    <!-- ================= SCRIPTS DE FIREBASE Y NAVEGACIÓN ================= -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -300,6 +300,7 @@
             }
         });
 
+        // Lógica de cambio de pestañas en el menú lateral
         window.switchTab = function(tabName) {
             document.querySelectorAll('.nav-item').forEach(btn => {
                 btn.classList.remove('bg-sena-green', 'text-white', 'shadow-sm');
@@ -309,6 +310,40 @@
             if (activeBtn) {
                 activeBtn.classList.remove('text-slate-300', 'hover:bg-sena-navyLight', 'hover:text-white');
                 activeBtn.classList.add('bg-sena-green', 'text-white', 'shadow-sm');
+            }
+
+            // Actualizar contenido principal según la opción seleccionada
+            const mainContent = document.getElementById('mainContent');
+            switch(tabName) {
+                case 'dashboard':
+                    mainContent.innerHTML = `
+                        <h3 class="text-lg font-bold text-sena-navy mb-2"><i class="fa-solid fa-chart-pie mr-2 text-sena-green"></i> Dashboard General</h3>
+                        <p class="text-sm text-slate-600">Resumen y métricas clave de la Ruta Emprendedora en la Regional Santander.</p>
+                    `;
+                    break;
+                case 'emprendedores':
+                    mainContent.innerHTML = `
+                        <h3 class="text-lg font-bold text-sena-navy mb-2"><i class="fa-solid fa-users mr-2 text-sena-green"></i> Directorio y Ruta de Emprendedores</h3>
+                        <p class="text-sm text-slate-600">Listado general y seguimiento de los proyectos registrados en los municipios.</p>
+                    `;
+                    break;
+                case 'nuevo':
+                    mainContent.innerHTML = `
+                        <h3 class="text-lg font-bold text-sena-navy mb-2"><i class="fa-solid fa-user-plus mr-2 text-sena-green"></i> Registrar Emprendedor</h3>
+                        <p class="text-sm text-slate-600">Formulario de inscripción para la Ruta Emprendedora y Fondo Emprender.</p>
+                    `;
+                    break;
+                case 'reportes':
+                    mainContent.innerHTML = `
+                        <h3 class="text-lg font-bold text-sena-navy mb-2"><i class="fa-solid fa-file-lines mr-2 text-sena-green"></i> Reportes y Métricas</h3>
+                        <p class="text-sm text-slate-600">Generación y exportación de informes consolidados de avance regional.</p>
+                    `;
+                    break;
+                default:
+                    mainContent.innerHTML = `
+                        <h3 class="text-lg font-bold text-sena-navy mb-2">Bienvenido al Sistema</h3>
+                        <p class="text-sm text-slate-600">Selecciona una opción en el menú lateral para gestionar la ruta emprendedora.</p>
+                    `;
             }
         };
     </script>
