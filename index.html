@@ -201,14 +201,42 @@
     <!-- Contenido Principal -->
     <main class="flex-1 flex flex-col h-screen overflow-y-auto">
         <header class="bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center shadow-sm">
-            <h1 class="text-base font-bold text-sena-navy">Sistema de Seguimiento Ruta Emprendedora</h1>
+            <h1 id="pageTitle" class="text-base font-bold text-sena-navy">Dashboard General</h1>
             <div id="userSessionEmail" class="text-xs font-medium text-slate-600"></div>
         </header>
+
         <div class="p-6">
-            <div id="mainContent" class="bg-white rounded-2xl p-6 shadow-sm">
-                <h3 class="text-lg font-bold text-sena-navy mb-2">Bienvenido al Sistema</h3>
-                <p class="text-sm text-slate-600">Selecciona una opción en el menú lateral para gestionar la ruta emprendedora.</p>
-            </div>
+            <!-- TAB 1: DASHBOARD GENERAL -->
+            <section id="tab-dashboard" class="space-y-4">
+                <div class="bg-white rounded-2xl p-6 shadow-sm">
+                    <h3 class="text-lg font-bold text-sena-navy mb-2"><i class="fa-solid fa-chart-pie mr-2 text-sena-green"></i> Dashboard General</h3>
+                    <p class="text-sm text-slate-600">Resumen y métricas clave de la Ruta Emprendedora en la Regional Santander.</p>
+                </div>
+            </section>
+
+            <!-- TAB 2: DIRECTORIO Y RUTA -->
+            <section id="tab-emprendedores" class="hidden space-y-4">
+                <div class="bg-white rounded-2xl p-6 shadow-sm">
+                    <h3 class="text-lg font-bold text-sena-navy mb-2"><i class="fa-solid fa-users mr-2 text-sena-green"></i> Directorio y Ruta de Emprendedores</h3>
+                    <p class="text-sm text-slate-600">Listado general y seguimiento de los proyectos registrados en los municipios.</p>
+                </div>
+            </section>
+
+            <!-- TAB 3: REGISTRAR EMPRENDEDOR -->
+            <section id="tab-nuevo" class="hidden space-y-4">
+                <div class="bg-white rounded-2xl p-6 shadow-sm">
+                    <h3 class="text-lg font-bold text-sena-navy mb-2"><i class="fa-solid fa-user-plus mr-2 text-sena-green"></i> Registrar Emprendedor</h3>
+                    <p class="text-sm text-slate-600">Formulario de inscripción para la Ruta Emprendedora y Fondo Emprender.</p>
+                </div>
+            </section>
+
+            <!-- TAB 4: REPORTES Y MÉTRICAS -->
+            <section id="tab-reportes" class="hidden space-y-4">
+                <div class="bg-white rounded-2xl p-6 shadow-sm">
+                    <h3 class="text-lg font-bold text-sena-navy mb-2"><i class="fa-solid fa-file-lines mr-2 text-sena-green"></i> Reportes y Métricas</h3>
+                    <p class="text-sm text-slate-600">Generación y exportación de informes consolidados de avance regional.</p>
+                </div>
+            </section>
         </div>
     </main>
 
@@ -300,8 +328,9 @@
             }
         });
 
-        // Lógica de cambio de pestañas en el menú lateral
+        // Lógica corregida de cambio de pestañas en el menú lateral
         window.switchTab = function(tabName) {
+            // Actualizar estilos activos de los botones
             document.querySelectorAll('.nav-item').forEach(btn => {
                 btn.classList.remove('bg-sena-green', 'text-white', 'shadow-sm');
                 btn.classList.add('text-slate-300', 'hover:bg-sena-navyLight', 'hover:text-white');
@@ -312,38 +341,28 @@
                 activeBtn.classList.add('bg-sena-green', 'text-white', 'shadow-sm');
             }
 
-            // Actualizar contenido principal según la opción seleccionada
-            const mainContent = document.getElementById('mainContent');
-            switch(tabName) {
-                case 'dashboard':
-                    mainContent.innerHTML = `
-                        <h3 class="text-lg font-bold text-sena-navy mb-2"><i class="fa-solid fa-chart-pie mr-2 text-sena-green"></i> Dashboard General</h3>
-                        <p class="text-sm text-slate-600">Resumen y métricas clave de la Ruta Emprendedora en la Regional Santander.</p>
-                    `;
-                    break;
-                case 'emprendedores':
-                    mainContent.innerHTML = `
-                        <h3 class="text-lg font-bold text-sena-navy mb-2"><i class="fa-solid fa-users mr-2 text-sena-green"></i> Directorio y Ruta de Emprendedores</h3>
-                        <p class="text-sm text-slate-600">Listado general y seguimiento de los proyectos registrados en los municipios.</p>
-                    `;
-                    break;
-                case 'nuevo':
-                    mainContent.innerHTML = `
-                        <h3 class="text-lg font-bold text-sena-navy mb-2"><i class="fa-solid fa-user-plus mr-2 text-sena-green"></i> Registrar Emprendedor</h3>
-                        <p class="text-sm text-slate-600">Formulario de inscripción para la Ruta Emprendedora y Fondo Emprender.</p>
-                    `;
-                    break;
-                case 'reportes':
-                    mainContent.innerHTML = `
-                        <h3 class="text-lg font-bold text-sena-navy mb-2"><i class="fa-solid fa-file-lines mr-2 text-sena-green"></i> Reportes y Métricas</h3>
-                        <p class="text-sm text-slate-600">Generación y exportación de informes consolidados de avance regional.</p>
-                    `;
-                    break;
-                default:
-                    mainContent.innerHTML = `
-                        <h3 class="text-lg font-bold text-sena-navy mb-2">Bienvenido al Sistema</h3>
-                        <p class="text-sm text-slate-600">Selecciona una opción en el menú lateral para gestionar la ruta emprendedora.</p>
-                    `;
+            // Ocultar todas las secciones y mostrar solo la seleccionada
+            const tabs = ['dashboard', 'emprendedores', 'nuevo', 'reportes'];
+            tabs.forEach(t => {
+                const section = document.getElementById(`tab-${t}`);
+                if (section) section.classList.add('hidden');
+            });
+
+            const currentSection = document.getElementById(`tab-${tabName}`);
+            if (currentSection) {
+                currentSection.classList.remove('hidden');
+            }
+
+            // Actualizar título de la página superior
+            const titles = {
+                dashboard: 'Dashboard General',
+                emprendedores: 'Directorio y Ruta de Emprendedores',
+                nuevo: 'Registrar Emprendedor',
+                reportes: 'Reportes y Métricas'
+            };
+            const pageTitle = document.getElementById('pageTitle');
+            if (pageTitle) {
+                pageTitle.textContent = titles[tabName] || 'Sistema de Seguimiento Ruta Emprendedora';
             }
         };
     </script>
